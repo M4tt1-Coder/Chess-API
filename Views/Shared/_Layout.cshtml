@@ -9,13 +9,9 @@
 </head>
 <body class="bg-slate-800">
 <header>
-    <nav class="navbar">
-        <div class="container-fluid">
-            <a class="" asp-area="" asp-controller="Home" asp-action="Index">Chess_API</a>
-            <button class="" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class=""></span>
-            </button>
+    <nav class="navbar bg-white">
+        <div class="p-2 w-screen mb-3 flex items-center justify-center border-b-2 border-black">
+            <a class="p-1 font-mono text-2xl font-bold hover:underline rounded-lg border-sky-500 transition-all duration-500 hover:border-2 decoration-2 decoration-sky-500 decoration-dotted underline-offset-2" asp-area="" asp-controller="Home" asp-action="Index">Chess_API</a>
         </div>
     </nav>
 </header>
@@ -24,13 +20,23 @@
         @RenderBody()
     </main>
 </div>
-<footer class="">
-    <div class="">
-        &copy; 2023 - Chess_API - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+<footer class="w-screen absolute bottom-0 left-0">
+    <div class="bg-white rounded-lg shadow m-4">
+        <div
+            class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+            <span class="text-sm text-gray-500 sm:text-center">
+                © 2023 - <a asp-area="" asp-controller="Home" asp-action="Index" class="hover:underline">Chess_API</a>. All Rights Reserved.
+            </span>
+            <ul
+                class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 sm:mt-0">
+                <li>
+                    <a class="hover:underline me-4 md:me-6" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
