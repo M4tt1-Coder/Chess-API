@@ -12,6 +12,19 @@
         <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Models\GameModel.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.14" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="pics\" />
+    </ItemGroup>
+
     <Target Name="Tailwind" BeforeTargets="Build">
         <Exec Command="npm run css:build"/>
     </Target>

@@ -30,3 +30,7 @@
 /Users/m4tt1/RiderProjects/Chess-API/obj/Debug/net7.0/Chess-API.pdb
 /Users/m4tt1/RiderProjects/Chess-API/obj/Debug/net7.0/Chess-API.genruntimeconfig.cache
 /Users/m4tt1/RiderProjects/Chess-API/obj/Debug/net7.0/ref/Chess-API.dll
+/Users/m4tt1/RiderProjects/Chess-API/bin/Debug/net7.0/Microsoft.EntityFrameworkCore.dll
+/Users/m4tt1/RiderProjects/Chess-API/bin/Debug/net7.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/m4tt1/RiderProjects/Chess-API/bin/Debug/net7.0/Microsoft.EntityFrameworkCore.InMemory.dll
+/Users/m4tt1/RiderProjects/Chess-API/obj/Debug/net7.0/Chess-API.csproj.CopyComplete

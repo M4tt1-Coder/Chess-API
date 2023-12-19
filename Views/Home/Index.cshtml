@@ -1,16 +1,44 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@{
+}
 
-<div class="flex items-center justify-center w-screen h-screen" role="main">
-    <div class="grid grid-cols-1 place-content-center rounded-lg w-[35%] h-[40%] border-2 border-green-500 bg-white">
-        <div class="p-2 flex justify-center items-center">
-            <button type="button" class=" ml-3 border-2 border-black rounded-lg p-2 hover:p-3 hover:-translate-y-0.5 transition-all duration-500">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"/>
-                </svg>
-            </button>
-            <p class="text-lg font-mono font-semibold text-black">Play a local game</p>
+<div class="flex items-center justify-center w-screen h-auto mt-10" role="main" onload="">
+    <div class="grid grid-cols-1 place-content-center rounded-lg w-[35%] h-[40%] border-2 border-green-500 bg-white p-4">
+        <div class="p-3 w-full h-auto rounded-lg text-center border-x-2 border-x-slate-400 border-t-2 border-t-slate-400 hover:bg-slate-300 transition-all duration-500">
+            <a class="group p-3 text-center transition-all duration-500 ease-in-out" href="#">
+                <span class="p-2 text-black text-xl font-semibold font-mono text-center bg-left-bottom bg-gradient-to-r from-red-300 to-red-500 bg-[length:0%_4px] bg-no-repeat group-hover:bg-[length:100%_4px] transition-all duration-700 ease-out">
+                    Okay, lets choose what to play ...
+                </span>
+            </a>
         </div>
+        <hr class="border-1 border-gray-700 w-full my-4"/>
+        <ul class="grid grid-cols-1 place-content-center">
+            <li class="my-2 p-2 flex justify-normal items-center rounded-lg hover:bg-amber-200 transition-all duration-500">
+                <button type="button" class=" mr-3 border-2 border-black rounded-lg bg-white p-2 hover:p-3 hover:-translate-y-0.5 transition-all duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"/>
+                    </svg>
+                </button>
+                <p class="text-lg font-mono font-semibold text-black">Player VS Player (local)</p>
+            </li>
+            <li class="my-2 p-2 flex justify-normal items-center rounded-lg hover:bg-emerald-300 transition-all duration-500">
+                <button type="button" class=" mr-3 border-2 border-black bg-white rounded-lg p-2 hover:p-3 hover:-translate-y-0.5 transition-all duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"/>
+                    </svg>
+                </button>
+                <p class="text-lg font-mono font-semibold text-black">Player VS AI (local)</p>
+            </li>
+            <li class="my-2 p-2 flex justify-normal items-center rounded-lg hover:bg-red-300 transition-all duration-500">
+                <button type="button" class=" mr-3 border-2 border-black bg-white rounded-lg p-2 hover:p-3 hover:-translate-y-0.5 transition-all duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"/>
+                    </svg>
+                </button>
+                <p class="text-lg font-mono font-semibold text-black">Player VS Player (online)</p>
+            </li>
+        </ul>
     </div>
 </div>
