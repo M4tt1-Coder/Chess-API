@@ -1,7 +1,11 @@
+using Chess_API.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ChessDbContext>();
 
 var app = builder.Build();
 

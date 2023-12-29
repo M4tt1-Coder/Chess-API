@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Models\GameModel.cs" />
+      <Compile Remove="Models\GameModell.cs" />
     </ItemGroup>
 
     <ItemGroup>
