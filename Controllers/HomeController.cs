@@ -6,16 +6,19 @@ namespace Chess_API.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly ChessDbContext _context;
+    
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, ChessDbContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
     public IActionResult Index()
     {
-        return View();
+        return View(_context.Game);
     }
 
     public IActionResult Privacy()
@@ -25,6 +28,7 @@ public class HomeController : Controller
 
     public IActionResult GameField()
     {
+        _logger.LogInformation("We are here!");
         return View();
     }
     

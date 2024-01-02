@@ -12,7 +12,7 @@ public class PlayerModel
     /// <summary>
     /// When the player sets a time limit it's stored in here.
     /// </summary>
-    public TimeSpan Time { get; set; }
+    public TimeSpan? Time { get; set; }
 
     /// <summary>
     /// The pieces the player removed from the board of the opponent.
@@ -24,7 +24,7 @@ public class PlayerModel
     /// </summary>
     public string? Name { get; set; }
 
-    public PlayerModel(TimeSpan time, string name)
+    public PlayerModel(TimeSpan? time, string name)
     {
         Time = time;
         Pieces = new List<FigureModel>();

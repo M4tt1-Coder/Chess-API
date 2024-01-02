@@ -40,4 +40,8 @@ public class FigureModel
         PictureSource = pictureSource;
         Color = color;
     }
+
+    public FigureModel()
+    {
+    }
 }
