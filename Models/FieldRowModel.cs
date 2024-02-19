@@ -1,3 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
 namespace Chess_API.Models;
 
 /// <summary>
@@ -10,22 +14,38 @@ namespace Chess_API.Models;
 public class FieldRowModel
 {
     /// <summary>
-    /// Defines what line it is starting from the white color side!
+    /// The identifier for a row.
+    ///
+    /// Represents the number in the playing field in which the row sits
+    /// 
+    /// Can't be null.
     /// </summary>
-    public int Number { get; set; }
+    [Key]
+    public int RowId { get; set; }
 
     /// <summary>
+    /// Declares which number the row is from the top to the bottom in the playing field.
+    /// </summary>
+    [Required]
+    public int RowNumber { get; set; }
+    
+    /// <summary>
+    /// Can be empty.
+    /// 
     /// Stores all fields in the row.
     ///
-    /// It has until 8 members, located starting with the index 0 to 7.
+    /// It has 8 members, located starting with the index 0 to 7.
     /// </summary>
+    [Required]
     public List<FieldModel> Row { get; set; }
 
     public FieldRowModel(List<FieldModel> row, int number)
     {
+        RowNumber = number;
         Row = row;
-        Number = number;
     }
-    
-    
+
+    public FieldRowModel()
+    {
+    }
 }

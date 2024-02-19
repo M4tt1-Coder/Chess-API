@@ -1,4 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using Chess_API.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chess_API.Models;
 
@@ -13,13 +15,23 @@ namespace Chess_API.Models;
 public class FigureModel
 {
     /// <summary>
+    /// Represents the identifier for a figure.
+    ///
+    /// Can't be null.
+    /// </summary>
+    [Key]
+    public int FigureId { get; set; }
+    
+    /// <summary>
     /// Defines type of a piece through an enum.
     /// </summary>
+    [Required]
     public FigureType Type { get; set; }
 
     /// <summary>
     /// That is an external path to a local stored, static png-picture.
     /// </summary>
+    [MaxLength(50)]
     public string PictureSource { get; set; }
 
     /// <summary>
@@ -31,6 +43,7 @@ public class FigureModel
     /// <summary>
     /// Property to declare the color of the figure.
     /// </summary>
+    [Required]
     public Colors Color { get; set; }
 
     public FigureModel(FigureType type, bool selected, string pictureSource, Colors color)

@@ -10,6 +10,13 @@ namespace Chess_API.utils;
 /// </summary>
 public static class GameHandler
 {
+    //constants
+    
+    /// <summary>
+    /// Represents that the first round is always 1.
+    /// </summary>
+    private static readonly int DefaultRound = 1; 
+    
     /// <summary>
     /// It's there to create a completely new game object for another playing round.
     ///
@@ -21,11 +28,10 @@ public static class GameHandler
     public static GameModel Default()
     {
         return new GameModel(
-            new PlayerModel(null, ""),
-            new PlayerModel(null, ""),
+            new PlayerModel(null, "", 0),
+            new PlayerModel(null, "", 0),
             FieldHandler.Default(),
-            new int[] { 0, 0 },
-            0,
+            DefaultRound,
             PlayingMode.Default,
             Winner.Default
         );

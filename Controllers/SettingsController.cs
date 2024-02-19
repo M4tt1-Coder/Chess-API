@@ -1,4 +1,4 @@
-using Chess_API.Models;
+using Chess_API.Database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chess_API.Controllers;

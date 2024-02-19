@@ -1,13 +1,17 @@
 ﻿using System.Diagnostics;
+using System.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Chess_API.Database;
 using Chess_API.Models;
+using Chess_API.utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chess_API.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ChessDbContext _context;
-    
+
     private readonly ILogger<HomeController> _logger;
 
     public HomeController(ILogger<HomeController> logger, ChessDbContext context)
@@ -26,12 +30,18 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult GameField()
+    public async Task<IActionResult> GameField()
     {
-        _logger.LogInformation("We are here!");
-        return View();
+        GameModel game = GameHandler.Default();
+
+        _context.Game.Add(game);
+        await _context.SaveChangesAsync();
+
+        GameModel testGame = await _context.Game.FirstAsync();      
+        
+        return View(testGame);
     }
-    
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

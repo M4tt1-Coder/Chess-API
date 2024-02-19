@@ -1,4 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using Chess_API.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chess_API.Models;
 
@@ -17,10 +19,19 @@ namespace Chess_API.Models;
 public class FieldModel
 {
     /// <summary>
+    /// The identifier for every field.
+    ///
+    /// Can't be null.
+    /// </summary>
+    [Key]
+    public int FieldId { get; set; }
+    
+    /// <summary>
     /// As in the figure class these stands for color of the field.
     /// </summary>
+    [Required]
     public Colors Color { get; set; }
-    
+
     /// <summary>
     /// The property can have two states:
     /// 1.) hold nothing
@@ -38,5 +49,9 @@ public class FieldModel
         Color = color;
         Content = content;
         MoveSelected = false;
+    }
+
+    public FieldModel()
+    {
     }
 }

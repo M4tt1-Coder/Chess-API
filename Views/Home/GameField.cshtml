@@ -6,10 +6,8 @@
 @model Chess_API.Models.GameModel
 
 <!--TODO - Connect to controller -> inject form to communicate with controller-->
-<!--TODO - Get figure pictures and set picture paths-->
 <!--TODO - when player clicks a field with a figure on it mark these fields who are selected -> where the figure can go!-->
 <!--TODO - create a selection algorithm for selection of fields -> implement in the view-->
-<!--TODO - Default implementation method for game instance-->
 <!--TODO - use Periodic timer for ticking down the clocks of the single players; let the player select a time option -> sets number of seconds -> will be ticked down-->
 <!--https://www.youtube.com/watch?v=N7vhJ7O56iM&t=15s-->
 
@@ -28,7 +26,7 @@
                             @if (field.Content != null)
                             {
                                 <button class="bg-white border-1 border-black focus:border-white">
-                                    <img src="@field.Content.PictureSource" alt="none" class=""/>
+                                    <img src="@field.Content.PictureSource" alt="none" class="m-1"/>
                                 </button>
                             }
                             else

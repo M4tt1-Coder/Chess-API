@@ -33,7 +33,7 @@ public static class FieldHandler
 
         for (int i = 0; i < RowNumber; i++)
         {
-            FieldRowModel row = new FieldRowModel(new List<FieldModel>(), i);
+            FieldRowModel row = new FieldRowModel(new List<FieldModel>(), i + 1);
 
             for (int j = 0; j < FieldNumber; j++)
             {
@@ -64,11 +64,13 @@ public static class FieldHandler
             output.Add(row);
         }
 
+            
+        
         return output;
     }
 
-    //TODO - Import picture sources over external file
-
+    //TODO - The picture source micro service doesn't work.
+    
     /// <summary>
     /// Goes through all positions of the figures in starting chess game layout.
     ///
@@ -87,11 +89,11 @@ public static class FieldHandler
         }
         else if (rowIndex == 1)
         {
-            return new FigureModel(FigureType.Pawn, false, "", Colors.White);
+            return new FigureModel(FigureType.Pawn, false, PictureSources.White_Pawn(), Colors.White);
         }
         else if (rowIndex == 6)
         {
-            return new FigureModel(FigureType.Pawn, false, "", Colors.Black);
+            return new FigureModel(FigureType.Pawn, false, PictureSources.Black_Pawn(), Colors.Black);
         }
         else if (rowIndex == 7)
         {
@@ -116,54 +118,54 @@ public static class FieldHandler
         {
             if (fieldIndex == 0 || fieldIndex == 7)
             {
-                return new FigureModel(FigureType.Rook, false, "", Colors.White);
+                return new FigureModel(FigureType.Rook, false, PictureSources.White_Rook(), Colors.White);
             }
 
             if (fieldIndex == 1 || fieldIndex == 6)
             {
-                return new FigureModel(FigureType.Knight, false, "", Colors.White);
+                return new FigureModel(FigureType.Knight, false, PictureSources.White_Knight(), Colors.White);
             }
 
             if (fieldIndex == 2 || fieldIndex == 5)
             {
-                return new FigureModel(FigureType.Bishop, false, "", Colors.White);
+                return new FigureModel(FigureType.Bishop, false, PictureSources.White_Bishop(), Colors.White);
             }
 
             if (fieldIndex == 3)
             {
-                return new FigureModel(FigureType.King, false, "", Colors.White);
+                return new FigureModel(FigureType.King, false, PictureSources.White_King(), Colors.White);
             }
 
             if (fieldIndex == 4)
             {
-                return new FigureModel(FigureType.Queen, false, "", Colors.White);
+                return new FigureModel(FigureType.Queen, false, PictureSources.White_Queen(), Colors.White);
             }
         }
         else
         {
             if (fieldIndex == 0 || fieldIndex == 7)
             {
-                return new FigureModel(FigureType.Rook, false, "", Colors.Black);
+                return new FigureModel(FigureType.Rook, false, PictureSources.Black_Rook(), Colors.Black);
             }
 
             if (fieldIndex == 1 || fieldIndex == 6)
             {
-                return new FigureModel(FigureType.Knight, false, "", Colors.Black);
+                return new FigureModel(FigureType.Knight, false, PictureSources.Black_Knight(), Colors.Black);
             }
 
             if (fieldIndex == 2 || fieldIndex == 5)
             {
-                return new FigureModel(FigureType.Bishop, false, "", Colors.Black);
+                return new FigureModel(FigureType.Bishop, false, PictureSources.Black_Bishop(), Colors.Black);
             }
 
             if (fieldIndex == 3)
             {
-                return new FigureModel(FigureType.King, false, "", Colors.Black);
+                return new FigureModel(FigureType.King, false, PictureSources.Black_King(), Colors.Black);
             }
 
             if (fieldIndex == 4)
             {
-                return new FigureModel(FigureType.Queen, false, "", Colors.Black);
+                return new FigureModel(FigureType.Queen, false, PictureSources.Black_Queen(), Colors.Black);
             }
         }
 

@@ -1,3 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
 namespace Chess_API.Models;
 
 /// <summary>
@@ -10,6 +14,19 @@ namespace Chess_API.Models;
 public class PlayerModel
 {
     /// <summary>
+    /// Represents the ID and additionally the player number one or two.
+    ///
+    /// Can't be null.
+    /// </summary>
+    [Key]
+    public int PlayerId { get; set; }
+
+    /// <summary>
+    /// Represents how many rounds a player has won.
+    /// </summary>
+    public int Score { get; set; }
+
+    /// <summary>
     /// When the player sets a time limit it's stored in here.
     /// </summary>
     public TimeSpan? Time { get; set; }
@@ -17,17 +34,24 @@ public class PlayerModel
     /// <summary>
     /// The pieces the player removed from the board of the opponent.
     /// </summary>
-    public List<FigureModel>? Pieces { get; set; }
+    [Required]
+    public List<FigureModel> Pieces { get; set; }
 
     /// <summary>
     /// A random name the player can set.
     /// </summary>
-    public string? Name { get; set; }
+    [MaxLength(25)]
+    public string Name { get; set; }
 
-    public PlayerModel(TimeSpan? time, string name)
+    public PlayerModel(TimeSpan? time, string name, int score)
     {
+        Score = score;
         Time = time;
         Pieces = new List<FigureModel>();
         Name = name;
+    }
+
+    public PlayerModel()
+    {
     }
 }
