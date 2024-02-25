@@ -29,6 +29,11 @@ public static class DotEnv
             if (parts.Length != 2)
                 continue;
 
+            if (parts[1][1] is '"' || parts[1][parts[1].Length - 1] is '"')
+            {
+                parts[1] = parts[1].Substring(1, parts[1].Length - 2);
+            }
+
             Environment.SetEnvironmentVariable(parts[0], parts[1]);
         }
     }

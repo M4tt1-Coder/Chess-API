@@ -15,13 +15,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ChessDbContext>();
 
-//TODO - Look add entity framework properly!
-//TODO - Rework the model system for proper entity classes -> update the handler components
-//TODO - Add CRUD functions to interact with the database
 //TODO - Create Game option pages to create the game instance
 //TODO - Configure correct routing + in right order redirect -> use middlewares (when a side can't be accessed yet, ...)
 //TODO - Finish playing page
-//use https://learn.microsoft.com/en-us/ef/core/modeling/
+//TODO - Write a checker for figure movements + game state
 
 var app = builder.Build();
 

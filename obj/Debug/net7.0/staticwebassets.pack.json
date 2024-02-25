@@ -249,6 +249,58 @@
       "PackagePath": "staticwebassets/lib/jquery/dist/jquery.min.map"
     },
     {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/.DS_Store",
+      "PackagePath": "staticwebassets/pics/.DS_Store"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/Bishop_Black.png",
+      "PackagePath": "staticwebassets/pics/Bishop_Black.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/Bishop_White.png",
+      "PackagePath": "staticwebassets/pics/Bishop_White.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/King_Black.png",
+      "PackagePath": "staticwebassets/pics/King_Black.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/King_White.png",
+      "PackagePath": "staticwebassets/pics/King_White.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/Knight_Black.png",
+      "PackagePath": "staticwebassets/pics/Knight_Black.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/Knight_White.png",
+      "PackagePath": "staticwebassets/pics/Knight_White.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/Pawn_Black.png",
+      "PackagePath": "staticwebassets/pics/Pawn_Black.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/Pawn_White.png",
+      "PackagePath": "staticwebassets/pics/Pawn_White.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/Queen_Black.png",
+      "PackagePath": "staticwebassets/pics/Queen_Black.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/Queen_White.png",
+      "PackagePath": "staticwebassets/pics/Queen_White.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/Rook_Black.png",
+      "PackagePath": "staticwebassets/pics/Rook_Black.png"
+    },
+    {
+      "Id": "/Users/m4tt1/RiderProjects/Chess-API/wwwroot/pics/Rook_White.png",
+      "PackagePath": "staticwebassets/pics/Rook_White.png"
+    },
+    {
       "Id": "obj/Debug/net7.0/staticwebassets/msbuild.Chess-API.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

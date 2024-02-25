@@ -69,8 +69,6 @@ public static class FieldHandler
         return output;
     }
 
-    //TODO - The picture source micro service doesn't work.
-    
     /// <summary>
     /// Goes through all positions of the figures in starting chess game layout.
     ///

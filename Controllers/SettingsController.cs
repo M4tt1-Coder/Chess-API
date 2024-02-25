@@ -12,8 +12,20 @@ public class SettingsController : Controller
         _context = context;
     }
 
-    // GET
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public IActionResult Index()
+    {
+        return View();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public IActionResult Options()
     {
         return View();
     }

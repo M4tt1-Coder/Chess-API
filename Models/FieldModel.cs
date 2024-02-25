@@ -36,7 +36,7 @@ public class FieldModel
     /// The property can have two states:
     /// 1.) hold nothing
     /// 2.) include a piece of every type.
-    /// </summary>
+    /// </summary> 
     public FigureModel? Content { get; set; }
 
     /// <summary>

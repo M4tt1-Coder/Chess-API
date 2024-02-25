@@ -22,7 +22,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="pics\" />
+      <None Include="wwwroot\pics\Bishop_Black.png" />
+      <None Include="wwwroot\pics\Bishop_White.png" />
+      <None Include="wwwroot\pics\King_Black.png" />
+      <None Include="wwwroot\pics\King_White.png" />
+      <None Include="wwwroot\pics\Knight_Black.png" />
+      <None Include="wwwroot\pics\Knight_White.png" />
+      <None Include="wwwroot\pics\Pawn_Black.png" />
+      <None Include="wwwroot\pics\Pawn_White.png" />
+      <None Include="wwwroot\pics\Queen_Black.png" />
+      <None Include="wwwroot\pics\Queen_White.png" />
+      <None Include="wwwroot\pics\Rook_Black.png" />
+      <None Include="wwwroot\pics\Rook_White.png" />
     </ItemGroup>
 
     <Target Name="Tailwind" BeforeTargets="Build">

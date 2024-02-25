@@ -30,18 +30,8 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> GameField()
-    {
-        GameModel game = GameHandler.Default();
-
-        _context.Game.Add(game);
-        await _context.SaveChangesAsync();
-
-        GameModel testGame = await _context.Game.FirstAsync();      
-        
-        return View(testGame);
-    }
-
+    
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

@@ -32,7 +32,7 @@ public class FigureModel
     /// That is an external path to a local stored, static png-picture.
     /// </summary>
     [MaxLength(50)]
-    public string PictureSource { get; set; }
+    public string? PictureSource { get; set; }
 
     /// <summary>
     /// Shows if the user has clicked on a field with a piece of his color.
