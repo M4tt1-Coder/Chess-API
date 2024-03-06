@@ -1,5 +1,6 @@
 @{
-    //TODO - Link the buttons + Adjust playing mode implementation
+    //TODO - Adjust playing mode implementation
+    //-> add a route parameter to the IActionResult function & the url with the buttons
 }
 
 <div class="flex items-center justify-center w-screen h-auto mt-10" role="main" onload="">
@@ -15,25 +16,31 @@
         <ul class="grid grid-cols-1 place-content-center">
             <li class="my-2 p-2 flex justify-normal items-center rounded-lg hover:bg-amber-200 transition-all duration-500">
                 <button type="button" class=" mr-3 border-2 border-black rounded-lg bg-white p-2 hover:p-3 hover:-translate-y-0.5 transition-all duration-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"/>
-                    </svg>
+                    <a href="/settings/options?modeId=0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"/>
+                        </svg>
+                    </a>
                 </button>
                 <p class="text-lg font-mono font-semibold text-black">Player VS Player (local)</p>
             </li>
             <li class="my-2 p-2 flex justify-normal items-center rounded-lg hover:bg-emerald-300 transition-all duration-500">
                 <button type="button" class=" mr-3 border-2 border-black bg-white rounded-lg p-2 hover:p-3 hover:-translate-y-0.5 transition-all duration-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"/>
-                    </svg>
+                    <a href="/settings/options?modeId=1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"/>
+                        </svg>
+                    </a>
                 </button>
                 <p class="text-lg font-mono font-semibold text-black">Player VS AI (local)</p>
             </li>
             <li class="my-2 p-2 flex justify-normal items-center rounded-lg hover:bg-red-300 transition-all duration-500">
                 <button type="button" class=" mr-3 border-2 border-black bg-white rounded-lg p-2 hover:p-3 hover:-translate-y-0.5 transition-all duration-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"/>
-                    </svg>
+                    <a href="/settings/options?modeId=2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"/>
+                        </svg>
+                    </a>
                 </button>
                 <p class="text-lg font-mono font-semibold text-black">Player VS Player (online)</p>
             </li>

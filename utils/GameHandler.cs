@@ -11,12 +11,12 @@ namespace Chess_API.utils;
 public static class GameHandler
 {
     //constants
-    
+
     /// <summary>
     /// Represents that the first round is always 1.
     /// </summary>
-    private static readonly int DefaultRound = 1; 
-    
+    private static readonly int DefaultRound = 1;
+
     /// <summary>
     /// It's there to create a completely new game object for another playing round.
     ///
@@ -55,5 +55,37 @@ public static class GameHandler
         //game.PlayerTwo ... - || -
         //game.Score = new int[] { }; -> updated in checker
         return game;
+    }
+
+    /// <summary>
+    /// Creates a default game instance for the start of the game based on the play-mode the user chose to play.
+    ///
+    /// It's the entrypoint for the game object.
+    ///
+    /// Changes the Mode-prop dependent on the choice.
+    /// </summary>
+    /// <param name="modeId">Represents which game mode the player wants to play.</param>
+    /// <returns>The initialization game object.</returns>
+    public static GameModel GameOnPlayingMode(int? modeId = 3)
+    {
+        GameModel output = Default();
+
+        switch (modeId)
+        {
+            case 0:
+                output.Mode = PlayingMode.UserVsUserLocal;
+                break;
+            case 1:
+                output.Mode = PlayingMode.UserVsAi;
+                break;
+            case 2:
+                output.Mode = PlayingMode.UserVsUserOnline;
+                break;
+            case 3:
+                output.Mode = PlayingMode.Default;
+                break;
+        }
+
+        return output;
     }
 }

@@ -29,6 +29,7 @@ public class PlayerModel
     /// <summary>
     /// When the player sets a time limit it's stored in here.
     /// </summary>
+    [DataType(DataType.Time)]
     public TimeSpan? Time { get; set; }
 
     /// <summary>

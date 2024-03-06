@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Chess_API.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace Chess_API.Models;
 
@@ -50,6 +48,12 @@ public class GameModel
     /// </summary>
     public Winner Winner { get; set; }
 
+    /// <summary>
+    /// Is null when the players want to customize their time OR when they want no time limit.
+    /// </summary>
+    [MaxLength(5)]
+    public string? PlayTimeMode { get; set; }
+    
     public GameModel(PlayerModel playerOne, PlayerModel playerTwo, List<FieldRowModel> field, int round,
         PlayingMode mode, Winner winner)
     {

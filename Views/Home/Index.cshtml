@@ -2,10 +2,9 @@
     ViewData["Title"] = "Home Page";
 }
 @{
-    //TODO - Add a starting page
 }
 
-<main class="w-screen h-screen flex items-center justify-center">
+<main class="w-screen h-[80vh] flex items-center justify-center" onmouseenter="test()">
     <div class="text-4xl text-white font-bold p-4 w-full h-full grid grid-rows-2 grid-cols-1 justify-items-center">
         <!--That's the text what is shown.-->
         <div class="p-1 grid grid-rows-1 grid-cols-4 gap-3">
@@ -30,11 +29,25 @@
             @* </p> *@
         </div>
         <!--The starting button.-->
+        
         <div class="p-1">
-            <button class="" type="button">
-                <a href="/" class="">start</a>
+            <button id="starting-button" class="hover:animate-none starting-btn bg-white p-4 rounded-lg text-black" type="button">
+                <a href="/settings/">Start</a>
             </button>
+
         </div>
     </div>
 </main>
-
+<script>
+        function test() {
+                const startingButton = document.getElementById("starting-button");
+                
+                startingButton.classList.toggle("animate-str-btn");
+            
+                setTimeout(() => {
+                    startingButton.classList.toggle("animate-str-btn");
+                }, 6500)
+                
+                console.log("I am here trying to delete the class.")
+        }
+</script>

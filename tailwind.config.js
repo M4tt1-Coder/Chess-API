@@ -5,7 +5,11 @@ module.exports = {
     './Views/**/*.cshtml'
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        full_screen: {raw: '(min-height: 100vh)'},
+      }
+    },
   },
   plugins: [],
 }
