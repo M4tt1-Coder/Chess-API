@@ -13,6 +13,26 @@ namespace Chess_API.Database;
 public class ChessDbContext : DbContext
 {
     /// <summary>
+    /// Table for all figures on the board.
+    /// </summary>
+    public required DbSet<FigureModel> Figures { get; set; }
+    
+    /// <summary>
+    /// Table for the fields.
+    /// </summary>
+    public required DbSet<FieldModel> Fields { get; set; }
+    
+    /// <summary>
+    /// Table for the single field rows.
+    /// </summary>
+    public required DbSet<FieldRowModel> FieldRows { get; set; }
+    
+    /// <summary>
+    /// Table for the player objects.
+    /// </summary>
+    public required DbSet<PlayerModel> Players { get; set; }
+    
+    /// <summary>
     /// Table for the game object.
     /// </summary>
     public required DbSet<GameModel> Game { get; init; }

@@ -51,8 +51,7 @@ public class GameModel
     /// <summary>
     /// Is null when the players want to customize their time OR when they want no time limit.
     /// </summary>
-    [MaxLength(5)]
-    public string? PlayTimeMode { get; set; }
+    public PlayTimeMode PlayTimeMode { get; set; }
     
     public GameModel(PlayerModel playerOne, PlayerModel playerTwo, List<FieldRowModel> field, int round,
         PlayingMode mode, Winner winner)

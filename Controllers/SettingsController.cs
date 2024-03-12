@@ -29,17 +29,28 @@ public class SettingsController : Controller
         return View();
     }
 
-    //TODO - Add Saving-function for the prepared game of the player
     /// <summary>
-    /// 
+    /// Receives the new set game instance and saves it.
+    ///
+    /// Applies the time mode handling based on the decision of the user on the time mode.
+    ///
+    /// Fails when the game object is null.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Result of the saving process.</returns>
     [HttpPost]
-    [Route("/settings/options/save")]
-    public async Task<IActionResult> SaveGameOptions([FromBody]GameModel gameModel)
+    [Route("settings/options/save")]
+    public async Task<IActionResult> SaveGameOptions([FromForm] GameModel gameModel) //using [FromBody] didn't work
     {
-        GameModel game = await _context.Game.FirstAsync();
+        var game = await _context.Game.Include(model => model.PlayerOne)
+            .Include(model => model.PlayerTwo).FirstAsync();
 
+        //Just apply props that have been changed by the user.
+        game.ApplyUserChanges(gameModel.Mode, gameModel.PlayTimeMode, gameModel.PlayerOne.Name,
+            gameModel.PlayerTwo.Name, gameModel.PlayerOne.StartingTime, gameModel.PlayerTwo.StartingTime);
+
+        await _context.SaveChangesAsync();
+
+        //TODO - Redirect to playing field.
         return RedirectToAction("Options");
     }
 

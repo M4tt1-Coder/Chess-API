@@ -1,28 +1,26 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Chess_API.Enums;
 
 /// <summary>
-/// This is a custom string-enumeration.
-/// 
-/// Should represent a time every player gets in a the upcoming game.
+/// Enumeration of all time modes.
 ///
-/// It is set in the options-page by the player himself or herself.
+/// 'None' is when the user doesn't want to have a time limit or wants to customize it.
 ///
-/// It's string in the game instance can be null if the player wants to customize their time.
+/// Represents all specific game options.
+///
+/// The time in seconds are applied to the enums members.
 /// </summary>
-public static class PlayTimeMode
+public enum PlayTimeMode
 {
-    /// <summary>
-    /// The players each have 3 minutes for their game.
-    /// </summary>
-    public static readonly string ThreeMinutes = "03:00";
-
-    /// <summary>
-    /// The players each have 10 minutes for their game.
-    /// </summary>
-    public static readonly string TenMinutes = "10:00";
-
-    /// <summary>
-    /// The players each have 30 minutes for their game.
-    /// </summary>
-    public static readonly string ThirtyMinutes = "30:00";
+    [Display(Name = "No time limit")]
+    NoTimeLimit = 0,
+    [Display(Name = "None / Customized")]
+    None = 1,
+    [Display(Name = "3 min")]
+    ThreeMinutes = 180,
+    [Display(Name = "10 min")]
+    TenMinutes = 600,
+    [Display(Name = "30 min")]
+    ThirtyMinutes = 1800,
 }

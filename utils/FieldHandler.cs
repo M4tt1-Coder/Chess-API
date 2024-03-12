@@ -79,26 +79,16 @@ public static class FieldHandler
     /// <param name="fieldIndex">On which field the algorithm is currently.</param>
     /// <param name="rowIndex">Which row the figure should be set.</param>
     /// <returns>A specific figure positioned on the board.</returns>
-    private static FigureModel GetFigureModel(int fieldIndex, int rowIndex)
+    private static FigureModel? GetFigureModel(int fieldIndex, int rowIndex)
     {
-        if (rowIndex == 0)
+        return rowIndex switch
         {
-            return DetermineFigure(fieldIndex, true);
-        }
-        else if (rowIndex == 1)
-        {
-            return new FigureModel(FigureType.Pawn, false, PictureSources.White_Pawn(), Colors.White);
-        }
-        else if (rowIndex == 6)
-        {
-            return new FigureModel(FigureType.Pawn, false, PictureSources.Black_Pawn(), Colors.Black);
-        }
-        else if (rowIndex == 7)
-        {
-            return DetermineFigure(fieldIndex, false);
-        }
-
-        return new FigureModel();
+            0 => DetermineFigure(fieldIndex, true),
+            1 => new FigureModel(FigureType.Pawn, false, PictureSources.White_Pawn(), Colors.White),
+            6 => new FigureModel(FigureType.Pawn, false, PictureSources.Black_Pawn(), Colors.Black),
+            7 => DetermineFigure(fieldIndex, false),
+            _ => null
+        };
     }
 
     /// <summary>
@@ -114,56 +104,40 @@ public static class FieldHandler
     {
         if (white)
         {
-            if (fieldIndex == 0 || fieldIndex == 7)
+            switch (fieldIndex)
             {
-                return new FigureModel(FigureType.Rook, false, PictureSources.White_Rook(), Colors.White);
-            }
-
-            if (fieldIndex == 1 || fieldIndex == 6)
-            {
-                return new FigureModel(FigureType.Knight, false, PictureSources.White_Knight(), Colors.White);
-            }
-
-            if (fieldIndex == 2 || fieldIndex == 5)
-            {
-                return new FigureModel(FigureType.Bishop, false, PictureSources.White_Bishop(), Colors.White);
-            }
-
-            if (fieldIndex == 3)
-            {
-                return new FigureModel(FigureType.King, false, PictureSources.White_King(), Colors.White);
-            }
-
-            if (fieldIndex == 4)
-            {
-                return new FigureModel(FigureType.Queen, false, PictureSources.White_Queen(), Colors.White);
+                case 0:
+                case 7:
+                    return new FigureModel(FigureType.Rook, false, PictureSources.White_Rook(), Colors.White);
+                case 1:
+                case 6:
+                    return new FigureModel(FigureType.Knight, false, PictureSources.White_Knight(), Colors.White);
+                case 2:
+                case 5:
+                    return new FigureModel(FigureType.Bishop, false, PictureSources.White_Bishop(), Colors.White);
+                case 3:
+                    return new FigureModel(FigureType.King, false, PictureSources.White_King(), Colors.White);
+                case 4:
+                    return new FigureModel(FigureType.Queen, false, PictureSources.White_Queen(), Colors.White);
             }
         }
         else
         {
-            if (fieldIndex == 0 || fieldIndex == 7)
+            switch (fieldIndex)
             {
-                return new FigureModel(FigureType.Rook, false, PictureSources.Black_Rook(), Colors.Black);
-            }
-
-            if (fieldIndex == 1 || fieldIndex == 6)
-            {
-                return new FigureModel(FigureType.Knight, false, PictureSources.Black_Knight(), Colors.Black);
-            }
-
-            if (fieldIndex == 2 || fieldIndex == 5)
-            {
-                return new FigureModel(FigureType.Bishop, false, PictureSources.Black_Bishop(), Colors.Black);
-            }
-
-            if (fieldIndex == 3)
-            {
-                return new FigureModel(FigureType.King, false, PictureSources.Black_King(), Colors.Black);
-            }
-
-            if (fieldIndex == 4)
-            {
-                return new FigureModel(FigureType.Queen, false, PictureSources.Black_Queen(), Colors.Black);
+                case 0:
+                case 7:
+                    return new FigureModel(FigureType.Rook, false, PictureSources.Black_Rook(), Colors.Black);
+                case 1:
+                case 6:
+                    return new FigureModel(FigureType.Knight, false, PictureSources.Black_Knight(), Colors.Black);
+                case 2:
+                case 5:
+                    return new FigureModel(FigureType.Bishop, false, PictureSources.Black_Bishop(), Colors.Black);
+                case 3:
+                    return new FigureModel(FigureType.King, false, PictureSources.Black_King(), Colors.Black);
+                case 4:
+                    return new FigureModel(FigureType.Queen, false, PictureSources.Black_Queen(), Colors.Black);
             }
         }
 

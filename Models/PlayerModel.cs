@@ -27,10 +27,18 @@ public class PlayerModel
     public int Score { get; set; }
 
     /// <summary>
-    /// When the player sets a time limit it's stored in here.
+    /// Should represent the choice of the user when he entered a customized time.
+    ///
+    /// Is null when the player chose a time mode.
     /// </summary>
-    [DataType(DataType.Time)]
-    public TimeSpan? Time { get; set; }
+    public TimeSpan? StartingTime { get; set; }
+    
+    /// <summary>
+    /// When the player sets a time limit it's stored in here.
+    ///
+    /// It counts the seconds of the remaining seconds.
+    /// </summary>
+    public double? Seconds { get; set; }
 
     /// <summary>
     /// The pieces the player removed from the board of the opponent.
@@ -47,7 +55,7 @@ public class PlayerModel
     public PlayerModel(TimeSpan? time, string name, int score)
     {
         Score = score;
-        Time = time;
+        StartingTime = time;
         Pieces = new List<FigureModel>();
         Name = name;
     }

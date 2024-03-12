@@ -1,7 +1,5 @@
-using Chess_API.Models;
 using Chess_API.utils;
 using Chess_API.Database;
-using Microsoft.EntityFrameworkCore.Internal;
 
 //Initialize the environment variables loading
 var root = Directory.GetCurrentDirectory();
@@ -15,10 +13,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ChessDbContext>();
 
-//TODO - Create Game option pages to create the game instance
 //TODO - Configure correct routing + in right order redirect -> use middlewares (when a side can't be accessed yet, ...)
 //TODO - Finish playing page
 //TODO - Write a checker for figure movements + game state
+//TODO - Add responsibility to all pages
 
 var app = builder.Build();
 

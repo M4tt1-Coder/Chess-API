@@ -1,7 +1,5 @@
 @{
     ViewData["Title"] = "Options";
-    //TODO - Finish options page
-    //TODO - Add a time mode setting option functionality (every player 15 min // 10 ... etc.)
     //var gamePlayingMode = Model.Mode;
 }
 @using Chess_API.Enums
@@ -9,14 +7,14 @@
 
 <main class="flex items-center justify-center w-screen h-[85vh]">
     <!--form element to post all changes the user made -> adjust default values!-->
-    <form class="text-lg font-mono font-semibold grid grid-cols-4 grid-rows-2 gap-4 h-1/2 w-2/3" method="post" asp-action="SaveGameOptions">
+    <form class="text-lg font-mono font-semibold grid grid-cols-4 grid-rows-2 gap-4 h-1/2 w-2/3" method="post">
         <!--Player 1 date field-->
         <div class="row-span-2 rounded-lg p-2 bg-white flex flex-col space-y-4">
             <h2 class="hover:underline-offset-4 hover:underline transition-all duration-500 h-fit font-bold text-center text-2xl">Player 1 </h2>
             <!--time field-->
             <div class="rounded-lg hover:bg-slate-200 flex items-center p-2 transition-all duration-500">
                 <label for="player-one-time" class="mr-2">Time: </label>
-                <input id="player-one-time" type="time" asp-for="PlayerOne.Time" placeholder="15:12" class="w-full place-content-center placeholder-slate-300 p-1 rounded-md font-medium"/>
+                <input id="player-one-time" type="time" asp-for="PlayerOne.StartingTime" placeholder="15:12" class="w-full place-content-center placeholder-slate-300 p-1 rounded-md font-medium"/>
             </div>
             <!--name field-->
             <div class="rounded-lg hover:bg-slate-200 flex items-center transition-all duration-500 p-2">
@@ -80,11 +78,8 @@
             <h2 class="hover:underline-offset-4 hover:underline transition-all duration-500 h-fit font-bold text-center text-2xl mb-2">Time Mode</h2>
             <!--dropdown for the time-modes-->
             <div class="rounded-lg hover:bg-slate-200 flex items-center p-2 transition-all duration-500">
-                <select name="game-time-mode" class="p-2 rounded-md font-medium w-full" id="game-time-mode" asp-for="PlayTimeMode">
-                    <option value="">None</option>
-                    <option value="@PlayTimeMode.ThreeMinutes">3 min</option>
-                    <option value="@PlayTimeMode.TenMinutes">10 min</option>
-                    <option value="@PlayTimeMode.ThirtyMinutes">30 min</option>
+                <label for="game-time-mode" class="mr-2">Time Mode:</label>
+                <select asp-items="Html.GetEnumSelectList<PlayTimeMode>()" class="p-2 rounded-md font-medium w-full" id="game-time-mode" asp-for="PlayTimeMode">
                 </select>
             </div>
         </div>
@@ -95,7 +90,7 @@
             <!--time field-->
             <div class="rounded-lg hover:bg-slate-200 flex items-center p-2 transition-all duration-500">
                 <label for="player-two-time" class="mr-2">Time: </label>
-                <input id="player-two-time" type="time" asp-for="PlayerTwo.Time" placeholder="11:12" class="w-full place-content-center placeholder-slate-300 p-1 rounded-md font-medium"/>
+                <input id="player-two-time" type="time" asp-for="PlayerTwo.StartingTime" placeholder="11:12" class="w-full place-content-center placeholder-slate-300 p-1 rounded-md font-medium"/>
             </div>
             <!--name field-->
             <div class="rounded-lg hover:bg-slate-200 flex items-center transition-all duration-500 p-2">
@@ -122,7 +117,7 @@
         <!--Button to go to the game-->
         <div class="col-span-2 flex items-center justify-center pt-3">
             <!--do a clip-path animation when hovering over the button-->
-            <button type="submit" asp-action="SaveGameOptions" class="text-xl rounded-md p-3 bg-slate-700 text-white hover:bg-white hover:text-black hover:-translate-y-1 transition-all duration-500 shadow-lg">Go to the Game</button>
+            <button type="submit" asp-controller="Settings" asp-action="SaveGameOptions" class="text-xl rounded-md p-3 bg-slate-700 text-white hover:bg-white hover:text-black hover:-translate-y-1 transition-all duration-500 shadow-lg">Go to the Game</button>
         </div>
     </form>
 </main>

@@ -88,4 +88,68 @@ public static class GameHandler
 
         return output;
     }
+
+    /// <summary>
+    /// A keypoint function where all adjustable properties of the game can be set by the user.
+    ///
+    /// Defines the time mode, player attributes and a possible new wanted playing mode by the user.
+    ///
+    /// Fails when an invalid argument was passed and not filtered by the compiler.
+    /// </summary>
+    /// <param name="game">The current game instance.</param>
+    /// <param name="newPlayingMode">If the user set a new playing mode, it will be stored here.</param>
+    /// <param name="timeMode">Can't be null! Represents the time mode for the game.</param>
+    /// <param name="playerOneName">Custom player 1 name to use in the game.</param>
+    /// <param name="playerTwoName">Custom player 2 name to use in the game.</param>
+    /// <param name="playerOneTime">Custom time of player 1.</param>
+    /// <param name="playerTwoTime">If the user entered a custom time for 'player 2' then it will be stored here.</param>
+    public static void ApplyUserChanges(this GameModel game, PlayingMode newPlayingMode, PlayTimeMode timeMode,
+        string? playerOneName, string? playerTwoName, TimeSpan? playerOneTime, TimeSpan? playerTwoTime)
+    {
+        //game mode
+        if (game.Mode != newPlayingMode)
+        {
+            game.Mode = newPlayingMode;
+        }
+
+        //time mode
+        if (game.PlayTimeMode != timeMode)
+        {
+            game.PlayTimeMode = timeMode;
+        }
+
+        switch (timeMode)
+        {
+            case PlayTimeMode.None:
+                if (playerOneTime != null && playerTwoTime != null)
+                {
+                    game.PlayerOne.Seconds = playerOneTime.Value.TotalSeconds;
+                    game.PlayerTwo.Seconds = playerTwoTime.Value.TotalSeconds;
+                }
+
+                break;
+            case PlayTimeMode.ThreeMinutes:
+                game.PlayerOne.Seconds = (double)PlayTimeMode.ThreeMinutes;
+                game.PlayerTwo.Seconds = (double)PlayTimeMode.ThreeMinutes;
+                break;
+            case PlayTimeMode.TenMinutes:
+                game.PlayerOne.Seconds = (double)PlayTimeMode.TenMinutes;
+                game.PlayerTwo.Seconds = (double)PlayTimeMode.TenMinutes;
+                break;
+            case PlayTimeMode.ThirtyMinutes:
+                game.PlayerOne.Seconds = (double)PlayTimeMode.ThirtyMinutes;
+                game.PlayerTwo.Seconds = (double)PlayTimeMode.ThirtyMinutes;
+                break;
+            case PlayTimeMode.NoTimeLimit:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(timeMode), timeMode, null);
+        }
+
+        //player 1 name
+        game.PlayerOne.Name = !string.IsNullOrEmpty(playerOneName) ? playerOneName : "Player 1";
+
+        //player 2 name
+        game.PlayerTwo.Name = !string.IsNullOrEmpty(playerTwoName) ? playerTwoName : "Player 2";
+    }
 }

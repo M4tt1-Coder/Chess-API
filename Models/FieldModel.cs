@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Chess_API.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace Chess_API.Models;
 
@@ -24,27 +23,27 @@ public class FieldModel
     /// Can't be null.
     /// </summary>
     [Key]
-    public int FieldId { get; set; }
+    public int FieldId { get; init; }
     
     /// <summary>
     /// As in the figure class these stands for color of the field.
     /// </summary>
     [Required]
-    public Colors Color { get; set; }
+    public Colors Color { get; init; }
 
     /// <summary>
     /// The property can have two states:
     /// 1.) hold nothing
     /// 2.) include a piece of every type.
     /// </summary> 
-    public FigureModel? Content { get; set; }
+    public FigureModel? Content { get; init; }
 
     /// <summary>
     /// In a piece movement this prop defines if the player can move the piece to the specific field.
     /// </summary>
-    public bool MoveSelected { get; set; }
+    public bool MoveSelected { get; init; }
 
-    public FieldModel(Colors color, FigureModel content)
+    public FieldModel(Colors color, FigureModel? content)
     {
         Color = color;
         Content = content;
