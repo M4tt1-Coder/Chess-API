@@ -54,7 +54,7 @@ public class ChessDbContext : DbContext
     /// <param name="updatedGame">Is the new game object with updated properties.</param>
     public async void UpdateGameModel(GameModel updatedGame)
     {
-        GameModel game = await GetGameModel();
+        var game = await GetGameModel();
 
         game = updatedGame;
 
@@ -75,11 +75,11 @@ public class ChessDbContext : DbContext
     /// <summary>
     /// At the start of the game the default game object will be saved.
     ///
-    /// Fails when the the entity can't be resolved.
+    /// Fails when the entity can't be resolved.
     /// </summary>
     public async void AddDefaultGameModel()
     {
-        GameModel defaultGame = GameHandler.Default();
+        var defaultGame = GameHandler.Default();
 
         Game.Add(defaultGame);
         await this.SaveChangesAsync();
@@ -90,7 +90,7 @@ public class ChessDbContext : DbContext
     /// </summary>
     public async void DeleteGameModel()
     {
-        GameModel game = await GetGameModel();
+        var game = await GetGameModel();
         this.Remove(game);
         await this.SaveChangesAsync();
     }

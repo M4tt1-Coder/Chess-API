@@ -22,7 +22,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View(_context.Game);
+        return View();
     }
 
     public IActionResult Privacy()

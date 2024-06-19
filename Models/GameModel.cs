@@ -19,19 +19,18 @@ public class GameModel
     /// <summary>
     /// Stands for the player who is everytime a person not dependent on the game mode.
     /// </summary>
-    public PlayerModel PlayerOne { get; set; }
+    public PlayerModel PlayerOne { get; set; } = null!;
 
     /// <summary>
     /// Can be the Ai instance with the default name "Paul",
     /// or another normal player.
     /// </summary>
-    public PlayerModel PlayerTwo { get; set; }
+    public PlayerModel PlayerTwo { get; set; } = null!;
 
     /// <summary>
     /// The actual game field the player interacts with.
     /// </summary>
-    
-    public List<FieldRowModel> Field { get; set; }
+    public ICollection<FieldRowModel> Field { get; set; } = null!;
 
     /// <summary>
     /// Counts how many rounds have been played in the specific playing mode.
@@ -39,7 +38,7 @@ public class GameModel
     public int Round { get; set; }
 
     /// <summary>
-    /// It's content is the chosen game mode of the player one.
+    /// Its content is the chosen game mode of the player one.
     /// </summary>
     public PlayingMode Mode { get; set; }
 

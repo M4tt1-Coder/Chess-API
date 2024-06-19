@@ -44,13 +44,13 @@ public class PlayerModel
     /// The pieces the player removed from the board of the opponent.
     /// </summary>
     [Required]
-    public List<FigureModel> Pieces { get; set; }
+    public ICollection<FigureModel>? Pieces { get; set; }
 
     /// <summary>
     /// A random name the player can set.
     /// </summary>
     [MaxLength(25)]
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
     public PlayerModel(TimeSpan? time, string name, int score)
     {

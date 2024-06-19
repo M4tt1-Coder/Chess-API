@@ -50,16 +50,15 @@ public class SettingsController : Controller
 
         await _context.SaveChangesAsync();
 
-        //TODO - Redirect to playing field.
-        return RedirectToAction("Options");
+        return Redirect("/playing");
     }
 
     /// <summary>
-    /// All other playing choice will be made here.
+    /// All other playing choices will be made here.
     ///
     /// Needs the playing mode which the player wants to play before the game.
     /// </summary>
-    /// <returns>The view for the options page.</returns>
+    /// <returns>The view for the option page.</returns>
     [HttpGet]
     //[Route("/settings/{modeId:int}")]
     public async Task<IActionResult> Options(int? modeId)
@@ -70,7 +69,7 @@ public class SettingsController : Controller
         }
 
         //Create the game instance with the first option of the game mode
-        GameModel game = GameHandler.GameOnPlayingMode(modeId);
+        var game = GameHandler.GameOnPlayingMode(modeId);
 
         //save it 
         _context.Game.Add(game);

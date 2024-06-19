@@ -13,10 +13,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ChessDbContext>();
 
-//TODO - Configure correct routing + in right order redirect -> use middlewares (when a side can't be accessed yet, ...)
-//TODO - Finish playing page
-//TODO - Write a checker for figure movements + game state
-//TODO - Add responsibility to all pages
+// TODO - Configure correct routing + in right order redirect -> use middleware 
+// TODO - Finish playing page
+// TODO - Write a checker for figure movements + game state
+// TODO - Add responsibility to all pages
 
 var app = builder.Build();
 
@@ -30,7 +30,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseChessMiddleware();
 app.UseRouting();
 
 app.UseAuthorization();

@@ -1,6 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Chess_API.Models;
 
@@ -37,7 +35,7 @@ public class FieldRowModel
     /// It has 8 members, located starting with the index 0 to 7.
     /// </summary>
     [Required]
-    public List<FieldModel> Row { get; set; }
+    public ICollection<FieldModel> Row { get; set; } = null!;
 
     public FieldRowModel(List<FieldModel> row, int number)
     {
