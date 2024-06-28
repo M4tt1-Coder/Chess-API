@@ -1,13 +1,11 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Chess_API.Models;
 
 /// <summary>
-/// Represents a player of two in on game.
+/// Represents a player of two in the game.
 ///
-/// A player can be an AI-instance when the player chooses that specific game-mode.
+/// A player can be an AI instance when the player chooses that specific game-mode.
 ///
 /// It consists of all necessary information for the dashboard.
 /// </summary>
@@ -34,7 +32,7 @@ public class PlayerModel
     public TimeSpan? StartingTime { get; set; }
     
     /// <summary>
-    /// When the player sets a time limit it's stored in here.
+    /// When the player sets a time limit, it's stored in here.
     ///
     /// It counts the seconds of the remaining seconds.
     /// </summary>

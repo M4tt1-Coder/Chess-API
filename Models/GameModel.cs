@@ -30,7 +30,7 @@ public class GameModel
     /// <summary>
     /// The actual game field the player interacts with.
     /// </summary>
-    public ICollection<FieldRowModel> Field { get; set; } = null!;
+    public IList<FieldRowModel> Field { get; set; } = null!;
 
     /// <summary>
     /// Counts how many rounds have been played in the specific playing mode.

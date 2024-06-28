@@ -4,7 +4,7 @@ using Chess_API.Models;
 namespace Chess_API.utils;
 
 /// <summary>
-/// It's function is to provide a chess-field
+/// Its function is to provide a chess-field
 /// with normal start layout. 
 /// </summary>
 public static class FieldHandler
@@ -26,14 +26,14 @@ public static class FieldHandler
     ///
     /// Field row starting with index 0 begins at the white side.
     /// </summary>
-    /// <returns>Default list of 8 field-rows</returns>
+    /// <returns>Default list of eight field-rows</returns>
     public static List<FieldRowModel> Default()
     {
         List<FieldRowModel> output = new List<FieldRowModel>();
 
         for (int i = 0; i < RowNumber; i++)
         {
-            FieldRowModel row = new FieldRowModel(new List<FieldModel>(), i + 1);
+            var row = new FieldRowModel(new List<FieldModel>(), i + 1);
 
             for (int j = 0; j < FieldNumber; j++)
             {
@@ -41,22 +41,22 @@ public static class FieldHandler
                 {
                     if (j % 2 == 0)
                     {
-                        row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i)));
+                        row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i), new []{ j, i }));
                     }
                     else if (j % 2 == 1)
                     {
-                        row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i)));
+                        row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i), new[] { j, i }));
                     }
                 }
                 else if (i % 2 == 1)
                 {
                     if (j % 2 == 0)
                     {
-                        row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i)));
+                        row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i), new[] { j, i }));
                     }
                     else if (j % 2 == 1)
                     {
-                        row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i)));
+                        row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i), new[] { j, i }));
                     }
                 }
             }
@@ -74,9 +74,9 @@ public static class FieldHandler
     ///
     /// Depending on the row (starting at the white side with index 0) returns a specific colored figure.
     ///
-    /// Sets all pawns on the black and white side.
+    /// Set all pawns on the black and white side.
     /// </summary>
-    /// <param name="fieldIndex">On which field the algorithm is currently.</param>
+    /// <param name="fieldIndex">On which field the algorithm is current.</param>
     /// <param name="rowIndex">Which row the figure should be set.</param>
     /// <returns>A specific figure positioned on the board.</returns>
     private static FigureModel? GetFigureModel(int fieldIndex, int rowIndex)

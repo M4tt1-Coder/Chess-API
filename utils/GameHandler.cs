@@ -125,20 +125,28 @@ public static class GameHandler
                 {
                     game.PlayerOne.Seconds = playerOneTime.Value.TotalSeconds;
                     game.PlayerTwo.Seconds = playerTwoTime.Value.TotalSeconds;
+                    game.PlayerOne.StartingTime = playerTwoTime;
+                    game.PlayerTwo.StartingTime = playerTwoTime;
                 }
 
                 break;
             case PlayTimeMode.ThreeMinutes:
                 game.PlayerOne.Seconds = (double)PlayTimeMode.ThreeMinutes;
                 game.PlayerTwo.Seconds = (double)PlayTimeMode.ThreeMinutes;
+                game.PlayerOne.StartingTime = new TimeSpan(0,3,0);
+                game.PlayerTwo.StartingTime = new TimeSpan(0, 3, 0);
                 break;
             case PlayTimeMode.TenMinutes:
                 game.PlayerOne.Seconds = (double)PlayTimeMode.TenMinutes;
                 game.PlayerTwo.Seconds = (double)PlayTimeMode.TenMinutes;
+                game.PlayerOne.StartingTime = new TimeSpan(0, 10, 0);
+                game.PlayerTwo.StartingTime = new TimeSpan(0, 10, 0);
                 break;
             case PlayTimeMode.ThirtyMinutes:
                 game.PlayerOne.Seconds = (double)PlayTimeMode.ThirtyMinutes;
                 game.PlayerTwo.Seconds = (double)PlayTimeMode.ThirtyMinutes;
+                game.PlayerOne.StartingTime = new TimeSpan(0, 30, 0);
+                game.PlayerTwo.StartingTime = new TimeSpan(0, 30, 0);
                 break;
             case PlayTimeMode.NoTimeLimit:
                 break;

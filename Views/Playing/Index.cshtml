@@ -9,10 +9,54 @@
 <!--TODO - create a selection algorithm for selection of fields -> implement in the view-->
 <!--TODO - use Periodic timer for ticking down the clocks of the single players; let the player select a time option -> sets number of seconds -> will be ticked down-->
 <!--https://www.youtube.com/watch?v=N7vhJ7O56iM&t=15s-->
+<!-- TODO - Rotate the board 180 deg for each players turn -->
+<!-- TODO - Responsibility -->
 
-<main class="w-screen p-5 h-full flex items-center justify-center">
+
+<!-- TODO - Design -->
+<!-- TODO - Add score board -->
+
+<main class="w-screen p-5 h-full grid grid-rows-1 grid-cols-4">
+    <!-- player one dashboard -->
+    <div class="col-span-1 h-full w-full flex items-center justify-end">
+        <div class="h-full w-3/5 rounded-xl bg-white grid grid-cols-1 grid-rows-3">
+            <!-- name -->
+            <div class="col-span-1 w-full flex items-center justify-center border-b-4 border-black border-double">
+                <p class="text-center text-xl font-sans font-semibold w-full p-2">@Model.PlayerOne.Name</p>
+            </div>
+            <!-- time -->
+            <div class="col-span-1 w-full flex items-center justify-center">
+                @* TODO - Need a formatter for number of seconds to time hh/min/ss *@
+                @if (Model.PlayerOne.Seconds is null)
+                {
+                    <p class="text-center text-xl font-sans font-semibold w-full p-2">--:--:--</p>
+                }
+                else
+                {
+                    <p class="text-center text-xl font-sans font-semibold w-full p-2">@Model.PlayerOne.Seconds</p>    
+                }
+                
+            </div>
+            <!-- pieces -->
+            <div class="col-span-1 w-full flex items-start justify-center">
+                <div class="w-full flex flex-col items-center justify-center">
+                    <p class="text-center text-xl font-sans font-semibold w-full p-2">Pieces</p>
+                    @if (Model.PlayerOne.Pieces is not null)
+                    {
+                        <div class="flex gap-2">
+                            @foreach (var piece in Model.PlayerOne.Pieces)
+                            {
+                                <img class="size-12 aspect-square" alt="A thrown piece" src=@piece.PictureSource/>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>    
+        </div>
+    </div>
+    <!-- TODO - Add resign & defeat button -->
     <!--game board-->
-    <div class="w-full h-auto flex items-center justify-center">
+    <div class="col-span-2 w-full h-auto flex items-center justify-center">
         <!-- TODO - Create the form action endpoint taking in the some coordinates which field has been pressed -->
         <form action="" class="p-3 border-4 border-black rounded-lg bg-blue-950 aspect-square w-fit">
             @foreach (var row in Model.Field)
@@ -43,5 +87,42 @@
                 </div>
             }
         </form>
+    </div>
+    <!-- player two -->
+    <div class="col-span-1 h-full w-full flex items-center justify-start">
+        <div class="h-full w-3/5 rounded-xl bg-white grid grid-cols-1 grid-rows-3">
+            <!-- name -->
+            <div class="col-span-1 w-full flex items-center justify-center border-b-4 border-black border-double">
+                <p class="text-center text-xl font-sans font-semibold w-full p-2">@Model.PlayerTwo.Name</p>
+            </div>
+            <!-- time -->
+            <div class="col-span-1 w-full flex items-center justify-center">
+                @if (Model.PlayerTwo.StartingTime is null)
+                {
+                <p class="text-center text-xl font-sans font-semibold w-full p-2">--:--:--</p>
+                }
+                else
+                {
+                    @* <p class="text-center text-xl font-sans font-semibold w-full p-2">@Model.PlayerTwo.Seconds</p> *@
+                    <p class="text-center text-xl font-sans font-semibold w-full p-2">@Model.PlayerTwo.StartingTime?</p>
+                }
+
+            </div>
+            <!-- pieces -->
+            <div class="col-span-1 w-full flex items-start justify-center">
+                <div class="w-full flex flex-col items-center justify-center">
+                    <p class="text-center text-xl font-sans font-semibold w-full p-2">Pieces</p>
+                    @if (Model.PlayerTwo.Pieces is not null)
+                    {
+                    <div class="flex gap-2">
+                        @foreach (var piece in Model.PlayerTwo.Pieces)
+                        {
+                            <img class="size-12 aspect-square" alt="A thrown piece" src=@piece.PictureSource/>
+                        }
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </main>

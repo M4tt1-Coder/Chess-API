@@ -5,6 +5,9 @@
 @using Chess_API.Enums
 @model GameModel
 
+<!-- TODO - Responsibility -->
+<!-- TODO - Time format is too big from a timespan-->
+
 <main class="flex items-center justify-center w-screen h-[85vh]">
     <!--form element to post all changes the user made -> adjust default values!-->
     <form class="text-lg font-mono font-semibold grid grid-cols-4 grid-rows-2 gap-4 h-1/2 w-2/3" method="post">
@@ -32,10 +35,14 @@
             <!--thrown pieces-->
             <div class="rounded-lg hover:bg-slate-200 flex items-center transition-all duration-500 p-2">
                 <p class="">Figures: </p>
-                @foreach (FigureModel figure in Model.PlayerOne.Pieces)
+                @if (Model.PlayerOne.Pieces is not null)
                 {
-                    <img src=@figure.PictureSource alt="none" class="w-6 h-6"/>
+                    @foreach (var figure in Model.PlayerOne.Pieces)
+                    {
+                        <img src=@figure.PictureSource alt="none" class="w-6 h-6"/>
+                    }    
                 }
+                
             </div>
         </div>
         <!--General information field-->
@@ -108,9 +115,12 @@
             <!--thrown pieces-->
             <div class="rounded-lg hover:bg-slate-200 flex items-center transition-all duration-500 p-2">
                 <p class="">Figures: </p>
-                @foreach (FigureModel figure in Model.PlayerTwo.Pieces)
+                @if (Model.PlayerTwo.Pieces is not null)
                 {
-                    <img src=@figure.PictureSource alt="none" class="w-6 h-6"/>
+                    foreach (var figure in Model.PlayerTwo.Pieces)
+                    {
+                        <img src=@figure.PictureSource alt="none" class="w-6 h-6"/>
+                    }
                 }
             </div>
         </div>

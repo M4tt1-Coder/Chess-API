@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Chess_API.Enums;
 
 namespace Chess_API.Models;
-
-// TODO - Add props that hold the position of a field specifically
 
 /// <summary>
 /// There are 64 fields on the chess broad.
@@ -35,8 +34,8 @@ public class FieldModel
 
     /// <summary>
     /// The property can have two states:
-    /// 1.) hold nothing
-    /// 2.) include a piece of every type.
+    /// 1.) Hold nothing
+    /// 2.) Include a piece of every type.
     /// </summary> 
     public FigureModel? Content { get; set; }
 
@@ -44,12 +43,23 @@ public class FieldModel
     /// In a piece movement, this prop defines if the player can move the piece to the specific field.
     /// </summary>
     public bool MoveSelected { get; set; }
+
+    /// <summary>
+    /// Represents where the position of a field on the board is.
+    ///
+    /// It's not needed to display the playing field.
+    ///
+    /// Exists for playing logic.
+    /// </summary>
+    [NotMapped]
+    public IList<int> Coordinates { get; set; } = null!;
     
-    public FieldModel(Colors color, FigureModel? content)
+    public FieldModel(Colors color, FigureModel? content, IList<int> coordinates)
     {
         Color = color;
         Content = content;
         MoveSelected = false;
+        Coordinates = coordinates;
     }
 
     public FieldModel()

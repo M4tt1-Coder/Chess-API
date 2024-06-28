@@ -35,7 +35,7 @@ public class FieldRowModel
     /// It has 8 members, located starting with the index 0 to 7.
     /// </summary>
     [Required]
-    public ICollection<FieldModel> Row { get; set; } = null!;
+    public IList<FieldModel> Row { get; set; } = null!;
 
     public FieldRowModel(List<FieldModel> row, int number)
     {

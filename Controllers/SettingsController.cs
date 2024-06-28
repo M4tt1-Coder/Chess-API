@@ -44,7 +44,7 @@ public class SettingsController : Controller
         var game = await _context.Game.Include(model => model.PlayerOne)
             .Include(model => model.PlayerTwo).FirstAsync();
 
-        //Just apply props that have been changed by the user.
+        //Apply props that have been changed by the user.
         game.ApplyUserChanges(gameModel.Mode, gameModel.PlayTimeMode, gameModel.PlayerOne.Name,
             gameModel.PlayerTwo.Name, gameModel.PlayerOne.StartingTime, gameModel.PlayerTwo.StartingTime);
 
@@ -65,6 +65,7 @@ public class SettingsController : Controller
     {
         if (modeId is null)
         {
+            _logger.LogError("No playing mode has been selected!");
             return NotFound();
         }
 

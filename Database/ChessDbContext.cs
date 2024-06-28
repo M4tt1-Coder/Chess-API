@@ -73,7 +73,7 @@ public class ChessDbContext : DbContext
     }
 
     /// <summary>
-    /// At the start of the game the default game object will be saved.
+    /// At the start of the game, the default game object will be saved.
     ///
     /// Fails when the entity can't be resolved.
     /// </summary>

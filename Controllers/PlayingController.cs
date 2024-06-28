@@ -16,7 +16,23 @@ public class PlayingController : Controller
         _context = context;
         _logger = logger;
     }
-    
+
+    // TODO - Add resign & admit defeat functionality
+        
+    // TODO - Finish universal board interaction endpoint
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("/playing/move")]
+    public async Task<IActionResult> UserInteraction([FromBody] IList<int> coordinates)
+    {
+        // TODO - Add a way to implement figure moving styles -> enums?
+        // check if a field with a figure was selected 
+        // check if the piece can move to that field -> what are consequences
+        return Redirect("/playing");
+    }
 
     /// <summary>
     /// Gets the game model out of memory.
@@ -26,13 +42,15 @@ public class PlayingController : Controller
     public async Task<IActionResult> Index()
     {
         // get the game instance
-        // add inclusion declarations of properties that forcibly have to take out of the in-memory database  
+        // add inclusion declarations of properties that forcibly have to take out of the in-memory database 
         // data needs to be included in the entity
         // https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.entityframeworkqueryableextensions.include?view=efcore-8.0&viewFallbackFrom=net-6.0
         var game = await _context.Game.Include(model => model.PlayerOne)
             .Include(model => model.PlayerTwo)
             .Include(model => model.Field).ThenInclude(row => row.Row).ThenInclude(field => field.Content)
             .FirstAsync();
+        
+        // 
         
         return View(game);
     }
