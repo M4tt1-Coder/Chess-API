@@ -4,9 +4,9 @@ using Chess_API.Models;
 namespace Chess_API.utils;
 
 /// <summary>
-/// At the beginning of a game it will provide a default settings game-object.
+/// At the beginning of a game, it will provide a default settings game-object.
 ///
-/// Includes functions to handle the game object during the playing-process and at the end of it.
+/// Includes functions to handle the game object during the playing process and at the end of it.
 /// </summary>
 public static class GameHandler
 {
@@ -20,7 +20,7 @@ public static class GameHandler
     /// <summary>
     /// It's there to create a completely new game object for another playing round.
     ///
-    /// It gets the default field layout from default field component.
+    /// It gets the default field layout from a default field component.
     /// </summary>
     /// <returns>
     /// A normal starter game instance with default properties. 
@@ -38,9 +38,9 @@ public static class GameHandler
     }
 
     /// <summary>
-    /// Prepares the game for a new game in the same game mode as last round.
+    /// Prepares the game for a new game in the same game mode as the last round.
     ///
-    /// Just edits those properties that need to be touched.
+    /// Edit those properties that need to be touched.
     /// </summary>
     /// <param name="game">Game instance after a playing round.</param>
     /// <returns>A reset game object.</returns>
@@ -62,7 +62,7 @@ public static class GameHandler
     ///
     /// It's the entrypoint for the game object.
     ///
-    /// Changes the Mode-prop dependent on the choice.
+    /// Changes the Mode-prop-dependent on the choice.
     /// </summary>
     /// <param name="modeId">Represents which game mode the player wants to play.</param>
     /// <returns>The initialization game object.</returns>
@@ -90,7 +90,7 @@ public static class GameHandler
     }
 
     /// <summary>
-    /// A keypoint function where all adjustable properties of the game can be set by the user.
+    /// A keypoint function where the user can set all adjustable properties of the game.
     ///
     /// Defines the time mode, player attributes and a possible new wanted playing mode by the user.
     ///
@@ -102,7 +102,8 @@ public static class GameHandler
     /// <param name="playerOneName">Custom player 1 name to use in the game.</param>
     /// <param name="playerTwoName">Custom player 2 name to use in the game.</param>
     /// <param name="playerOneTime">Custom time of player 1.</param>
-    /// <param name="playerTwoTime">If the user entered a custom time for 'player 2' then it will be stored here.</param>
+    /// <param name="playerTwoTime">If the user entered a custom time for 'player two,'
+    /// then it will be stored here.</param>
     public static void ApplyUserChanges(this GameModel game, PlayingMode newPlayingMode, PlayTimeMode timeMode,
         string? playerOneName, string? playerTwoName, TimeSpan? playerOneTime, TimeSpan? playerTwoTime)
     {
@@ -123,28 +124,19 @@ public static class GameHandler
             case PlayTimeMode.None:
                 if (playerOneTime != null && playerTwoTime != null)
                 {
-                    game.PlayerOne.Seconds = playerOneTime.Value.TotalSeconds;
-                    game.PlayerTwo.Seconds = playerTwoTime.Value.TotalSeconds;
-                    game.PlayerOne.StartingTime = playerTwoTime;
+                    game.PlayerOne.StartingTime = playerOneTime;
                     game.PlayerTwo.StartingTime = playerTwoTime;
                 }
-
                 break;
             case PlayTimeMode.ThreeMinutes:
-                game.PlayerOne.Seconds = (double)PlayTimeMode.ThreeMinutes;
-                game.PlayerTwo.Seconds = (double)PlayTimeMode.ThreeMinutes;
                 game.PlayerOne.StartingTime = new TimeSpan(0,3,0);
                 game.PlayerTwo.StartingTime = new TimeSpan(0, 3, 0);
                 break;
             case PlayTimeMode.TenMinutes:
-                game.PlayerOne.Seconds = (double)PlayTimeMode.TenMinutes;
-                game.PlayerTwo.Seconds = (double)PlayTimeMode.TenMinutes;
                 game.PlayerOne.StartingTime = new TimeSpan(0, 10, 0);
                 game.PlayerTwo.StartingTime = new TimeSpan(0, 10, 0);
                 break;
             case PlayTimeMode.ThirtyMinutes:
-                game.PlayerOne.Seconds = (double)PlayTimeMode.ThirtyMinutes;
-                game.PlayerTwo.Seconds = (double)PlayTimeMode.ThirtyMinutes;
                 game.PlayerOne.StartingTime = new TimeSpan(0, 30, 0);
                 game.PlayerTwo.StartingTime = new TimeSpan(0, 30, 0);
                 break;

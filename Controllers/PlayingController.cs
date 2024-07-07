@@ -29,6 +29,7 @@ public class PlayingController : Controller
     public async Task<IActionResult> UserInteraction([FromBody] IList<int> coordinates)
     {
         // TODO - Add a way to implement figure moving styles -> enums?
+        // TODO - Rule-Executor instance
         // check if a field with a figure was selected 
         // check if the piece can move to that field -> what are consequences
         return Redirect("/playing");

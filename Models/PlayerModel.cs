@@ -31,12 +31,7 @@ public class PlayerModel
     /// </summary>
     public TimeSpan? StartingTime { get; set; }
     
-    /// <summary>
-    /// When the player sets a time limit, it's stored in here.
-    ///
-    /// It counts the seconds of the remaining seconds.
-    /// </summary>
-    public double? Seconds { get; set; }
+    //public double? Seconds { get; set; }
 
     /// <summary>
     /// The pieces the player removed from the board of the opponent.
