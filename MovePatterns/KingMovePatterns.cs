@@ -5,69 +5,61 @@ using Chess_API.Interfaces;
 namespace Chess_API.MovePatterns;
 
 /// <summary>
-/// The knight has eight move patterns.
+/// The king has the biggest value of all pieces, it can't be thrown but it's move sets just can be repeat once in a players turn.
 ///
-/// ! All move patterns are special, they aren't linear. ! 
+/// Similar to the queen but weakened in movement.
+///
+/// <code>
+/// // same implementation like all other pieces.
+/// </code>
 /// </summary>
-public class KnightMovePattern : IMovePattern
+public class KingMovePatterns : IMovePattern
 {
     public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
     {
         // 1
         new Collection<Moves>()
         {
-            Moves.Up,
-            Moves.Up,
-            Moves.Left
+            Moves.Up
         },
         // 2
         new Collection<Moves>()
         {
-            Moves.Up,
-            Moves.Up,
             Moves.Right
         },
-        // 3
+        // 3 
         new Collection<Moves>()
         {
-            Moves.Right,
-            Moves.Right,
-            Moves.Up
+            Moves.Down
         },
         // 4
         new Collection<Moves>()
         {
-            Moves.Right,
-            Moves.Right,
-            Moves.Down,
+            Moves.Left
         },
         // 5
         new Collection<Moves>()
         {
-            Moves.Down,
+            Moves.Up,
+            Moves.Right
+        },
+        // 6 
+        new Collection<Moves>()
+        {
             Moves.Down,
             Moves.Right
         },
-        // 6
+        // 7 
         new Collection<Moves>()
         {
-            Moves.Down,
             Moves.Down,
             Moves.Left
-        },
-        // 7
-        new Collection<Moves>()
-        {
-            Moves.Left,
-            Moves.Left,
-            Moves.Down
         },
         // 8
         new Collection<Moves>()
         {
-            Moves.Left,
-            Moves.Left,
-            Moves.Up
+            Moves.Up,
+            Moves.Left
         }
     };
 }

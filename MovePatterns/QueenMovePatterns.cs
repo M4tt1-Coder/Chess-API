@@ -5,69 +5,69 @@ using Chess_API.Interfaces;
 namespace Chess_API.MovePatterns;
 
 /// <summary>
-/// The knight has eight move patterns.
+/// The queen has the biggest move-variety of all figures.
 ///
-/// ! All move patterns are special, they aren't linear. ! 
+/// On all linear move sets should be checked if they can proceed.
+///
+/// Its the strongest piece of all.
+///
+/// It has similar move patterns as the king.
+/// <code>
+/// // ...
+///
+/// foreach (var pattern in QueenMovePatterns.Patterns)
+/// {
+///     // ... your checks
+/// }
+/// </code>
 /// </summary>
-public class KnightMovePattern : IMovePattern
+public class QueenMovePatterns : IMovePattern
 {
     public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
     {
         // 1
         new Collection<Moves>()
         {
-            Moves.Up,
-            Moves.Up,
-            Moves.Left
+            Moves.Up
         },
         // 2
         new Collection<Moves>()
         {
-            Moves.Up,
-            Moves.Up,
             Moves.Right
         },
-        // 3
+        // 3 
         new Collection<Moves>()
         {
-            Moves.Right,
-            Moves.Right,
-            Moves.Up
+            Moves.Down
         },
         // 4
         new Collection<Moves>()
         {
-            Moves.Right,
-            Moves.Right,
-            Moves.Down,
+            Moves.Left
         },
         // 5
         new Collection<Moves>()
         {
-            Moves.Down,
+            Moves.Up,
+            Moves.Right
+        },
+        // 6 
+        new Collection<Moves>()
+        {
             Moves.Down,
             Moves.Right
         },
-        // 6
+        // 7 
         new Collection<Moves>()
         {
-            Moves.Down,
             Moves.Down,
             Moves.Left
-        },
-        // 7
-        new Collection<Moves>()
-        {
-            Moves.Left,
-            Moves.Left,
-            Moves.Down
         },
         // 8
         new Collection<Moves>()
         {
-            Moves.Left,
-            Moves.Left,
-            Moves.Up
+            Moves.Up,
+            Moves.Left
         }
     };
 }
