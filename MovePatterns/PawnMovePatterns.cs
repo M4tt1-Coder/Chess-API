@@ -24,30 +24,52 @@ namespace Chess_API.MovePatterns;
 /// </summary>
 public class PawnMovePatterns : IMovePattern
 {
+    public bool AreMovesInfinite => false;
+
     public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
     {
         // 1
-        new Collection<Moves>()
+        new()
         {
             Moves.Up
         },
         // 2
-        new Collection<Moves>()
+        new()
         {
             Moves.Up,
             Moves.Up
         },
         // 3 
-        new Collection<Moves>()
+        new()
         {
-            Moves.Up,
-            Moves.Left
+            Moves.DiagonalUpLeft
         },
         // 4
-        new Collection<Moves>()
+        new()
         {
-            Moves.Up,
-            Moves.Right
+            Moves.DiagonalUpRight
+        },
+        // 5
+        new ()
+        {
+            Moves.Down
+        },
+        // 6
+        new()
+        {
+            Moves.Down,
+            Moves.Down
+            
+        },
+        // 7
+        new ()
+        {
+            Moves.DiagonalDownLeft
+        },
+        // 8
+        new ()
+        {
+            Moves.DiagonalDownRight
         }
     };
 }

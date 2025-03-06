@@ -17,6 +17,9 @@ public class PlayingController : Controller
         _logger = logger;
     }
 
+    // TODO - Game board needs to be reorder -> white on top then bottom and then on top again
+    // depending which players turn it is; just effective for local playing
+    
     // TODO - Add resign & admit defeat functionality
         
     // TODO - Finish universal board interaction endpoint
@@ -28,7 +31,6 @@ public class PlayingController : Controller
     [Route("/playing/move")]
     public async Task<IActionResult> UserInteraction([FromBody] IList<int> coordinates)
     {
-        // TODO - Add a way to implement figure moving styles -> enums?
         // TODO - Rule-Executor instance
         // check if a field with a figure was selected 
         // check if the piece can move to that field -> what are consequences

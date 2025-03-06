@@ -10,6 +10,11 @@ namespace Chess_API.Interfaces;
 public interface IMovePattern
 {
     /// <summary>
+    /// Defines if the moves are infinite and repetitive.
+    /// </summary>
+    public bool AreMovesInfinite { get; }
+    
+    /// <summary>
     /// Public accessible list of all patterns.
     /// </summary>
     public IEnumerable<IEnumerable<Moves>> Patterns { get; }

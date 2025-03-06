@@ -33,10 +33,31 @@ public static class GameHandler
             FieldHandler.Default(),
             DefaultRound,
             PlayingMode.Default,
-            Winner.Default
+            Winner.Default,
+            PlayingDirection.WhiteBottom
         );
     }
 
+    // TODO - Add a function that creates a copy of the game object
+    /// <summary>
+    /// Creates a temporary copy of the current game instance.
+    /// </summary>
+    /// <param name="game">The current game instance</param>
+    /// <returns>A temporary copy of the current game instance</returns>
+    public static GameModel CopyGame(GameModel game)
+    {
+        // assign all properties of the game object to a new game object
+        return new GameModel(
+            game.PlayerOne,
+            game.PlayerTwo,
+            game.Field,
+            game.Round,
+            game.Mode,
+            game.Winner,
+            game.Direction
+        );
+    }
+    
     /// <summary>
     /// Prepares the game for a new game in the same game mode as the last round.
     ///
@@ -70,21 +91,14 @@ public static class GameHandler
     {
         GameModel output = Default();
 
-        switch (modeId)
+        output.Mode = modeId switch
         {
-            case 0:
-                output.Mode = PlayingMode.UserVsUserLocal;
-                break;
-            case 1:
-                output.Mode = PlayingMode.UserVsAi;
-                break;
-            case 2:
-                output.Mode = PlayingMode.UserVsUserOnline;
-                break;
-            case 3:
-                output.Mode = PlayingMode.Default;
-                break;
-        }
+            0 => PlayingMode.UserVsUserLocal,
+            1 => PlayingMode.UserVsAi,
+            2 => PlayingMode.UserVsUserOnline,
+            3 => PlayingMode.Default,
+            _ => output.Mode
+        };
 
         return output;
     }

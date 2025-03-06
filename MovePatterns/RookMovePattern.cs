@@ -25,25 +25,27 @@ namespace Chess_API.MovePatterns;
 /// </summary>
 public class RookMovePattern : IMovePattern
 {
+    public bool AreMovesInfinite => true;
+
     public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
     {
         // 1
-        new Collection<Moves>()
+        new()
         {
             Moves.Up
         },
         // 2
-        new Collection<Moves>()
+        new()
         {
             Moves.Right
         },
         // 3
-        new Collection<Moves>()
+        new()
         {
             Moves.Down
         },
         // 4
-        new Collection<Moves>()
+        new()
         {
             Moves.Left
         }

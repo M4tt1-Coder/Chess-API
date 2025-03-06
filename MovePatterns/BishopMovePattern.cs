@@ -14,31 +14,29 @@ namespace Chess_API.MovePatterns;
 /// </summary>
 public class BishopMovePattern : IMovePattern
 {
+    public bool AreMovesInfinite => true;
+
     public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
     {
         // 1
-        new Collection<Moves>()
+        new()
         {
-            Moves.Up,
-            Moves.Left
+            Moves.DiagonalUpLeft
         },
         // 2
-        new Collection<Moves>()
+        new()
         {
-            Moves.Up,
-            Moves.Right
+            Moves.DiagonalUpRight
         },
         // 3
-        new Collection<Moves>()
+        new()
         {
-            Moves.Down,
-            Moves.Right,
+            Moves.DiagonalDownRight
         },
         // 4
-        new Collection<Moves>()
+        new()
         {
-            Moves.Down,
-            Moves.Left
+            Moves.DiagonalUpLeft
         }
     };
 }

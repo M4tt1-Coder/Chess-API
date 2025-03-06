@@ -29,35 +29,40 @@ public static class FieldHandler
     /// <returns>Default list of eight field-rows</returns>
     public static List<FieldRowModel> Default()
     {
-        List<FieldRowModel> output = new List<FieldRowModel>();
+        var output = new List<FieldRowModel>();
 
-        for (int i = 0; i < RowNumber; i++)
+        for (var i = 0; i < RowNumber; i++)
         {
             var row = new FieldRowModel(new List<FieldModel>(), i + 1);
 
-            for (int j = 0; j < FieldNumber; j++)
+            for (var j = 0; j < FieldNumber; j++)
             {
-                if (i % 2 == 0)
+                switch (i % 2)
                 {
-                    if (j % 2 == 0)
-                    {
-                        row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i), new []{ j, i }));
-                    }
-                    else if (j % 2 == 1)
-                    {
-                        row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i), new[] { j, i }));
-                    }
-                }
-                else if (i % 2 == 1)
-                {
-                    if (j % 2 == 0)
-                    {
-                        row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i), new[] { j, i }));
-                    }
-                    else if (j % 2 == 1)
-                    {
-                        row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i), new[] { j, i }));
-                    }
+                    case 0:
+                        switch (j % 2)
+                        {
+                            case 0:
+                                row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i), new []{ j, i }));
+                                break;
+                            case 1:
+                                row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i), new[] { j, i }));
+                                break;
+                        }
+
+                        break;
+                    case 1:
+                        switch (j % 2)
+                        {
+                            case 0:
+                                row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i), new[] { j, i }));
+                                break;
+                            case 1:
+                                row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i), new[] { j, i }));
+                                break;
+                        }
+
+                        break;
                 }
             }
 
@@ -83,10 +88,10 @@ public static class FieldHandler
     {
         return rowIndex switch
         {
-            0 => DetermineFigure(fieldIndex, true),
-            1 => new FigureModel(FigureType.Pawn, false, PictureSources.White_Pawn(), Colors.White),
-            6 => new FigureModel(FigureType.Pawn, false, PictureSources.Black_Pawn(), Colors.Black),
-            7 => DetermineFigure(fieldIndex, false),
+            7 => DetermineFigure(fieldIndex, true),
+            6 => new FigureModel(FigureType.Pawn, false, PictureSources.White_Pawn(), Colors.White),
+            1 => new FigureModel(FigureType.Pawn, false, PictureSources.Black_Pawn(), Colors.Black),
+            0 => DetermineFigure(fieldIndex, false),
             _ => null
         };
     }
@@ -142,5 +147,49 @@ public static class FieldHandler
         }
 
         return new FigureModel();
+    }
+
+    /// <summary>
+    /// Searches in the whole board after a field with specific coordinates.
+    ///
+    /// Notifies you if such a field couldn't found.
+    /// </summary>
+    /// <param name="game">Current game</param>
+    /// <param name="coordinates">Some coordinates on the board.</param>
+    /// <returns>
+    /// A field that has been found by coordinates.
+    /// </returns>
+    public static FieldModel GetSpecificFieldByCoordinates(GameModel game, IList<int> coordinates)
+    {
+        var output = new FieldModel();
+
+        // compare coordinates with every field in the game
+        foreach (var row in game.Field)
+        {
+            foreach (var field in row.Row)
+            {
+                if (Equals(field.Coordinates, coordinates))
+                {
+                    output = field;
+                }
+            }
+        }
+    
+        return output;
+    }   
+    
+    /// <summary>
+    /// Simply creates a copy of a field.
+    ///
+    /// A new instance of a field is created.
+    /// </summary>
+    /// <param name="field">The field that should be copied</param>
+    /// <returns>A copy of the a field.</returns>
+    public static FieldModel CopyField(FieldModel field)
+    {
+        return new FieldModel(field.Color, field.Content, field.Coordinates)
+        {
+            MoveSelected = field.MoveSelected
+        };
     }
 }

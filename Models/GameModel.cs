@@ -11,6 +11,12 @@ namespace Chess_API.Models;
 public class GameModel
 {
     /// <summary>
+    /// Gives information about which color is on the top or on the bottom side
+    /// of the board.
+    /// </summary>
+    public PlayingDirection Direction { get; set; }
+    
+    /// <summary>
     /// Represents the identifier of the current game instance in the database.
     /// </summary>
     [Key]
@@ -52,8 +58,8 @@ public class GameModel
     /// </summary>
     public PlayTimeMode PlayTimeMode { get; set; }
     
-    public GameModel(PlayerModel playerOne, PlayerModel playerTwo, List<FieldRowModel> field, int round,
-        PlayingMode mode, Winner winner)
+    public GameModel(PlayerModel playerOne, PlayerModel playerTwo, IList<FieldRowModel> field, int round,
+        PlayingMode mode, Winner winner, PlayingDirection playingDirection)
     {
         PlayerOne = playerOne;
         PlayerTwo = playerTwo;
@@ -61,6 +67,7 @@ public class GameModel
         Round = round;
         Mode = mode;
         Winner = winner;
+        Direction = playingDirection;
     }
 
     public GameModel()

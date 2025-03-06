@@ -28,8 +28,6 @@ public class FieldRowModel
     public int RowNumber { get; set; }
     
     /// <summary>
-    /// Can be empty.
-    /// 
     /// Stores all fields in the row.
     ///
     /// It has 8 members, located starting with the index 0 to 7.

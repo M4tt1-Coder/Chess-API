@@ -50,6 +50,10 @@ public class FieldModel
     /// It's not needed to display the playing field.
     ///
     /// Exists for playing logic.
+    ///
+    /// => [ x, y ]
+    /// - x ... field index in row
+    /// - y ... row index from the bottom
     /// </summary>
     [NotMapped]
     public IList<int> Coordinates { get; set; } = null!;

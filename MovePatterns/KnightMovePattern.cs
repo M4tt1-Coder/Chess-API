@@ -11,63 +11,57 @@ namespace Chess_API.MovePatterns;
 /// </summary>
 public class KnightMovePattern : IMovePattern
 {
+    public bool AreMovesInfinite => false;
+
     public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
     {
         // 1
-        new Collection<Moves>()
+        new()
         {
             Moves.Up,
-            Moves.Up,
-            Moves.Left
+            Moves.DiagonalUpLeft
         },
         // 2
-        new Collection<Moves>()
+        new()
         {
             Moves.Up,
-            Moves.Up,
-            Moves.Right
+            Moves.DiagonalUpRight
         },
         // 3
-        new Collection<Moves>()
+        new()
         {
             Moves.Right,
-            Moves.Right,
-            Moves.Up
+            Moves.DiagonalUpRight
         },
         // 4
-        new Collection<Moves>()
+        new()
         {
             Moves.Right,
-            Moves.Right,
-            Moves.Down,
+            Moves.DiagonalDownRight
         },
         // 5
-        new Collection<Moves>()
+        new()
         {
             Moves.Down,
-            Moves.Down,
-            Moves.Right
+            Moves.DiagonalDownRight
         },
         // 6
-        new Collection<Moves>()
+        new()
         {
             Moves.Down,
-            Moves.Down,
-            Moves.Left
+            Moves.DiagonalDownLeft
         },
         // 7
-        new Collection<Moves>()
+        new()
         {
             Moves.Left,
-            Moves.Left,
-            Moves.Down
+            Moves.DiagonalDownLeft
         },
         // 8
-        new Collection<Moves>()
+        new()
         {
             Moves.Left,
-            Moves.Left,
-            Moves.Up
+            Moves.DiagonalUpLeft
         }
     };
 }

@@ -1,4 +1,4 @@
-namespace Chess_API.Roules;
+namespace Chess_API.Rules;
 
 public class ThrowingRules
 {

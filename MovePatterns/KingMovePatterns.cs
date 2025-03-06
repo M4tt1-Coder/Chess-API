@@ -15,51 +15,49 @@ namespace Chess_API.MovePatterns;
 /// </summary>
 public class KingMovePatterns : IMovePattern
 {
+    public bool AreMovesInfinite => false;
+
     public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
     {
         // 1
-        new Collection<Moves>()
+        new()
         {
             Moves.Up
         },
         // 2
-        new Collection<Moves>()
+        new()
         {
             Moves.Right
         },
         // 3 
-        new Collection<Moves>()
+        new()
         {
             Moves.Down
         },
         // 4
-        new Collection<Moves>()
+        new()
         {
             Moves.Left
         },
         // 5
-        new Collection<Moves>()
+        new()
         {
-            Moves.Up,
-            Moves.Right
+            Moves.DiagonalUpRight
         },
         // 6 
-        new Collection<Moves>()
+        new()
         {
-            Moves.Down,
-            Moves.Right
+            Moves.DiagonalDownRight
         },
         // 7 
-        new Collection<Moves>()
+        new()
         {
-            Moves.Down,
-            Moves.Left
+            Moves.DiagonalDownLeft
         },
         // 8
-        new Collection<Moves>()
+        new()
         {
-            Moves.Up,
-            Moves.Left
+            Moves.DiagonalUpLeft
         }
     };
 }

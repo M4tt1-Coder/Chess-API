@@ -10,5 +10,9 @@ public enum Moves
     Up,
     Down,
     Left,
-    Right
+    Right,
+    DiagonalUpLeft,
+    DiagonalUpRight,
+    DiagonalDownLeft,
+    DiagonalDownRight
 }
