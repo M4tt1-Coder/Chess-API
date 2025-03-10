@@ -56,26 +56,6 @@ public class RulesExecutor
         var type = curField.Content.Type;
         
         // depending on the type check for movements
-
-        switch (type)
-        {
-            // TODO - Add the pattern execution for all pieces
-            case FigureType.Pawn:
-                break;
-            case FigureType.Bishop:
-                break;
-            case FigureType.Knight:
-                break;
-            case FigureType.Rook:
-                break;
-            case FigureType.Queen:
-                break;
-            case FigureType.King:
-                break;
-            default:
-                _logger.LogError("A wrong enum value has been entered, while checking for the figure type!");
-                break;
-        }
     }
 
     // TODO - 1.) Finish check checker

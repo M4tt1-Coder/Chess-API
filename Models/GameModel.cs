@@ -39,6 +39,11 @@ public class GameModel
     public IList<FieldRowModel> Field { get; set; } = null!;
 
     /// <summary>
+    /// List that contains all moves that have been made in the current game.
+    /// </summary>
+    public IList<MoveModel> MoveHistory { get; set; }
+    
+    /// <summary>
     /// Counts how many rounds have been played in the specific playing mode.
     /// </summary>
     public int Round { get; set; }
@@ -68,6 +73,7 @@ public class GameModel
         Mode = mode;
         Winner = winner;
         Direction = playingDirection;
+        MoveHistory = new List<MoveModel>();
     }
 
     public GameModel()

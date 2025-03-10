@@ -38,6 +38,11 @@ public class ChessDbContext : DbContext
     public required DbSet<GameModel> Game { get; init; }
 
     /// <summary>
+    /// History of all moves in the current round.
+    /// </summary>
+    public required DbSet<MoveModel> Moves { get; set; }
+    
+    /// <summary>
     /// Adds the database service to the dependency injection.
     /// </summary>
     /// <param name="optionsBuilder">Configuration endpoint for the database.</param>

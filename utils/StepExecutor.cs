@@ -14,13 +14,15 @@ namespace Chess_API.utils;
 public static class StepExecutor
 {
     /// <summary>
-    /// 
+    /// Depending on the piece type, the move pattern is executed.
+    ///
+    /// Generally a possible check is ignored.
     /// </summary>
-    /// <param name="game"></param>
-    /// <param name="movePattern"></param>
-    /// <param name="curField"></param>
-    /// <param name="newField"></param>
-    /// <param name="type"></param>
+    /// <param name="game">Current game instance</param>
+    /// <param name="movePattern">All move patterns of a specific piece</param>
+    /// <param name="curField">Current position of the piece</param>
+    /// <param name="newField">Destined field for the figure</param>
+    /// <param name="type">Type of the figure</param>
     /// <returns></returns>
     public static bool ExecuteMovePattern(GameModel game, IMovePattern movePattern, FieldModel curField, FieldModel newField,
         FigureType type)
@@ -71,16 +73,19 @@ public static class StepExecutor
         else
         {
             var piece = curField.Content!;
-            // TODO - Implement the move pattern for the knight / king
             foreach (var pattern in movePattern.Patterns)
             {
                 if (piece.Type == FigureType.Pawn)
                 {
                     switch (Math.Abs(curField.Coordinates[1] - newField.Coordinates[1]))
                     {
-                        // TODO - Add checker if pawn already has moved from the start field
                         case 2:
                         {
+                            // check if the pawn has already been moved
+                            if(MoveHistoryManager.HasPieceAlreadyMoved(game.MoveHistory, piece.FigureId))
+                            {
+                                break;
+                            }
                             var nextField = FieldHandler.CopyField(curField);
                             foreach (var move in pattern)
                             {
@@ -120,10 +125,17 @@ public static class StepExecutor
                 }
                 else if (piece.Type == FigureType.King)
                 {
+                    foreach(var move in pattern)
+                    {
+                        var nextField = GoStepKing(move, game, FieldHandler.CopyField(curField), piece.Color);
+                        if (nextField == newField)
+                        {
+                            output = true;
+                        }
+                    }
                 }
             }
         }
-        
 
         return output;
     }
@@ -243,7 +255,6 @@ public static class StepExecutor
         return output;
     }
     
-    // TODO - Implement a storage for all moves in a game / for the last move -> needed for En Passant
     /// <summary>
     /// Executes one step of a pawn.
     ///
@@ -358,7 +369,6 @@ public static class StepExecutor
         return output;
     }
     
-    // TODO - Finish King step function
     /// <summary>
     /// Executes one step of a king.
     ///
@@ -371,7 +381,116 @@ public static class StepExecutor
     /// <returns>The new field of the kings position</returns>
     public static FieldModel GoStepKing(Moves move, GameModel game, FieldModel curField, Colors kingColor)
     {
-        return new FieldModel();
+        var output = new FieldModel();
+        List<int> newCoordinates;
+        FieldModel newField;
+
+        switch (move)
+        {
+            case Moves.Up:
+                newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] - 1 };
+                newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
+                if (newCoordinates[1] < 0 || (newField.Content is not null && newField.Content.Color == kingColor))
+                {
+                    output = curField;
+                }
+                else
+                {
+                    output = newField;
+                }
+                break;
+            case Moves.Down:
+                newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] + 1 };
+                newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
+                if (newCoordinates[1] > 7 || (newField.Content is not null && newField.Content.Color == kingColor))
+                {
+                    output = curField;
+                }
+                else
+                {
+                    output = newField;
+                }
+                break;
+            case Moves.Left:
+                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] };
+                newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
+                if (newCoordinates[0] < 0 || (newField.Content is not null && newField.Content.Color == kingColor))
+                {
+                    output = curField;
+                }
+                else
+                {
+                    output = newField;
+                }
+                break;
+            case Moves.Right:
+                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] };
+                newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
+                if (newCoordinates[0] > 7 || (newField.Content is not null && newField.Content.Color == kingColor))
+                {
+                    output = curField;
+                }
+                else
+                {
+                    output = newField;
+                }
+                break;
+            case Moves.DiagonalUpLeft:
+                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] - 1 };
+                newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
+                if (newCoordinates[0] < 0 || newCoordinates[1] < 0 || (newField.Content is not null && newField.Content.Color == kingColor))
+                {
+                    output = curField;
+                }
+                else
+                {
+                    output = newField;
+                }
+                break;
+            case Moves.DiagonalUpRight:
+                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] - 1 };
+                newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
+                if (newCoordinates[0] > 7 || newCoordinates[1] < 0 ||
+                    (newField.Content is not null && newField.Content.Color == kingColor))
+                {
+                    output = curField;
+                }
+                else
+                {
+                    output = newField;
+                }
+                break;
+            case Moves.DiagonalDownLeft:
+                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] + 1 };
+                newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
+                if (newCoordinates[0] < 0 || newCoordinates[1] > 7 ||
+                    (newField.Content is not null && newField.Content.Color == kingColor))
+                {
+                    output = curField;
+                }
+                else
+                {
+                    output = newField;
+                }
+                break;
+            case Moves.DiagonalDownRight:
+                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] + 1 };
+                newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
+                if (newCoordinates[0] > 7 || newCoordinates[1] > 7 ||
+                    (newField.Content is not null && newField.Content.Color == kingColor))
+                {
+                    output = curField;
+                }
+                else
+                {
+                    output = newField;
+                }
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(move), move, "Invalid move for the king!");;
+        }
+        
+        return output;
     }
     
     /// <summary>
@@ -391,7 +510,7 @@ public static class StepExecutor
         switch (move)
         {
             case Moves.Up:
-                // if (border check + is there a piece in the way -> stay on the field [possible throw])
+                // if (border check + is there a piece i=n the way -> stay on the field [possible throw])
                 newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] - 1 };
                 if (newCoordinates[1] < 0 || curField.Content is not null)
                 {
@@ -485,6 +604,8 @@ public static class StepExecutor
     }
     
     // helper functions _______
+
+    
     
     /// <summary>
     /// Determines if a pawn moves in the right direction.

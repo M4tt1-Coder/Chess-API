@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 /*That's supposed to be animations for the starting page heading.*/
 /*'Press'*/

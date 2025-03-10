@@ -14,10 +14,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ChessDbContext>();
 builder.Services.AddSingleton<IProtectionService, RoutesProtector>();
 
-// TODO - add middleware checks when ever needed (*)  
 // TODO - Check if a player has won with a checkmate
 // TODO - Finish playing page
-// TODO - Write a checker for figure movements + game state
 // TODO - Add responsibility to all pages
 // TODO - the special move castling for the king and the rook
 // TODO - What to do when your king is in check
