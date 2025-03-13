@@ -1,57 +1,54 @@
-using System.Runtime.InteropServices.ComTypes;
+using Chess_API.Enums;
+using Chess_API.Interfaces;
 using Chess_API.Models;
+using Chess_API.MovePatterns;
+using Chess_API.utils;
 
 namespace Chess_API.Rules;
-
-// TODO - FIRST: Add all runners which move a piece to a specific new field
 
 /// <summary>
 /// Contains all checking functions if a piece can move to a new field.
 ///
 /// Moves a piece to another field.
 /// </summary>
-public class MovingRules
+public static class MovingRules
 {
     /// <summary>
-    /// Logger for the MovingRules instance
+    /// Depending on the piece type, the function checks if a piece can move to a new field.
+    ///
+    /// Executes the move pattern of the piece.
     /// </summary>
-    private readonly ILogger<MovingRules> _logger;
-
-    public MovingRules(ILogger<MovingRules> logger)
-    {
-        _logger = logger;
-    }
-
-    // TODO - Implement a functions that checks if a piece can move to a selected field
-    // TODO - Add a function that moves a piece to a new field without paying attention to possible checks
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="board"></param>
-    /// <param name="pieceCoordinates"></param>
-    /// <param name="destinationCoordinates"></param>
-    /// <returns></returns>
-    public bool CanPieceMoveToField(IList<FieldRowModel> board, IList<int> pieceCoordinates,
+    /// <param name="game">Current game instance</param>
+    /// <param name="pieceCoordinates">Current coordinates of the piece</param>
+    /// <param name="destinationCoordinates">Field coordinates of the new field</param>
+    /// <returns>True, when the piece theoretically can move to a new field.</returns>
+    private static bool CanPieceMoveToField(GameModel game, IList<int> pieceCoordinates,
         IList<int> destinationCoordinates)
     {
         var output = false;
         // simple look if the piece can move to that field using its move patterns
         // check if a piece (of both colors) is in the way
         // field where piece currently is
-        var curField = board[pieceCoordinates[1]].Row[pieceCoordinates[0]];
+        var curField = game.Field[pieceCoordinates[1]].Row[pieceCoordinates[0]];
         if (curField.Content is null)
         {
-            _logger.LogError("Coordinates of piece point to an empty field! {}", pieceCoordinates);
             return false;
         }
 
         var piece = curField.Content!;
-        var destField = board[destinationCoordinates[1]].Row[destinationCoordinates[0]];
-        // when the destination field contains a piece of the same color -> return false
-        if (destField.Content is not null && destField.Content.Color == piece.Color)
+        var destField = game.Field[destinationCoordinates[1]].Row[destinationCoordinates[0]];
+        // execute pattern
+        IMovePattern movePattern = piece.Type switch
         {
-            return false;
-        }
+            FigureType.Pawn => new PawnMovePatterns(),
+            FigureType.Rook => new RookMovePattern(),
+            FigureType.Knight => new KnightMovePattern(),
+            FigureType.Bishop => new BishopMovePattern(),
+            FigureType.Queen => new QueenMovePatterns(),
+            FigureType.King => new KingMovePatterns(),
+            _ => new PawnMovePatterns()
+        };
+        output = StepExecutor.ExecuteMovePattern(game, movePattern, curField, destField, piece.Type);
         // return output
         return output;
     }
@@ -63,26 +60,26 @@ public class MovingRules
     /// Pays attention to the king's position and if it would be in check.
     /// </summary>
     /// <param name="game">Current game</param>
-    /// <param name="coordinates">The coordinates of a field on which a specific piece is supposed to move.</param>
-    /// <param name="figure">The type of the figure.</param>
+    /// <param name="pieceCoordinates">The coordinates of a field on which a specific piece is supposed to move.</param>
+    /// <param name="newCoordinates">Coordinates of the new field</param>
     /// <returns>If a piece can take a field where another piece is situated.</returns>
-    public bool CanPieceMoveToFieldWithCheck(GameModel game, IList<int> coordinates, FigureModel figure)
+    public static bool CanPieceMoveToFieldWithCheck(GameModel game, IList<int> pieceCoordinates, IList<int> newCoordinates)
     {
-        // check for extra conditions regarding the king
-
-        // color of the figure on the field
-        var figureColor = game.Field[coordinates[1]].Row[coordinates[0]].Color;
-        // different color?
-        if (figureColor != figure.Color)
-        {
-            // check if the figure can move to the new field
-            // -> then determine if the own king would be in check
-            return true;
-        }
-        else
+        // the field where is supposed to be can't be empty
+        if (game.Field[newCoordinates[1]].Row[newCoordinates[0]].Content is null)
         {
             return false;
         }
-        // yes -> throw || no -> can't move 
+        var output = false;
+        // check if the piece can move to the new field
+        var canMove = CanPieceMoveToField(game, pieceCoordinates, newCoordinates);
+        // check if the own king would be in check
+        var figureColor = game.Field[pieceCoordinates[1]].Row[pieceCoordinates[0]].Content!.Color;
+        var kingInCheck = RulesExecutor.CheckChecker(game,figureColor, pieceCoordinates, newCoordinates);
+        if (canMove && !kingInCheck)
+        {
+            output = true;
+        }
+        return output;
     }
 }

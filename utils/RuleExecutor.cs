@@ -19,18 +19,9 @@ namespace Chess_API.utils;
 ///
 /// Potential checks, throwing other pieces, ....
 /// </summary>
-public class RulesExecutor
+public static class RulesExecutor
 {
-    /// <summary>
-    /// MoveExaminer logger singleton service.
-    /// </summary>
-    private readonly ILogger<RulesExecutor> _logger;
-
-    public RulesExecutor(ILogger<RulesExecutor> logger)
-    {
-        _logger = logger;
-    }
-
+    // TODO - Finish the validateMove function
     /// <summary>
     /// Global rule endpoint.
     /// 
@@ -42,12 +33,10 @@ public class RulesExecutor
     /// <param name="curField">The selected field of player.</param>
     /// <param name="newField">The new field where the user wants to put the figure.</param>
     /// <returns>A boolean to validate that all rules apply to the move.</returns>
-    public void ValidateMove(GameModel game, FieldModel curField, FieldModel newField)
+    public static void ValidateMove(GameModel game, FieldModel curField, FieldModel newField)
     {
-        // TODO - Check if a player has won with a checkmate 
         if (curField.Content is null)
         {
-            _logger.LogError("The field where the figure is standing is empty!");
             return;
         }
         
@@ -58,16 +47,16 @@ public class RulesExecutor
         // depending on the type check for movements
     }
 
-    // TODO - 1.) Finish check checker
     /// <summary>
-    /// 
+    /// Differentiates between the two cases when the player made a move and his / her own king is in check AND
+    /// when the player made a move and the opponent's king is in check.
     /// </summary>
-    /// <param name="game"></param>
-    /// <param name="kingColor"></param>
-    /// <param name="figureNow"></param>
-    /// <param name="figureAfter"></param>
-    /// <returns></returns>
-    private bool CheckChecker(GameModel game, Colors kingColor, IList<int>? figureNow, IList<int>? figureAfter)
+    /// <param name="game">Current game instance</param>
+    /// <param name="kingColor">Color of the king</param>
+    /// <param name="figureNow">Starting position of the piece</param>
+    /// <param name="figureAfter">Ending position of the piece</param>
+    /// <returns>True, when the king is in check</returns>
+    public static bool CheckChecker(GameModel game, Colors kingColor, IList<int>? figureNow, IList<int>? figureAfter)
     {
         var output = true;
         IList<int> kingCoordinates = new List<int>();
@@ -95,13 +84,15 @@ public class RulesExecutor
         }
         else
         {
+            
             // go through all opposite figures and check for possible checks
             // when a figure can move to the king's field -> check        
-            var figure = FieldHandler.GetSpecificFieldByCoordinates(game, figureNow);
             // copy instance of the game to check if the move is valid
             var gameCopy = GameHandler.CopyGame(game);
             // move the figure to the new field
-            // TODO - Check if the figure can move to the new field & if the king is in check
+            MoveFigureToField(gameCopy, figureNow, figureAfter);
+            // check if the king is in check
+            output = IsKingInCheck(gameCopy, kingCoordinates, kingColor);
         }
         
         return output;
@@ -118,7 +109,7 @@ public class RulesExecutor
     /// <param name="kingCoordinates">Coordinates of the king's field</param>
     /// <param name="kingColor">The color of the king which is checked on being in check</param>
     /// <returns></returns>
-    private bool IsKingInCheck(GameModel game, IList<int> kingCoordinates, Colors kingColor)
+    private static bool IsKingInCheck(GameModel game, IList<int> kingCoordinates, Colors kingColor)
     {
         var output = false;
         
@@ -152,14 +143,13 @@ public class RulesExecutor
     /// <param name="game">Current game instance</param>
     /// <param name="kingColor">Either white /  black : Color of the king</param>
     /// <returns>A list of coordinates (list of integers) of all field where the king is attacked</returns>
-    private IEnumerable<IList<int>> FieldsWhereKingIsAttacked(GameModel game, Colors kingColor)
+    private static IEnumerable<IList<int>> FieldsWhereKingIsAttacked(GameModel game, Colors kingColor)
     {
         var output = new Collection<IList<int>>();
         
         // similar to move patterns but not moving but attacking
         // go along all possible move patterns
         // store fields which are attacked by figures of 
-
         foreach (var row in game.Field)
         {
             foreach (var field in row.Row)
@@ -237,9 +227,6 @@ public class RulesExecutor
                                         AddCoordinatesToList(output, secondField);
                                     }
                                 }
-                                break;
-                            default:
-                                _logger.LogError("Couldn't resolve a good enum value!");
                                 break;
                         }
                         break;
@@ -380,9 +367,6 @@ public class RulesExecutor
                             if (!Equals(nextField.Coordinates, field.Coordinates)) AddCoordinatesToList(output, nextField.Coordinates);
                         }
                         break;
-                    default:
-                        _logger.LogError("Enum value again out of scope!");
-                        break;
                 }
             }
         }
@@ -404,7 +388,7 @@ public class RulesExecutor
     /// <param name="currentField">Starting field where we are going from</param>
     /// <param name="game">Current game object</param>
     /// <returns>A field the king can move to</returns>
-    private FieldModel KingJustTriesToGoToField(Moves kingMove, FieldModel currentField, GameModel game)
+    private static FieldModel KingJustTriesToGoToField(Moves kingMove, FieldModel currentField, GameModel game)
     {
         // vars instantiation
         var output = new FieldModel();
@@ -456,11 +440,7 @@ public class RulesExecutor
                 if (newCoordinates[1] > 7 && newCoordinates[0] > 7) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            default:
-                _logger.LogError("Enum value again out of scope!");
-                break;
         }
-
         return output;
     }
     
@@ -499,5 +479,23 @@ public class RulesExecutor
         return true;
     }
     
-    
+    /// <summary>
+    /// Moves a piece to a new field by changing the content of the fields.
+    /// </summary>
+    /// <param name="game">Current game instance</param>
+    /// <param name="from">Starting coordinates of the piece</param>
+    /// <param name="to">Destination of the figure</param>
+    private static void MoveFigureToField(GameModel game, IList<int> from, IList<int> to)
+    {
+        if (FieldHandler.GetSpecificFieldByCoordinates(game, from).Content is null)
+        {
+            return;
+        }
+        // get the piece object
+        var piece = FieldHandler.GetSpecificFieldByCoordinates(game, from).Content!;
+        // reassign the field where the piece is situated
+        game.Field[from[1]].Row[from[0]].Content = null;
+        // assign the piece to the new field
+        game.Field[to[1]].Row[to[0]].Content = piece;
+    }
 }

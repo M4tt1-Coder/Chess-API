@@ -23,7 +23,7 @@ public static class StepExecutor
     /// <param name="curField">Current position of the piece</param>
     /// <param name="newField">Destined field for the figure</param>
     /// <param name="type">Type of the figure</param>
-    /// <returns></returns>
+    /// <returns>True, when a move pattern lead to the new field</returns>
     public static bool ExecuteMovePattern(GameModel game, IMovePattern movePattern, FieldModel curField, FieldModel newField,
         FigureType type)
     {
@@ -379,7 +379,7 @@ public static class StepExecutor
     /// <param name="curField">The field the king is theoretically situated</param>
     /// <param name="kingColor">Color of the king</param>
     /// <returns>The new field of the kings position</returns>
-    public static FieldModel GoStepKing(Moves move, GameModel game, FieldModel curField, Colors kingColor)
+    private static FieldModel GoStepKing(Moves move, GameModel game, FieldModel curField, Colors kingColor)
     {
         var output = new FieldModel();
         List<int> newCoordinates;
