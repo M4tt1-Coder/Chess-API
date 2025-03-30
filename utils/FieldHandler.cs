@@ -22,6 +22,14 @@ public static class FieldHandler
     private const int FieldNumber = 8;
 
     /// <summary>
+    /// Determines if the user already selected a field or not.
+    /// </summary>
+    /// <param name="X">Nullable field X ordinate</param>
+    /// /// <param name="Y">Nullable field Y ordinate</param>
+    /// <param name="IsThereSelectedField">True when there is a selected field</param>
+    public record FieldSelectedCheckResult(int? X, int? Y, bool IsThereSelectedField);
+
+    /// <summary>
     /// Creates a default field layout.
     ///
     /// Field row starting with index 0 begins at the white side.
@@ -43,10 +51,10 @@ public static class FieldHandler
                         switch (j % 2)
                         {
                             case 0:
-                                row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i), new []{ j, i }));
+                                row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i), j, i ));
                                 break;
                             case 1:
-                                row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i), new[] { j, i }));
+                                row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i), j, i ));
                                 break;
                         }
 
@@ -55,10 +63,10 @@ public static class FieldHandler
                         switch (j % 2)
                         {
                             case 0:
-                                row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i), new[] { j, i }));
+                                row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i),   j, i ));
                                 break;
                             case 1:
-                                row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i), new[] { j, i }));
+                                row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i),  j, i ));
                                 break;
                         }
 
@@ -168,7 +176,7 @@ public static class FieldHandler
         {
             foreach (var field in row.Row)
             {
-                if (Equals(field.Coordinates, coordinates))
+                if (Equals(new List<int> { field.X, field.Y }, coordinates))
                 {
                     output = field;
                 }
@@ -176,7 +184,9 @@ public static class FieldHandler
         }
     
         return output;
-    }   
+    }
+
+    
     
     /// <summary>
     /// Simply creates a copy of a field.
@@ -187,9 +197,59 @@ public static class FieldHandler
     /// <returns>A copy of the a field.</returns>
     public static FieldModel CopyField(FieldModel field)
     {
-        return new FieldModel(field.Color, field.Content, field.Coordinates)
+        return new FieldModel(field.Color, field.Content, field.X, field.Y)
         {
             MoveSelected = field.MoveSelected
         };
     }
+
+    /// <summary>
+    /// Goes through all fields and unselects them.
+    /// </summary>
+    /// <param name="game">Current game instance </param>
+    public static void UnselectAllFields(GameModel game)
+    {
+        foreach (var row in game.Field)
+        {
+            foreach (var field in row.Row)
+            {
+                if (field.Content is not null)
+                {
+                    field.Content.Selected = false;
+                }
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Checks if a field has been selected by the user.
+    ///
+    /// Fails when more than 2 have been selected somehow.
+    /// </summary>
+    /// <param name="game">Current game instance</param>
+    /// <returns>Result with possible field coordinates.</returns>
+    /// <exception cref="Exception">If too many fields where selected</exception>
+    public static FieldSelectedCheckResult IsAFieldSelected(GameModel game)
+    {
+        var output = new FieldSelectedCheckResult(null, null, false);
+        var numFieldsSelected = 0;
+        foreach (var row in game.Field)
+        {
+            foreach (var field in row.Row)
+            {
+                if (field.Content is not null && field.Content.Selected)
+                {
+                    output = new FieldSelectedCheckResult(field.X, field.Y, true);
+                    numFieldsSelected++;
+                }
+            }
+        }
+
+        if (numFieldsSelected >= 2)
+        {
+            throw new Exception("Too many fields have been selected! Number of Fields: " + numFieldsSelected);
+        }
+        
+        return output;
+    } 
 }

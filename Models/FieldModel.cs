@@ -44,26 +44,29 @@ public class FieldModel
     /// </summary>
     public bool MoveSelected { get; set; }
 
+    // TODO - Should think of a better way to store coordinates
+    // [NotMapped]
+    // public IList<int> Coordinates { get; set; } = null!;
+
     /// <summary>
-    /// Represents where the position of a field on the board is.
-    ///
-    /// It's not needed to display the playing field.
-    ///
-    /// Exists for playing logic.
-    ///
-    /// => [ x, y ]
-    /// - x ... field index in row
-    /// - y ... row index from the bottom
+    /// The X ordinate of the field.
     /// </summary>
-    [NotMapped]
-    public IList<int> Coordinates { get; set; } = null!;
+    [Required]
+    public int X { get; set; }
     
-    public FieldModel(Colors color, FigureModel? content, IList<int> coordinates)
+    /// <summary>
+    /// The Y ordinate of the field.
+    /// </summary>
+    [Required]
+    public int Y { get; set; }
+
+    public FieldModel(Colors color, FigureModel? content, int x, int y)
     {
         Color = color;
         Content = content;
         MoveSelected = false;
-        Coordinates = coordinates;
+        X = x;
+        Y = y;
     }
 
     public FieldModel()

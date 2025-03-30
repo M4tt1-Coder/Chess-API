@@ -38,7 +38,6 @@ public static class GameHandler
         );
     }
 
-    // TODO - Add a function that creates a copy of the game object
     /// <summary>
     /// Creates a temporary copy of the current game instance.
     /// </summary>

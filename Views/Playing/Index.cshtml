@@ -2,6 +2,7 @@
     ViewData["Title"] = "Playing";
 }
 @using Chess_API.Enums
+@using Chess_API.utils
 @model Chess_API.Models.GameModel
 
 <!--TODO - when player clicks a field with a figure on it mark these fields who are selected -> where the figure can go!-->
@@ -74,38 +75,60 @@
     
     <!--game board-->
     <div class="row-span-2 xl:col-span-2 w-full h-auto flex flex-col items-center justify-center">
-        <!-- TODO - Create the form action endpoint taking in the some coordinates which field has been pressed -->
-        <form action="" class="p-3 border-4 border-black rounded-lg bg-blue-950 aspect-square w-4/5">
+        <!-- TODO - Find out to send the clicked field coordinates to the controller endpoint -> https://stackoverflow.com/questions/62523590/asp-net-core-how-to-pass-listint-from-view-to-controller-->
+        <div class="p-3 border-4 border-black rounded-lg bg-blue-950 aspect-square w-4/5">
             @foreach (var row in Model.Field)
             {
                 <div class="w-full h-fit my-0 flex items-center justify-center">
                     @foreach (var field in row.Row)
                     {
-                        @switch (field.Color)
-                        {
-                            case Colors.White when field.Content is { PictureSource: not null }:
-                                <button class="bg-white border-1 border-black focus:border-white m-1 aspect-square w-[12.5%]" type="submit">
-                                    <img src=@field.Content.PictureSource alt="none" class="w-fit h-fit"/>
-                                </button>
-                                break;
-                            case Colors.White:
-                                <button type="submit" class="bg-white border-1 border-black focus:border-white m-1 aspect-square w-[12.5%]"></button>
-                                break;
-                            case Colors.Black when field.Content is { PictureSource: not null }:
-                                <button type="submit" class="bg-slate-500 border-1 border-black focus:border-white m-1 aspect-square w-[12.5%]">
-                                    <img src=@field.Content.PictureSource alt="none" class="w-fit h-fit"/>
-                                </button>
-                                break;
-                            case Colors.Black:
-                                <button type="submit" class="bg-slate-500 border-1 border-black focus:border-white m-1 aspect-square w-[12.5%]"></button>
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                            @switch (field.Color)
+                            {
+                                case Colors.White when field.Content is { PictureSource: not null }:
+                                    <form action="/playing/move" method="post" class="aspect-square w-[12.5%] bg-white border-1 border-black focus:border-white m-1 flex items-center justify-center">
+                                        <button
+                                            class="aspect-square w-full"
+                                            type="submit">
+                                            <img src=@field.Content.PictureSource alt="none" class="w-fit h-fit"/>
+                                        </button>
+                                        @* <input type="hidden" id="fieldCoordinates" name="fieldCoordinates" *@
+                                        @*        value=@ConverterHelper.ConvertIntsListToString(field.Coordinates)/> *@
+                                    </form>
+                                    break;
+                                case Colors.White:
+                                    <form action="/playing/move" method="post" class="aspect-square w-[12.5%] bg-white border-1 border-black focus:border-white m-1">
+                                        <button type="submit"
+                                                class="aspect-square w-full"></button>
+                                        @* <input type="hidden" id="fieldCoordinates" name="fieldCoordinates" *@
+                                        @*        value=@ConverterHelper.ConvertIntsListToString(field.Coordinates)/> *@
+                                    </form>
+                                    break;
+                                case Colors.Black when field.Content is { PictureSource: not null }:
+                                    <form action="/playing/move" method="post" class="aspect-square w-[12.5%] bg-slate-500 border-1 border-black focus:border-white m-1 flex items-center justify-center">
+                                        <button type="submit"
+                                                class=" m-1 aspect-square w-full">
+                                            <img src=@field.Content.PictureSource alt="none" class="w-fit h-fit"/>
+                                        </button>
+                                        @* <input type="hidden" id="fieldCoordinates" name="fieldCoordinates" *@
+                                        @*        value=@ConverterHelper.ConvertIntsListToString(field.Coordinates)/> *@
+                                    </form>
+                                    break;
+                                case Colors.Black:
+                                    <form action="/playing/move" method="post" class="aspect-square w-[12.5%] bg-slate-500 border-1 border-black focus:border-white m-1">
+                                        <button type="submit"
+                                                class="aspect-square w-full"></button>
+                                        @* <input type="hidden" id="fieldCoordinates" name="fieldCoordinates" *@
+                                        @*        value=@ConverterHelper.ConvertIntsListToString(field.Coordinates)/> *@
+                                    </form>
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
                     }
                 </div>
             }
-        </form>
+        </div>
+        <!-- TODO - Wrap the Resign and Draw button into a form -->
         <!-- resign and draw defeat -->
         <div class="w-full h-auto flex items-center justify-center gap-4">
             <!-- Resign -->

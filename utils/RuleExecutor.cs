@@ -3,6 +3,7 @@ using Chess_API.Enums;
 using Chess_API.Interfaces;
 using Chess_API.Models;
 using Chess_API.MovePatterns;
+using Chess_API.Rules;
 
 namespace Chess_API.utils;
 
@@ -21,7 +22,6 @@ namespace Chess_API.utils;
 /// </summary>
 public static class RulesExecutor
 {
-    // TODO - Finish the validateMove function
     /// <summary>
     /// Global rule endpoint.
     /// 
@@ -32,7 +32,6 @@ public static class RulesExecutor
     /// <param name="game">Current game</param>
     /// <param name="curField">The selected field of player.</param>
     /// <param name="newField">The new field where the user wants to put the figure.</param>
-    /// <returns>A boolean to validate that all rules apply to the move.</returns>
     public static void ValidateMove(GameModel game, FieldModel curField, FieldModel newField)
     {
         if (curField.Content is null)
@@ -40,11 +39,11 @@ public static class RulesExecutor
             return;
         }
         
-        // type of corresponding figure
-        // first check is about the piece type
-        var type = curField.Content.Type;
-        
-        // depending on the type check for movements
+        // can piece move to the field
+        if (MovingRules.CanPieceMoveToFieldWithCheck(game, new List<int>() { curField.X, curField.Y }, new List<int>() { newField.X, newField.Y }))
+        {
+            MoveFigureToField(game, new List<int> { curField.X, curField.Y }, new List<int>() { newField.X, newField.Y });
+        }
     }
 
     /// <summary>
@@ -69,7 +68,7 @@ public static class RulesExecutor
                 if (field.Content is null) continue;
                 if (field.Content.Type == FigureType.King && field.Content.Color == kingColor)
                 {
-                    kingCoordinates = field.Coordinates;
+                    kingCoordinates = new List<int> { field.X, field.Y };
                 }
             }
         }
@@ -167,8 +166,8 @@ public static class RulesExecutor
                                 {
                                     // check for boundaries 
                                     // assign new possible fields that could be attacked by black piece
-                                    var firstField = new []{ field.Coordinates[0] - 1, field.Coordinates[1] - 1 };
-                                    var secondField = new[] { field.Coordinates[0] + 1, field.Coordinates[1] - 1 };
+                                    var firstField = new []{ field.X - 1, field.Y - 1 };
+                                    var secondField = new[] { field.X + 1, field.Y - 1 };
 
                                     if (AreCoordinatesOnBoard(firstField))
                                     {
@@ -182,8 +181,8 @@ public static class RulesExecutor
                                 }
                                 else
                                 {
-                                    var firstField = new[] { field.Coordinates[0] - 1, field.Coordinates[1] + 1 };
-                                    var secondField = new[] { field.Coordinates[0] + 1, field.Coordinates[1] + 1 };
+                                    var firstField = new[] { field.X - 1, field.Y + 1 };
+                                    var secondField = new[] { field.X + 1, field.Y + 1 };
 
                                     if (AreCoordinatesOnBoard(firstField))
                                     {
@@ -199,8 +198,8 @@ public static class RulesExecutor
                             case PlayingDirection.WhiteBottom:
                                 if (kingColor == Colors.White)
                                 {
-                                    var firstField = new[] { field.Coordinates[0] - 1, field.Coordinates[1] + 1 };
-                                    var secondField = new[] { field.Coordinates[0] + 1, field.Coordinates[1] + 1 };
+                                    var firstField = new[] { field.X - 1, field.Y + 1 };
+                                    var secondField = new[] { field.X + 1, field.Y + 1 };
 
                                     if (AreCoordinatesOnBoard(firstField))
                                     {
@@ -214,8 +213,8 @@ public static class RulesExecutor
                                 }
                                 else
                                 {
-                                    var firstField = new[] { field.Coordinates[0] - 1, field.Coordinates[1] - 1 };
-                                    var secondField = new[] { field.Coordinates[0] + 1, field.Coordinates[1] - 1 };
+                                    var firstField = new[] { field.X - 1, field.Y - 1 };
+                                    var secondField = new[] { field.X + 1, field.Y - 1 };
 
                                     if (AreCoordinatesOnBoard(firstField))
                                     {
@@ -244,9 +243,9 @@ public static class RulesExecutor
                                 var previousField = nextField;
 
                                 // add the field to the list
-                                if (AreCoordinatesOnBoard(previousField.Coordinates))
+                                if (AreCoordinatesOnBoard(new List<int> { previousField.X, previousField.Y }))
                                 {
-                                    AddCoordinatesToList(output, previousField.Coordinates);
+                                    AddCoordinatesToList(output, new List<int>() {previousField.X, previousField.Y});
                                 }
                                 
                                 foreach (var move in (List<Moves>)pattern)
@@ -254,7 +253,7 @@ public static class RulesExecutor
                                     nextField = StepExecutor.GoStepStraight(move, game, field);    
                                 }
 
-                                if (Equals(previousField.Coordinates, nextField.Coordinates))
+                                if (Equals(new List<int> {previousField.X, previousField.Y}, new List<int> {nextField.X, nextField.Y}))
                                 {
                                     canStillContinue = false;
                                 }
@@ -285,9 +284,8 @@ public static class RulesExecutor
                                     goto SkipKnightPattern;
                                 }
 
-                                AddCoordinatesToList(output, nextField.Coordinates);
+                                AddCoordinatesToList(output, new List<int> {nextField.X, nextField.Y});
                             }
-
                             SkipKnightPattern: ;
                         }
                         break;
@@ -305,9 +303,9 @@ public static class RulesExecutor
                                 var previousField = nextField;
 
                                 // add the field to the list
-                                if (AreCoordinatesOnBoard(previousField.Coordinates))
+                                if (AreCoordinatesOnBoard(new List<int>() {previousField.X, previousField.Y}))
                                 {
-                                    AddCoordinatesToList(output, previousField.Coordinates);
+                                    AddCoordinatesToList(output, new List<int> {previousField.X, previousField.Y});
                                 }
 
                                 foreach (var move in (List<Moves>)pattern)
@@ -315,7 +313,7 @@ public static class RulesExecutor
                                     nextField = StepExecutor.GoStepStraight(move, game, field);
                                 }
 
-                                if (Equals(previousField.Coordinates, nextField.Coordinates))
+                                if (Equals(new List<int>() {previousField.X, previousField.Y}, new List<int>() {nextField.X, nextField.Y}))
                                 {
                                     canStillContinueRun = false;
                                 }
@@ -335,9 +333,9 @@ public static class RulesExecutor
                                 var previousField = nextField;
 
                                 // add the field to the list
-                                if (AreCoordinatesOnBoard(previousField.Coordinates))
+                                if (AreCoordinatesOnBoard(new List<int>() {previousField.X, previousField.Y}))
                                 {
-                                    AddCoordinatesToList(output, previousField.Coordinates);
+                                    AddCoordinatesToList(output, new List<int>() {previousField.X, previousField.Y});
                                 }
 
                                 foreach (var move in (List<Moves>)pattern)
@@ -345,7 +343,7 @@ public static class RulesExecutor
                                     nextField = StepExecutor.GoStepStraight(move, game, field);
                                 }
 
-                                if (Equals(previousField.Coordinates, nextField.Coordinates))
+                                if (Equals(new List<int>() {previousField.X, previousField.Y}, new List<int>() {nextField.X, nextField.Y}))
                                 {
                                     canStillContinueRun = false;
                                 }
@@ -364,7 +362,7 @@ public static class RulesExecutor
                             var nextField = pattern.Aggregate(field, (current, move) => KingJustTriesToGoToField(move, current, game));
                                 
                             // main check if the field where the figure has moved has changed
-                            if (!Equals(nextField.Coordinates, field.Coordinates)) AddCoordinatesToList(output, nextField.Coordinates);
+                            if (!Equals(new List<int>() {nextField.X, nextField.Y}, new List<int>() {field.X, field.Y})) AddCoordinatesToList(output, new List<int>() {nextField.X, nextField.Y});
                         }
                         break;
                 }
@@ -398,7 +396,7 @@ public static class RulesExecutor
         {
             case Moves.Up:
                 // get the new coordinates
-                newCoordinates = new List<int>() { currentField.Coordinates[0], currentField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { currentField.X, currentField.Y - 1 };
                 // validate new coordinates
                 if (newCoordinates[1] < 0) return currentField;
                 // get new field with new coordinates from game board
@@ -406,37 +404,37 @@ public static class RulesExecutor
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.Down:
-                newCoordinates = new List<int>() { currentField.Coordinates[0], currentField.Coordinates[1] + 1};
+                newCoordinates = new List<int>() { currentField.X, currentField.Y + 1};
                 if (newCoordinates[1] > 7) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.Left:
-                newCoordinates = new List<int>() { currentField.Coordinates[0] - 1, currentField.Coordinates[1]};
+                newCoordinates = new List<int>() { currentField.X - 1, currentField.Y};
                 if (newCoordinates[0] < 0) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.Right:
-                newCoordinates = new List<int>() { currentField.Coordinates[0], currentField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { currentField.X, currentField.Y + 1 };
                 if (newCoordinates[0] > 7) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.DiagonalUpLeft:
-                newCoordinates = new List<int>() { currentField.Coordinates[0] - 1, currentField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { currentField.X - 1, currentField.Y - 1 };
                 if (newCoordinates[1] < 0 && newCoordinates[0] < 0) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.DiagonalUpRight:
-                newCoordinates = new List<int>() { currentField.Coordinates[0] + 1, currentField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { currentField.X + 1, currentField.Y - 1 };
                 if (newCoordinates[1] < 0 && newCoordinates[0] > 7) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.DiagonalDownLeft:
-                newCoordinates = new List<int>() { currentField.Coordinates[0] - 1, currentField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { currentField.X - 1, currentField.Y + 1 };
                 if (newCoordinates[1] > 7 && newCoordinates[0] < 0) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.DiagonalDownRight:
-                newCoordinates = new List<int>() { currentField.Coordinates[0] + 1, currentField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { currentField.X + 1, currentField.Y + 1 };
                 if (newCoordinates[1] > 7 && newCoordinates[0] > 7) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;

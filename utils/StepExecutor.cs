@@ -77,7 +77,7 @@ public static class StepExecutor
             {
                 if (piece.Type == FigureType.Pawn)
                 {
-                    switch (Math.Abs(curField.Coordinates[1] - newField.Coordinates[1]))
+                    switch (Math.Abs(curField.X - newField.Y))
                     {
                         case 2:
                         {
@@ -163,24 +163,24 @@ public static class StepExecutor
         {
             case Moves.Up:
                 // if (border check + is there a piece in the way -> stay on the field [possible throw])
-                newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
                 output = newCoordinates[1] < 0 ? curField : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.Down:
-                newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
                 output = newCoordinates[1] > 7 ? curField : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.Left:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y };
                 output = newCoordinates[0] < 0 ? curField : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.Right:
-                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] };
+                newCoordinates = new List<int>() { curField.X + 1, curField.Y };
                 output = newCoordinates[0] > 7 ? curField : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Moves.DiagonalUpLeft:
                 // is next field free? if not can the figure be thrown
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
                 if (newField.Content is not null)
@@ -198,7 +198,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalUpRight:
-                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
                 if (newField.Content is not null)
@@ -216,7 +216,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalDownLeft:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
                 if (newField.Content is not null)
@@ -234,7 +234,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalDownRight:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
                 if (newField.Content is not null)
@@ -282,7 +282,7 @@ public static class StepExecutor
         {
             case Moves.Up:
                 // new coordinates
-                newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 // check if the field is empty + border check
                 if (newCoordinates[1] < 0 || newField.Content is not null)
@@ -296,7 +296,7 @@ public static class StepExecutor
                 break;
             case Moves.Down:
                 // new coordinates
-                newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 // check if the field is empty + border check
                 if (newCoordinates[1] > 7 || newField.Content is not null)
@@ -309,7 +309,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalUpLeft:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || newCoordinates[1] < 0 || newField.Content is null ||
                     newField.Content.Color == pawnColor)
@@ -322,7 +322,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalUpRight:
-                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || newCoordinates[1] < 0 || newField.Content is null ||
                     newField.Content.Color == pawnColor)
@@ -335,7 +335,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalDownLeft:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || newCoordinates[1] > 7 || newField.Content is null ||
                     newField.Content.Color == pawnColor)
@@ -348,7 +348,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalDownRight:
-                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || newCoordinates[1] > 7 || newField.Content is null ||
                     newField.Content.Color == pawnColor)
@@ -388,7 +388,7 @@ public static class StepExecutor
         switch (move)
         {
             case Moves.Up:
-                newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[1] < 0 || (newField.Content is not null && newField.Content.Color == kingColor))
                 {
@@ -400,7 +400,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.Down:
-                newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[1] > 7 || (newField.Content is not null && newField.Content.Color == kingColor))
                 {
@@ -412,7 +412,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.Left:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] };
+                newCoordinates = new List<int>() { curField.X- 1, curField.Y };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || (newField.Content is not null && newField.Content.Color == kingColor))
                 {
@@ -424,7 +424,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.Right:
-                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] };
+                newCoordinates = new List<int>() { curField.X + 1, curField.Y };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || (newField.Content is not null && newField.Content.Color == kingColor))
                 {
@@ -436,7 +436,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalUpLeft:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || newCoordinates[1] < 0 || (newField.Content is not null && newField.Content.Color == kingColor))
                 {
@@ -448,7 +448,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalUpRight:
-                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || newCoordinates[1] < 0 ||
                     (newField.Content is not null && newField.Content.Color == kingColor))
@@ -461,7 +461,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalDownLeft:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || newCoordinates[1] > 7 ||
                     (newField.Content is not null && newField.Content.Color == kingColor))
@@ -474,7 +474,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalDownRight:
-                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || newCoordinates[1] > 7 ||
                     (newField.Content is not null && newField.Content.Color == kingColor))
@@ -486,8 +486,6 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(move), move, "Invalid move for the king!");;
         }
         
         return output;
@@ -511,7 +509,7 @@ public static class StepExecutor
         {
             case Moves.Up:
                 // if (border check + is there a piece i=n the way -> stay on the field [possible throw])
-                newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
                 if (newCoordinates[1] < 0 || curField.Content is not null)
                 {
                     output = curField;
@@ -522,7 +520,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.Down:
-                newCoordinates = new List<int>() { curField.Coordinates[0], curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
                 if (newCoordinates[1] > 7 || curField.Content is not null)
                 {
                     output = curField;
@@ -533,7 +531,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.Left:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y };
                 if (newCoordinates[0] < 0 || curField.Content is not null)
                 {
                     output = curField;
@@ -544,7 +542,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.Right:
-                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] };
+                newCoordinates = new List<int>() { curField.X + 1, curField.Y };
                 if (newCoordinates[0] > 7 || curField.Content is not null)
                 {
                     output = curField;
@@ -555,7 +553,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalUpLeft:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
                 if (newCoordinates[0] < 0 || newCoordinates[1] < 0 || curField.Content is not null)
                 {
                     output = curField;
@@ -566,7 +564,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalUpRight:
-                newCoordinates = new List<int>() { curField.Coordinates[0] + 1, curField.Coordinates[1] - 1 };
+                newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
                 if (newCoordinates[0] > 7 || newCoordinates[1] < 0 || curField.Content is not null)
                 {
                     output = curField;
@@ -577,7 +575,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalDownLeft:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 if (newCoordinates[0] < 0 || newCoordinates[1] > 7 || curField.Content is not null)
                 {
                     output = curField;
@@ -588,7 +586,7 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalDownRight:
-                newCoordinates = new List<int>() { curField.Coordinates[0] - 1, curField.Coordinates[1] + 1 };
+                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 if (newCoordinates[0] > 7 || newCoordinates[1] > 7 || curField.Content is not null)
                 {
                     output = curField;
