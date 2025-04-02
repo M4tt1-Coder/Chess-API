@@ -40,15 +40,6 @@ public class FieldModel
     public FigureModel? Content { get; set; }
 
     /// <summary>
-    /// In a piece movement, this prop defines if the player can move the piece to the specific field.
-    /// </summary>
-    public bool MoveSelected { get; set; }
-
-    // TODO - Should think of a better way to store coordinates
-    // [NotMapped]
-    // public IList<int> Coordinates { get; set; } = null!;
-
-    /// <summary>
     /// The X ordinate of the field.
     /// </summary>
     [Required]
@@ -64,7 +55,6 @@ public class FieldModel
     {
         Color = color;
         Content = content;
-        MoveSelected = false;
         X = x;
         Y = y;
     }

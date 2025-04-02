@@ -32,11 +32,14 @@ public static class RulesExecutor
     /// <param name="game">Current game</param>
     /// <param name="curField">The selected field of player.</param>
     /// <param name="newField">The new field where the user wants to put the figure.</param>
-    public static void ValidateMove(GameModel game, FieldModel curField, FieldModel newField)
+    /// <returns>The Updated game object</returns>
+    public static GameModel ValidateMove(GameModel game, FieldModel curField, FieldModel newField)
     {
+        // TODO - Add the move history feature 
         if (curField.Content is null)
         {
-            return;
+            game = FieldHandler.UnselectAllFields(game);
+            return game;
         }
         
         // can piece move to the field
@@ -44,6 +47,12 @@ public static class RulesExecutor
         {
             MoveFigureToField(game, new List<int> { curField.X, curField.Y }, new List<int>() { newField.X, newField.Y });
         }
+        
+        // unselect all fields
+        game = FieldHandler.UnselectAllFields(game);
+        
+        // return the game object
+        return game;
     }
 
     /// <summary>

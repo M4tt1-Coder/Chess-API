@@ -197,17 +197,15 @@ public static class FieldHandler
     /// <returns>A copy of the a field.</returns>
     public static FieldModel CopyField(FieldModel field)
     {
-        return new FieldModel(field.Color, field.Content, field.X, field.Y)
-        {
-            MoveSelected = field.MoveSelected
-        };
+        return new FieldModel(field.Color, field.Content, field.X, field.Y);
     }
 
     /// <summary>
-    /// Goes through all fields and unselects them.
+    /// Unselects the selected field in the game.
     /// </summary>
-    /// <param name="game">Current game instance </param>
-    public static void UnselectAllFields(GameModel game)
+    /// <param name="game">Current game instance</param>
+    /// <returns>Updated game object</returns>
+    public static GameModel UnselectAllFields(GameModel game)
     {
         foreach (var row in game.Field)
         {
@@ -219,6 +217,8 @@ public static class FieldHandler
                 }
             }
         }
+
+        return game;
     }
     
     /// <summary>
@@ -252,4 +252,26 @@ public static class FieldHandler
         
         return output;
     } 
+
+    /// <summary>
+    /// Checks the field coordinates and sets the field selected.
+    /// </summary>
+    /// <param name="game">Current game instance</param>
+    /// <param name="coordinates">Coordinates of the field to be checked</param>
+    /// <returns>Updated game instance</returns>
+    public static GameModel SetFieldSelected(GameModel game, IList<int> coordinates)
+    {
+        foreach(var row in game.Field)
+        {
+            foreach (var field in row.Row)
+            {
+                if (field.X == coordinates[0] && field.Y == coordinates[1] && field.Content is not null)
+                {
+                    field.Content.Selected = !field.Content.Selected;
+                }
+            }
+        }
+
+        return game;
+    }
 }

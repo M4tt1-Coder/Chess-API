@@ -1,5 +1,6 @@
 using Chess_API.Database;
 using Chess_API.Models;
+using Chess_API.utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,13 +37,36 @@ public class PlayingController : Controller
         // get the field coordinates from the request
         // fieldCoordinates = HttpContext.Request.Form["fieldCoordinates"].ToList().ConvertAll(int.Parse!);
         var fieldCoordinates = HttpContext.Request.Form["fieldCoordinates"];
-         foreach (var t in fieldCoordinates)
-         {
-             _logger.LogInformation("User interaction called {}", t!);
-         }
-        // _logger.LogInformation("User interaction called {}", fieldCoordinates!);
+        if (fieldCoordinates.Count == 0 || fieldCoordinates[0] is null)
+        {
+            return BadRequest("No field coordinates provided.");
+        }
+        // convert the string to a list of integers
+        var fieldCoordinatesList = ConverterHelper.ConvertStringToIntsList(fieldCoordinates[0]!);
         // check if a field with a figure was selected 
-        // check if the piece can move to that field -> what are consequences
+        // var game = _context.Game.First();
+        var game = await _context.Game.Include(model => model.PlayerOne)
+            .Include(model => model.PlayerTwo)
+            .Include(model => model.Field).ThenInclude(row => row.Row).ThenInclude(field => field.Content)
+            .FirstAsync();
+        var fieldSelectedCheckResult = FieldHandler.IsAFieldSelected(game);
+        if (fieldSelectedCheckResult.IsThereSelectedField)
+        {
+          // get the fields
+          var curField = FieldHandler.GetSpecificFieldByCoordinates(game, new List<int> { fieldSelectedCheckResult.X!.Value, fieldSelectedCheckResult.Y!.Value });
+          var selectedField = FieldHandler.GetSpecificFieldByCoordinates(game, fieldCoordinatesList);
+          // validate the move
+          game = RulesExecutor.ValidateMove(game, curField, selectedField);
+          // unselect the field
+          // game = FieldHandler.UnselectAllFields(game);
+        }
+        else
+        {
+            // select a field
+            game = FieldHandler.SetFieldSelected(game, fieldCoordinatesList);
+        }
+
+        await _context.SaveChangesAsync();
         return Redirect("/playing");
     }
 
@@ -59,11 +83,6 @@ public class PlayingController : Controller
         // add inclusion declarations of properties that forcibly have to take out of the in-memory database 
         // data needs to be included in the entity
         // https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.entityframeworkqueryableextensions.include?view=efcore-8.0&viewFallbackFrom=net-6.0
-        // TODO - Need to query the coordinates of every field too
-        // var game = await _context.Game.Include(model => model.PlayerOne)
-        //     .Include(model => model.PlayerTwo)
-        //     .Include(model => model.Field).ThenInclude(row => row.Row).ThenInclude(field => ((field as FieldModel)!).Coordinates)
-        //     .FirstAsync();
         var game = _context.Game.First();
         
         return View(game);
