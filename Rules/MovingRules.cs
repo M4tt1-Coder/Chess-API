@@ -66,7 +66,7 @@ public static class MovingRules
     public static bool CanPieceMoveToFieldWithCheck(GameModel game, IList<int> pieceCoordinates, IList<int> newCoordinates)
     {
         // the field where is supposed to be can't be empty
-        if (game.Field[newCoordinates[1]].Row[newCoordinates[0]].Content is null)
+        if (game.Field[pieceCoordinates[1]].Row[pieceCoordinates[0]].Content is null)
         {
             return false;
         }

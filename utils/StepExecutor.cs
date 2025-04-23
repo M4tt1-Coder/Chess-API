@@ -77,7 +77,7 @@ public static class StepExecutor
             {
                 if (piece.Type == FigureType.Pawn)
                 {
-                    switch (Math.Abs(curField.X - newField.Y))
+                    switch (Math.Abs(curField.Y - newField.Y))
                     {
                         case 2:
                         {
@@ -268,7 +268,7 @@ public static class StepExecutor
     private static FieldModel GoStepPawn(Moves move, GameModel game, FieldModel curField, Colors pawnColor)
     {
         // according to the color of the pawn, the direction of the movement changes
-        if (MovesPawnInRightDirection(pawnColor, move, game.Direction))
+        if (!MovesPawnInRightDirection(pawnColor, move, game.Direction))
         {
             return curField;
         }

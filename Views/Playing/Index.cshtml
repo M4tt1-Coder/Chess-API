@@ -5,7 +5,7 @@
 @using Chess_API.utils
 @model Chess_API.Models.GameModel
 
-<!--TODO - when player clicks a field with a figure on it mark these fields who are selected -> where the figure can go!-->
+
 <!--TODO - create a selection algorithm for selection of fields -> implement in the view-->
 <!--TODO - use Periodic timer for ticking down the clocks of the single players; let the player select a time option -> sets number of seconds -> will be ticked down-->
 <!-- https://www.youtube.com/watch?v=N7vhJ7O56iM -->
@@ -82,6 +82,7 @@
                 <div class="w-full h-fit my-0 flex items-center justify-center">
                     @foreach (var field in row.Row)
                     {
+                        <!--TODO - when player clicks a field with a figure on it mark these fields who are selected -> where the figure can go!-->
                             @switch (field.Color)
                             {
                                 case Colors.White when field.Content is { PictureSource: not null }:

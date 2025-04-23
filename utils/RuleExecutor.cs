@@ -38,18 +38,14 @@ public static class RulesExecutor
         // TODO - Add the move history feature 
         if (curField.Content is null)
         {
-            game = FieldHandler.UnselectAllFields(game);
             return game;
         }
         
         // can piece move to the field
         if (MovingRules.CanPieceMoveToFieldWithCheck(game, new List<int>() { curField.X, curField.Y }, new List<int>() { newField.X, newField.Y }))
         {
-            MoveFigureToField(game, new List<int> { curField.X, curField.Y }, new List<int>() { newField.X, newField.Y });
+            game = MoveFigureToField(game, new List<int> { curField.X, curField.Y }, new List<int>() { newField.X, newField.Y });
         }
-        
-        // unselect all fields
-        game = FieldHandler.UnselectAllFields(game);
         
         // return the game object
         return game;
@@ -92,13 +88,12 @@ public static class RulesExecutor
         }
         else
         {
-            
             // go through all opposite figures and check for possible checks
             // when a figure can move to the king's field -> check        
             // copy instance of the game to check if the move is valid
             var gameCopy = GameHandler.CopyGame(game);
             // move the figure to the new field
-            MoveFigureToField(gameCopy, figureNow, figureAfter);
+            gameCopy = MoveFigureToField(gameCopy, figureNow, figureAfter);
             // check if the king is in check
             output = IsKingInCheck(gameCopy, kingCoordinates, kingColor);
         }
@@ -245,26 +240,37 @@ public static class RulesExecutor
                             var canStillContinue = true;
                             var nextField = field;
 
+                            // add the field of the figure to the list
+                            if (AreCoordinatesOnBoard(new List<int> { nextField.X, nextField.Y }))
+                            {
+                                AddCoordinatesToList(output, new List<int>() { nextField.X, nextField.Y });
+                            }
+                            
                             // repeat to go as long as possible along one pattern
                             // just for straight move pattern
                             while (canStillContinue)
                             {
                                 var previousField = nextField;
 
-                                // add the field to the list
-                                if (AreCoordinatesOnBoard(new List<int> { previousField.X, previousField.Y }))
-                                {
-                                    AddCoordinatesToList(output, new List<int>() {previousField.X, previousField.Y});
-                                }
-                                
-                                foreach (var move in (List<Moves>)pattern)
+                                // go along the pattern
+                                foreach (var move in pattern)
                                 {
                                     nextField = StepExecutor.GoStepStraight(move, game, field);    
                                 }
 
-                                if (Equals(new List<int> {previousField.X, previousField.Y}, new List<int> {nextField.X, nextField.Y}))
+                                // check if the field where the figure has moved has changed
+                                if (previousField.X == nextField.X && previousField.Y == nextField.Y)
                                 {
                                     canStillContinue = false;
+                                }
+                                else
+                                {
+                                    // add the field to the list
+                                    if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                                    {
+                                        AddCoordinatesToList(output,
+                                            new List<int> { nextField.X, nextField.Y });
+                                    }
                                 }
                             }
                         }
@@ -305,26 +311,35 @@ public static class RulesExecutor
                             var canStillContinueRun = true;
                             var nextField = field;
 
+                            // add the field of the figure to the list
+                            if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                            {
+                                AddCoordinatesToList(output, new List<int> { nextField.X, nextField.Y });
+                            }
+                            
                             // repeat to go as long as possible along one pattern
                             // just for straight move pattern
                             while (canStillContinueRun)
                             {
                                 var previousField = nextField;
 
-                                // add the field to the list
-                                if (AreCoordinatesOnBoard(new List<int>() {previousField.X, previousField.Y}))
-                                {
-                                    AddCoordinatesToList(output, new List<int> {previousField.X, previousField.Y});
-                                }
-
-                                foreach (var move in (List<Moves>)pattern)
+                                foreach (var move in pattern)
                                 {
                                     nextField = StepExecutor.GoStepStraight(move, game, field);
                                 }
 
-                                if (Equals(new List<int>() {previousField.X, previousField.Y}, new List<int>() {nextField.X, nextField.Y}))
+                                if (previousField.X == nextField.X && previousField.Y == nextField.Y)
                                 {
                                     canStillContinueRun = false;
+                                }
+                                else
+                                {
+                                    // add the field to the list
+                                    if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                                    {
+                                        AddCoordinatesToList(output,
+                                            new List<int> { nextField.X, nextField.Y });
+                                    }
                                 }
                             }
                         }
@@ -335,26 +350,35 @@ public static class RulesExecutor
                             var canStillContinueRun = true;
                             var nextField = field;
 
+                            // add the field of the figure to the list
+                            if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                            {
+                                AddCoordinatesToList(output, new List<int>() { nextField.X, nextField.Y });
+                            }
+                            
                             // repeat to go as long as possible along one pattern
                             // just for straight move pattern
                             while (canStillContinueRun)
                             {
                                 var previousField = nextField;
 
-                                // add the field to the list
-                                if (AreCoordinatesOnBoard(new List<int>() {previousField.X, previousField.Y}))
-                                {
-                                    AddCoordinatesToList(output, new List<int>() {previousField.X, previousField.Y});
-                                }
-
-                                foreach (var move in (List<Moves>)pattern)
+                                foreach (var move in pattern)
                                 {
                                     nextField = StepExecutor.GoStepStraight(move, game, field);
                                 }
 
-                                if (Equals(new List<int>() {previousField.X, previousField.Y}, new List<int>() {nextField.X, nextField.Y}))
+                                if (nextField.X == previousField.X && nextField.Y == previousField.Y)
                                 {
                                     canStillContinueRun = false;
+                                }
+                                else
+                                {
+                                    // add the field to the list
+                                    if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                                    {
+                                        AddCoordinatesToList(output,
+                                            new List<int> { nextField.X, nextField.Y });
+                                    }
                                 }
                             }
                         }
@@ -460,7 +484,7 @@ public static class RulesExecutor
     /// <param name="coordinates">The to adding coordinates.</param>
     private static void AddCoordinatesToList(Collection<IList<int>> list, IList<int> coordinates)
     {
-        if (Enumerable.Contains(list, coordinates))
+        if (IsFieldAlreadyInList(list, coordinates))
         {
             return;
         }
@@ -492,11 +516,12 @@ public static class RulesExecutor
     /// <param name="game">Current game instance</param>
     /// <param name="from">Starting coordinates of the piece</param>
     /// <param name="to">Destination of the figure</param>
-    private static void MoveFigureToField(GameModel game, IList<int> from, IList<int> to)
+    /// <returns>New game instance</returns>   
+    private static GameModel MoveFigureToField(GameModel game, IList<int> from, IList<int> to)
     {
         if (FieldHandler.GetSpecificFieldByCoordinates(game, from).Content is null)
         {
-            return;
+            return game;
         }
         // get the piece object
         var piece = FieldHandler.GetSpecificFieldByCoordinates(game, from).Content!;
@@ -504,5 +529,29 @@ public static class RulesExecutor
         game.Field[from[1]].Row[from[0]].Content = null;
         // assign the piece to the new field
         game.Field[to[1]].Row[to[0]].Content = piece;
+        
+        // return the new game instance
+        return game;   
+    }
+
+    /// <summary>
+    /// Checks whether a given set of coordinates is already present in a collection of coordinate lists.
+    /// </summary>
+    /// <param name="list">A collection containing sets of coordinates.</param>
+    /// <param name="coordinates">The specific coordinates to check for existence in the collection.</param>
+    /// <returns>True if the coordinates are already in the list, otherwise false.</returns>
+    private static bool IsFieldAlreadyInList(Collection<IList<int>> list, IList<int> coordinates)
+    {
+        var output = false;
+        
+        foreach (var c in list)
+        {
+            if (c[0] == coordinates[0] && c[1] == coordinates[1])
+            {
+                output = true;
+            }
+        }
+        
+        return output;   
     }
 }

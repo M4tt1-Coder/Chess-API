@@ -24,18 +24,22 @@ public class PlayingController : Controller
     
     // TODO - Add resign & admit defeat functionality
         
-    // TODO - Finish universal board interaction endpoint
+    // TODO - Add the marked field functionality to the endpoint
+    
     /// <summary>
-    /// 
+    /// Universal endpoint for user interaction.
+    ///
+    /// Handles selected fields and moves.
+    ///
+    /// Sets a field as selected or moves a piece to a field.
+    ///
+    /// Fields are marked as selected or movable.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Redirect to the playing page</returns>
     [HttpPost]
     [Route("/playing/move")]
     public async Task<IActionResult> UserInteraction()
     {
-        // var fieldCoordinates = new List<int>();
-        // get the field coordinates from the request
-        // fieldCoordinates = HttpContext.Request.Form["fieldCoordinates"].ToList().ConvertAll(int.Parse!);
         var fieldCoordinates = HttpContext.Request.Form["fieldCoordinates"];
         if (fieldCoordinates.Count == 0 || fieldCoordinates[0] is null)
         {
@@ -44,10 +48,10 @@ public class PlayingController : Controller
         // convert the string to a list of integers
         var fieldCoordinatesList = ConverterHelper.ConvertStringToIntsList(fieldCoordinates[0]!);
         // check if a field with a figure was selected 
-        // var game = _context.Game.First();
         var game = await _context.Game.Include(model => model.PlayerOne)
             .Include(model => model.PlayerTwo)
             .Include(model => model.Field).ThenInclude(row => row.Row).ThenInclude(field => field.Content)
+            .Include(model => model.MoveHistory)
             .FirstAsync();
         var fieldSelectedCheckResult = FieldHandler.IsAFieldSelected(game);
         if (fieldSelectedCheckResult.IsThereSelectedField)
@@ -55,10 +59,10 @@ public class PlayingController : Controller
           // get the fields
           var curField = FieldHandler.GetSpecificFieldByCoordinates(game, new List<int> { fieldSelectedCheckResult.X!.Value, fieldSelectedCheckResult.Y!.Value });
           var selectedField = FieldHandler.GetSpecificFieldByCoordinates(game, fieldCoordinatesList);
-          // validate the move
+          // TODO - Moving a piece possible needs to happen in the controller
           game = RulesExecutor.ValidateMove(game, curField, selectedField);
-          // unselect the field
-          // game = FieldHandler.UnselectAllFields(game);
+          // unselect all fields
+          game = FieldHandler.UnselectAllFields(game);
         }
         else
         {

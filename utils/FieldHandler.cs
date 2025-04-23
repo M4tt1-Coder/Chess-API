@@ -176,7 +176,7 @@ public static class FieldHandler
         {
             foreach (var field in row.Row)
             {
-                if (Equals(new List<int> { field.X, field.Y }, coordinates))
+                if (field.X == coordinates[0] && field.Y == coordinates[1])
                 {
                     output = field;
                 }
@@ -197,7 +197,11 @@ public static class FieldHandler
     /// <returns>A copy of the a field.</returns>
     public static FieldModel CopyField(FieldModel field)
     {
-        return new FieldModel(field.Color, field.Content, field.X, field.Y);
+        return new FieldModel(field.Color, field.Content, field.X, field.Y)
+        {
+            MovableField = field.MovableField,
+            SelectedField = field.SelectedField
+        };
     }
 
     /// <summary>

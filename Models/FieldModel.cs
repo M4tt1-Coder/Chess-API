@@ -51,10 +51,22 @@ public class FieldModel
     [Required]
     public int Y { get; set; }
 
+    /// <summary>
+    /// Is TRUE when the user can move a piece to this field.
+    /// </summary>
+    public bool MovableField { get; set; }
+    
+    /// <summary>
+    /// Is TRUE when the user selected this field.
+    /// </summary>
+    public bool SelectedField { get; set; }
+    
     public FieldModel(Colors color, FigureModel? content, int x, int y)
     {
         Color = color;
         Content = content;
+        MovableField = false;
+        SelectedField = false;
         X = x;
         Y = y;
     }

@@ -73,7 +73,7 @@ public class GameModel
         Mode = mode;
         Winner = winner;
         Direction = playingDirection;
-        MoveHistory = new List<MoveModel>();
+        MoveHistory = new List<MoveModel>() {};
     }
 
     public GameModel()

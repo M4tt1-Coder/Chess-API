@@ -35,6 +35,7 @@ public static class GameHandler
             PlayingMode.Default,
             Winner.Default,
             PlayingDirection.WhiteBottom
+            
         );
     }
 
