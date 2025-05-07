@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using Chess_API.Enums;
-using Chess_API.Interfaces;
 using Chess_API.Models;
 using Chess_API.MovePatterns;
 using Chess_API.Rules;
@@ -62,7 +61,7 @@ public static class RulesExecutor
     /// <returns>True, when the king is in check</returns>
     public static bool CheckChecker(GameModel game, Colors kingColor, IList<int>? figureNow, IList<int>? figureAfter)
     {
-        var output = true;
+        bool output;
         IList<int> kingCoordinates = new List<int>();
 
         // determine kings location
@@ -124,8 +123,9 @@ public static class RulesExecutor
         foreach (var checkCoordinates in attackedFields)
         {
             // when the field, where the king is situated, is being attacked
-            if (Equals(checkCoordinates, kingCoordinates))
+            if (checkCoordinates[0] == kingCoordinates[0] && checkCoordinates[1] == kingCoordinates[1])
             {
+                // set the output to true
                 output = true;
             }
         }
@@ -159,6 +159,11 @@ public static class RulesExecutor
             {
                 // Simply continue the iteration when: there is now figure || the figure is of the same color as the king
                 if (field.Content is null || field.Content.Color == kingColor) continue;
+                // add the field where the piece is situated
+                if (AreCoordinatesOnBoard(new List<int>() { field.X, field.Y }))
+                {
+                    AddCoordinatesToList(output, new List<int>() { field.X, field.Y });
+                }
                 switch (field.Content.Type)
                 {
                     case FigureType.Pawn:
@@ -234,17 +239,14 @@ public static class RulesExecutor
                         }
                         break;
                     case FigureType.Bishop:
+                        var bishopMovePatterns = new BishopMovePattern().Patterns.ToList();
                         // run along the move patterns
-                        foreach (var pattern in new BishopMovePattern().Patterns)
+                        foreach (var pattern in bishopMovePatterns)
                         {
                             var canStillContinue = true;
                             var nextField = field;
 
-                            // add the field of the figure to the list
-                            if (AreCoordinatesOnBoard(new List<int> { nextField.X, nextField.Y }))
-                            {
-                                AddCoordinatesToList(output, new List<int>() { nextField.X, nextField.Y });
-                            }
+                            var currentPattern = pattern.ToList();
                             
                             // repeat to go as long as possible along one pattern
                             // just for straight move pattern
@@ -253,7 +255,7 @@ public static class RulesExecutor
                                 var previousField = nextField;
 
                                 // go along the pattern
-                                foreach (var move in pattern)
+                                foreach (var move in currentPattern)
                                 {
                                     nextField = StepExecutor.GoStepStraight(move, game, field);    
                                 }
@@ -288,34 +290,28 @@ public static class RulesExecutor
                             {
                                 var previousField = nextField;
                                 // first go the step
-                                nextField  = StepExecutor.GoStepKnight(move, game, previousField, field.Content.Color);
+                                nextField = StepExecutor.GoStepKnight(move, game, previousField, field.Content.Color, true);
                                 // increase counter by 1
                                 moveCount++;
                                 // when 2 steps have been taken -> check if previous field is equal to field after
                                 // the moving operation -> continue
                                 if (moveCount != 2) continue;
-                                if (previousField == nextField)
+                                if (previousField != nextField)
                                 {
-                                    goto SkipKnightPattern;
+                                    AddCoordinatesToList(output, new List<int> {nextField.X, nextField.Y});
                                 }
-
-                                AddCoordinatesToList(output, new List<int> {nextField.X, nextField.Y});
                             }
-                            SkipKnightPattern: ;
                         }
                         break;
                     case FigureType.Rook:
+                        var rookMovePatterns = new RookMovePattern().Patterns.ToList();
                         // rook has 4 moving opportunities
-                        foreach (var pattern in new RookMovePattern().Patterns)
+                        foreach (var pattern in rookMovePatterns)
                         {
                             var canStillContinueRun = true;
                             var nextField = field;
 
-                            // add the field of the figure to the list
-                            if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
-                            {
-                                AddCoordinatesToList(output, new List<int> { nextField.X, nextField.Y });
-                            }
+                            var currentPattern = pattern.ToList();
                             
                             // repeat to go as long as possible along one pattern
                             // just for straight move pattern
@@ -323,7 +319,7 @@ public static class RulesExecutor
                             {
                                 var previousField = nextField;
 
-                                foreach (var move in pattern)
+                                foreach (var move in currentPattern)
                                 {
                                     nextField = StepExecutor.GoStepStraight(move, game, field);
                                 }
@@ -345,16 +341,13 @@ public static class RulesExecutor
                         }
                         break;
                     case FigureType.Queen:
-                        foreach (var pattern in new QueenMovePatterns().Patterns)
+                        var queenMovePatterns = new QueenMovePatterns().Patterns.ToList();
+                        foreach (var pattern in queenMovePatterns)
                         {
                             var canStillContinueRun = true;
                             var nextField = field;
 
-                            // add the field of the figure to the list
-                            if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
-                            {
-                                AddCoordinatesToList(output, new List<int>() { nextField.X, nextField.Y });
-                            }
+                            var currentPattern = pattern.ToList();
                             
                             // repeat to go as long as possible along one pattern
                             // just for straight move pattern
@@ -362,7 +355,7 @@ public static class RulesExecutor
                             {
                                 var previousField = nextField;
 
-                                foreach (var move in pattern)
+                                foreach (var move in currentPattern)
                                 {
                                     nextField = StepExecutor.GoStepStraight(move, game, field);
                                 }
@@ -395,7 +388,7 @@ public static class RulesExecutor
                             var nextField = pattern.Aggregate(field, (current, move) => KingJustTriesToGoToField(move, current, game));
                                 
                             // main check if the field where the figure has moved has changed
-                            if (!Equals(new List<int>() {nextField.X, nextField.Y}, new List<int>() {field.X, field.Y})) AddCoordinatesToList(output, new List<int>() {nextField.X, nextField.Y});
+                            if (!(field.X == nextField.X && field.Y == nextField.Y)) AddCoordinatesToList(output, new List<int>() {nextField.X, nextField.Y});
                         }
                         break;
                 }

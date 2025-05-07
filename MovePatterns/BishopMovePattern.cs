@@ -36,7 +36,7 @@ public class BishopMovePattern : IMovePattern
         // 4
         new()
         {
-            Moves.DiagonalUpLeft
+            Moves.DiagonalDownLeft
         }
     };
 }

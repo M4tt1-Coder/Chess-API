@@ -142,15 +142,16 @@ public static class StepExecutor
 
     /// <summary>
     /// The knight has eight moving possibilities.
-    ///
+    /// 
     /// Checks if each of the eight fields is accessible. 
     /// </summary>
     /// <param name="move">The to going step.</param>
     /// <param name="game">Current game</param>
     /// <param name="curField">On which field we are standing.</param>
     /// <param name="knightColor">Color of the knight.</param>
+    /// <param name="ignoreOpponentPieces">When the pieces of the opponent should be considered in the checking process or not</param>
     /// <returns>The next field of the pattern.</returns>
-    public static FieldModel GoStepKnight(Moves move, GameModel game, FieldModel curField, Colors knightColor)
+    public static FieldModel GoStepKnight(Moves move, GameModel game, FieldModel curField, Colors knightColor, bool ignoreOpponentPieces = false)
     {
         var output = new FieldModel();
         List<int> newCoordinates;
@@ -183,7 +184,8 @@ public static class StepExecutor
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
-                if (newField.Content is not null)
+                // check if the field is empty & if the knight can throw a piece
+                if (newField.Content is not null && !ignoreOpponentPieces)
                 {
                     sameColor = newField.Content.Color == knightColor;
                 }
@@ -201,7 +203,7 @@ public static class StepExecutor
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
-                if (newField.Content is not null)
+                if (newField.Content is not null && !ignoreOpponentPieces)
                 {
                     sameColor = newField.Content.Color == knightColor;
                 }
@@ -219,11 +221,10 @@ public static class StepExecutor
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
-                if (newField.Content is not null)
+                if (newField.Content is not null && !ignoreOpponentPieces)
                 {
                     sameColor = newField.Content.Color == knightColor;
                 }
-
                 if (newCoordinates[0] < 0 || newCoordinates[1] > 7 || sameColor)
                 {
                     output = curField;
@@ -234,10 +235,10 @@ public static class StepExecutor
                 }
                 break;
             case Moves.DiagonalDownRight:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
+                newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
-                if (newField.Content is not null)
+                if (newField.Content is not null && !ignoreOpponentPieces)
                 {
                     sameColor = newField.Content.Color == knightColor;
                 }
