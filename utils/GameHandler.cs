@@ -28,8 +28,8 @@ public static class GameHandler
     public static GameModel Default()
     {
         return new GameModel(
-            new PlayerModel(null, "", 0),
-            new PlayerModel(null, "", 0),
+            new PlayerModel(null, "", 0, Colors.White),
+            new PlayerModel(null, "", 0, Colors.Black),
             FieldHandler.Default(),
             DefaultRound,
             PlayingMode.Default,
@@ -57,6 +57,8 @@ public static class GameHandler
             game.Direction
         );
     }
+    
+    // TODO - Add logic that adjusts the player objects for the new game -> other piece color etc.
     
     /// <summary>
     /// Prepares the game for a new game in the same game mode as the last round.

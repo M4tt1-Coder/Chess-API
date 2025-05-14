@@ -269,7 +269,9 @@ public static class FieldHandler
         {
             foreach (var field in row.Row)
             {
-                if (field.X == coordinates[0] && field.Y == coordinates[1] && field.Content is not null)
+                if (field.X != coordinates[0] || field.Y != coordinates[1] || field.Content is null) continue;
+                if ((field.Content.Color == Colors.White && game.PlayerTurn == PlayerTurn.White) || 
+                    (field.Content.Color == Colors.Black && game.PlayerTurn == PlayerTurn.Black))
                 {
                     field.Content.Selected = !field.Content.Selected;
                 }

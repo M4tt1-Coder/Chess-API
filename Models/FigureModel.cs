@@ -53,6 +53,15 @@ public class FigureModel
         Color = color;
     }
 
+    public FigureModel(FigureType type, bool selected, string pictureSource, Colors color, int figureId)
+    {
+        FigureId = figureId;
+        Type = type;
+        Selected = selected;
+        PictureSource = pictureSource;
+        Color = color;
+    }
+    
     public FigureModel()
     {
     }

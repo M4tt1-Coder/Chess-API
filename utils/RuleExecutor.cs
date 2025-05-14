@@ -34,18 +34,26 @@ public static class RulesExecutor
     /// <returns>The Updated game object</returns>
     public static GameModel ValidateMove(GameModel game, FieldModel curField, FieldModel newField)
     {
-        // TODO - Add the move history feature 
         if (curField.Content is null)
         {
             return game;
         }
         
-        // can piece move to the field
-        if (MovingRules.CanPieceMoveToFieldWithCheck(game, new List<int>() { curField.X, curField.Y }, new List<int>() { newField.X, newField.Y }))
-        {
-            game = MoveFigureToField(game, new List<int> { curField.X, curField.Y }, new List<int>() { newField.X, newField.Y });
-        }
+        var currentFieldFigureId = curField.Content.FigureId;
         
+        // can piece move to the field
+        if (!MovingRules.CanPieceMoveToFieldWithCheck(game, new List<int>() { curField.X, curField.Y },
+                new List<int>() { newField.X, newField.Y })) return game;
+        
+        // add the move to the history
+        MoveHistoryManager.AddMove(game, new MoveModel(game.MoveHistory.Count + 1, currentFieldFigureId,
+            new List<int> { curField.X, curField.Y }, new List<int> { newField.X, newField.Y },
+            PlayerHandler.GetPlayerIdOnTurn(game)));
+        // modify who's turn it is
+        PlayerHandler.ChangePlayerTurn(game);
+        // move the figure to the new field
+        game = MoveFigureToField(game, new List<int> { curField.X, curField.Y }, new List<int>() { newField.X, newField.Y });
+
         // return the game object
         return game;
     }

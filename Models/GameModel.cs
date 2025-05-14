@@ -3,6 +3,8 @@ using Chess_API.Enums;
 
 namespace Chess_API.Models;
 
+// TODO - Add prop that defines which player's turn it is -> adjust the game logic
+
 /// <summary>
 /// Biggest instance in the type tree.
 ///
@@ -62,6 +64,11 @@ public class GameModel
     /// Is null when the players want to customize their time OR when they want no time limit.
     /// </summary>
     public PlayTimeMode PlayTimeMode { get; set; }
+
+    /// <summary>
+    /// Specifies which player's turn it currently is in the game.
+    /// </summary>
+    public PlayerTurn PlayerTurn { get; set; }
     
     public GameModel(PlayerModel playerOne, PlayerModel playerTwo, IList<FieldRowModel> field, int round,
         PlayingMode mode, Winner winner, PlayingDirection playingDirection)
@@ -73,6 +80,7 @@ public class GameModel
         Mode = mode;
         Winner = winner;
         Direction = playingDirection;
+        PlayerTurn = PlayerTurn.White;
         MoveHistory = new List<MoveModel>() {};
     }
 

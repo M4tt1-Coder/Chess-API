@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chess_API.Models;
 
@@ -27,19 +26,29 @@ public class MoveModel
     /// Id of the piece which moved.
     /// </summary>
     public int FigureId { get; set; }
-    
+
     /// <summary>
-    /// Starting field for the move.
+    /// Represents the X-coordinate of the starting position for a move.
     /// </summary>
-    [NotMapped]
-    public IList<int> From { get; set; }
-    
+    public int FromX { get; set; }
+
     /// <summary>
-    /// Destination field for the move.
+    /// Represents the Y-coordinate of the starting position of a chess piece in a move.
     /// </summary>
-    [NotMapped]
-    public IList<int> To { get; set; }
-    
+    public int FromY { get; set; }
+
+    /// <summary>
+    /// Represents the X-coordinate of the destination position in a move.
+    /// Indicates where a piece is moved along the horizontal axis.
+    /// </summary>
+    public int ToX { get; set; }
+
+    /// <summary>
+    /// Represents the vertical coordinate of the destination position for a move.
+    /// </summary>
+    public int ToY { get; set; }
+
+
     /// <summary>
     /// Player who made the move.
     /// </summary>
@@ -49,8 +58,10 @@ public class MoveModel
     {
         MoveNum = moveNum;
         FigureId = figureId;
-        From = from;
-        To = to;
+        FromX = from[0];
+        FromY = from[1];
+        ToX = to[0];
+        ToY = to[1];
         PlayerId = playerId;
     }
     

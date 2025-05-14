@@ -13,6 +13,8 @@ namespace Chess_API.Rules;
 /// </summary>
 public static class MovingRules
 {
+    // TODO - Check if the validation of the move is correct
+    
     /// <summary>
     /// Depending on the piece type, the function checks if a piece can move to a new field.
     ///

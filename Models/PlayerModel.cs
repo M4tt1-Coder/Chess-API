@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Chess_API.Enums;
 
 namespace Chess_API.Models;
 
@@ -45,13 +46,21 @@ public class PlayerModel
     [MaxLength(25)]
     public string Name { get; set; } = null!;
 
-    public PlayerModel(TimeSpan? time, string name, int score)
+    /// <summary>
+    /// Specifies the color of the chess pieces that the player controls.
+    /// Uses the <see cref="Chess_API.Enums.Colors"/> enumeration to define the possible values.
+    /// </summary>
+    public Colors PieceColor { get; set; }
+
+    public PlayerModel(TimeSpan? time, string name, int score, Colors color)
     {
+        PieceColor = color;
         Score = score;
         StartingTime = time;
         Pieces = new List<FigureModel>();
         Name = name;
     }
+    
 
     public PlayerModel()
     {
