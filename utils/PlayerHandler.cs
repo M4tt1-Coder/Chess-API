@@ -16,6 +16,22 @@ namespace Chess_API.utils;
 public static class PlayerHandler
 {
     /// <summary>
+    /// Creates a new instance of the <see cref="PlayerModel"/> class by copying the data
+    /// from an existing player instance.
+    /// </summary>
+    /// <param name="player">An instance of <see cref="PlayerModel"/> containing the player data to be copied.</param>
+    /// <returns>A new <see cref="PlayerModel"/> instance with the same data as the provided player.</returns>
+    public static PlayerModel CopyPlayer(PlayerModel player)
+    {
+        return new PlayerModel(
+            player.StartingTime,
+            player.Name,
+            player.Score,
+            player.PieceColor
+        );
+    }
+    
+    /// <summary>
     /// Determines the ID of the player whose turn it currently is in the provided game instance.
     /// </summary>
     /// <param name="game">An instance of the <see cref="GameModel"/> representing the current state of the chess game.</param>

@@ -35,7 +35,7 @@ public class RoutesProtector : IProtectionService
         
         // the game needs a field prop and then a complete one
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (game.Field is null)
+        if (game.Board is null)
         {
             _logger.LogError("Game instance didn't have a field");
             return false;
@@ -43,7 +43,7 @@ public class RoutesProtector : IProtectionService
         
         // when a field instance is there, there is the opportunity that the rows don't include all fields 
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (game.Field.Any(row => row.Row.Any(field => field is null)))
+        if (game.Board.Any(row => row.Row.Any(field => field is null)))
         {
             _logger.LogError("Rows did not have all required fields");
             return false;

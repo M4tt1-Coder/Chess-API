@@ -48,9 +48,9 @@ public static class GameHandler
     {
         // assign all properties of the game object to a new game object
         return new GameModel(
-            game.PlayerOne,
-            game.PlayerTwo,
-            game.Field,
+            PlayerHandler.CopyPlayer(game.PlayerOne),
+            PlayerHandler.CopyPlayer(game.PlayerTwo),
+            game.CopyBoard(),
             game.Round,
             game.Mode,
             game.Winner,
@@ -69,7 +69,7 @@ public static class GameHandler
     /// <returns>A reset game object.</returns>
     public static GameModel Reset(GameModel game)
     {
-        game.Field = FieldHandler.Default();
+        game.Board = FieldHandler.Default();
         game.Winner = Winner.Default;
         //gaming mode stays the same the player wanted to play a new game in the same playing mode as last time 
         //game.Mode = PlayingMode.Default;

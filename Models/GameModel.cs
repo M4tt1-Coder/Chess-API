@@ -3,8 +3,6 @@ using Chess_API.Enums;
 
 namespace Chess_API.Models;
 
-// TODO - Add prop that defines which player's turn it is -> adjust the game logic
-
 /// <summary>
 /// Biggest instance in the type tree.
 ///
@@ -38,7 +36,7 @@ public class GameModel
     /// <summary>
     /// The actual game field the player interacts with.
     /// </summary>
-    public IList<FieldRowModel> Field { get; set; } = null!;
+    public IList<FieldRowModel> Board { get; set; } = null!;
 
     /// <summary>
     /// List that contains all moves that have been made in the current game.
@@ -70,12 +68,12 @@ public class GameModel
     /// </summary>
     public PlayerTurn PlayerTurn { get; set; }
     
-    public GameModel(PlayerModel playerOne, PlayerModel playerTwo, IList<FieldRowModel> field, int round,
+    public GameModel(PlayerModel playerOne, PlayerModel playerTwo, IList<FieldRowModel> board, int round,
         PlayingMode mode, Winner winner, PlayingDirection playingDirection)
     {
         PlayerOne = playerOne;
         PlayerTwo = playerTwo;
-        Field = field;
+        Board = board;
         Round = round;
         Mode = mode;
         Winner = winner;
@@ -86,5 +84,38 @@ public class GameModel
 
     public GameModel()
     {
+    }
+
+    /// <summary>
+    /// Creates a deep copy of the current state of the chessboard represented by a list of <see cref="FieldRowModel"/>.
+    /// </summary>
+    /// <returns>
+    /// A new list of <see cref="FieldRowModel"/> objects that represents the exact state of the original board,
+    /// ensuring any modifications to the copied board do not affect the original board.
+    /// </returns>
+    public IList<FieldRowModel> CopyBoard()
+    {
+        var copiedBoard = new List<FieldRowModel>();
+
+        foreach (var row in Board)
+        {
+            var copiedRow = new FieldRowModel
+            {
+                Row = new List<FieldModel>()
+            };
+
+            foreach (var field in row.Row)
+            {
+                copiedRow.Row.Add(new FieldModel(field.Color, field.Content, field.X, field.Y)
+                {
+                    MovableField = field.MovableField,
+                    SelectedField = field.SelectedField
+                });
+            }
+
+            copiedBoard.Add(copiedRow);
+        }
+
+        return copiedBoard;
     }
 }

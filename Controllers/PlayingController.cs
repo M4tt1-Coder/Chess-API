@@ -50,7 +50,7 @@ public class PlayingController : Controller
         // check if a field with a figure was selected 
         var game = await _context.Game.Include(model => model.PlayerOne)
             .Include(model => model.PlayerTwo)
-            .Include(model => model.Field).ThenInclude(row => row.Row).ThenInclude(field => field.Content)
+            .Include(model => model.Board).ThenInclude(row => row.Row).ThenInclude(field => field.Content)
             .Include(model => model.MoveHistory)
             .FirstAsync();
         var fieldSelectedCheckResult = FieldHandler.IsAFieldSelected(game);

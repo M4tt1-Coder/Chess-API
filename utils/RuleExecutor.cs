@@ -73,7 +73,7 @@ public static class RulesExecutor
         IList<int> kingCoordinates = new List<int>();
 
         // determine kings location
-        foreach (var row in game.Field)
+        foreach (var row in game.Board)
         {
             foreach (var field in row.Row)
             {
@@ -102,7 +102,7 @@ public static class RulesExecutor
             // move the figure to the new field
             gameCopy = MoveFigureToField(gameCopy, figureNow, figureAfter);
             // check if the king is in check
-            output = IsKingInCheck(gameCopy, kingCoordinates, kingColor);
+            output = IsKingInCheck(gameCopy, kingCoordinates, kingColor); 
         }
         
         return output;
@@ -161,7 +161,7 @@ public static class RulesExecutor
         // similar to move patterns but not moving but attacking
         // go along all possible move patterns
         // store fields which are attacked by figures of 
-        foreach (var row in game.Field)
+        foreach (var row in game.Board)
         {
             foreach (var field in row.Row)
             {
@@ -527,9 +527,9 @@ public static class RulesExecutor
         // get the piece object
         var piece = FieldHandler.GetSpecificFieldByCoordinates(game, from).Content!;
         // reassign the field where the piece is situated
-        game.Field[from[1]].Row[from[0]].Content = null;
+        game.Board[from[1]].Row[from[0]].Content = null;
         // assign the piece to the new field
-        game.Field[to[1]].Row[to[0]].Content = piece;
+        game.Board[to[1]].Row[to[0]].Content = piece;
         
         // return the new game instance
         return game;   

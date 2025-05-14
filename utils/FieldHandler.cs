@@ -172,7 +172,7 @@ public static class FieldHandler
         var output = new FieldModel();
 
         // compare coordinates with every field in the game
-        foreach (var row in game.Field)
+        foreach (var row in game.Board)
         {
             foreach (var field in row.Row)
             {
@@ -211,7 +211,7 @@ public static class FieldHandler
     /// <returns>Updated game object</returns>
     public static GameModel UnselectAllFields(GameModel game)
     {
-        foreach (var row in game.Field)
+        foreach (var row in game.Board)
         {
             foreach (var field in row.Row)
             {
@@ -237,7 +237,7 @@ public static class FieldHandler
     {
         var output = new FieldSelectedCheckResult(null, null, false);
         var numFieldsSelected = 0;
-        foreach (var row in game.Field)
+        foreach (var row in game.Board)
         {
             foreach (var field in row.Row)
             {
@@ -265,7 +265,7 @@ public static class FieldHandler
     /// <returns>Updated game instance</returns>
     public static GameModel SetFieldSelected(GameModel game, IList<int> coordinates)
     {
-        foreach(var row in game.Field)
+        foreach(var row in game.Board)
         {
             foreach (var field in row.Row)
             {

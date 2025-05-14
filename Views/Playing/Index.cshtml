@@ -77,7 +77,7 @@
     <div class="row-span-2 xl:col-span-2 w-full h-auto flex flex-col items-center justify-center">
         <!-- TODO - Find out to send the clicked field coordinates to the controller endpoint -> https://stackoverflow.com/questions/62523590/asp-net-core-how-to-pass-listint-from-view-to-controller-->
         <div class="p-3 border-4 border-black rounded-lg bg-blue-950 aspect-square w-4/5">
-            @foreach (var row in Model.Field)
+            @foreach (var row in Model.Board)
             {
                 <div class="w-full h-fit my-0 flex items-center justify-center">
                     @foreach (var field in row.Row)

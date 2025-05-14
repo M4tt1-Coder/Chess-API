@@ -74,7 +74,7 @@ public class ChessMiddleware
             // strictly say that all needed props are included in the query
             var currentGame = dbContext.Game.Include(game => game.PlayerOne)
                 .Include(game => game.PlayerTwo)
-                .Include(game => game.Field)
+                .Include(game => game.Board)
                 .ThenInclude(gameField => gameField.Row)
                 .ThenInclude(field => field.Content).First();
 
