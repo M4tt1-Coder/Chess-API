@@ -99,12 +99,17 @@ public static class RulesExecutor
             // when a figure can move to the king's field -> check        
             // copy instance of the game to check if the move is valid
             var gameCopy = GameHandler.CopyGame(game);
+            // check if you are moving your own king
+            if (IsKingOnThisField(game, figureNow))
+            {
+                // when the king is moved -> update the coordinates
+                kingCoordinates = figureAfter;
+            }
             // move the figure to the new field
             gameCopy = MoveFigureToField(gameCopy, figureNow, figureAfter);
             // check if the king is in check
             output = IsKingInCheck(gameCopy, kingCoordinates, kingColor); 
         }
-        
         return output;
     }
 
@@ -554,5 +559,21 @@ public static class RulesExecutor
         }
         
         return output;   
+    }
+
+    /// <summary>
+    /// Determines if the King is located on the specified field coordinates within the game.
+    /// </summary>
+    /// <param name="game">The current state of the game.</param>
+    /// <param name="figureCoordinates">The coordinates of the field to check.</param>
+    /// <returns>True if the field contains a King; otherwise, false.</returns>
+    private static bool IsKingOnThisField(GameModel game, IList<int> figureCoordinates)
+    {
+        var field = FieldHandler.GetSpecificFieldByCoordinates(game, figureCoordinates);
+        if (field.Content is null)
+        {
+            return false;
+        }
+        return field.Content.Type == FigureType.King;
     }
 }

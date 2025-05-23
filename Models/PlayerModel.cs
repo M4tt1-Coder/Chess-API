@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using Chess_API.Enums;
+using Chess_API.utils;
 
 namespace Chess_API.Models;
 
@@ -64,5 +66,20 @@ public class PlayerModel
 
     public PlayerModel()
     {
+    }
+
+    /// <summary>
+    /// Prepares a player for a new game by setting their starting time
+    /// and any other necessary initializations based on the selected time mode.
+    /// </summary>
+    /// <param name="timeMode">The time mode selected for the game that determines the player's starting time.</param>
+    public void PrepPlayerForNewGame(PlayTimeMode timeMode)
+    {
+        // starting time 
+        StartingTime = GameHandler.GetPlayerStartingTime(timeMode);
+        // pieces
+        Pieces = new List<FigureModel>();  
+        // piece color
+        PieceColor = PieceColor == Colors.White ? Colors.Black : Colors.White;
     }
 }

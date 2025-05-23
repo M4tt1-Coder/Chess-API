@@ -58,4 +58,6 @@ public static class PlayerHandler
     {
         game.PlayerTurn = game.PlayerTurn == PlayerTurn.White ? PlayerTurn.Black : PlayerTurn.White;
     }
+
+    
 }

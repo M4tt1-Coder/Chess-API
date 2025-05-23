@@ -18,9 +18,9 @@ builder.Services.AddSingleton<IProtectionService, RoutesProtector>();
 // TODO - Finish playing page
 // TODO - Add responsibility to all pages
 // TODO - the special move castling for the king and the rook
-// TODO - What to do when your king is in check
 // TODO - Pawn reaches the end of the field -> promotion
 // TODO - En passant
+// TODO - When the players begin a new game -> some settings that the player could have applied should be saved
 
 var app = builder.Build();
 

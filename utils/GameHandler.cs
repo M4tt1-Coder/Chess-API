@@ -58,8 +58,6 @@ public static class GameHandler
         );
     }
     
-    // TODO - Add logic that adjusts the player objects for the new game -> other piece color etc.
-    
     /// <summary>
     /// Prepares the game for a new game in the same game mode as the last round.
     ///
@@ -74,9 +72,8 @@ public static class GameHandler
         //gaming mode stays the same the player wanted to play a new game in the same playing mode as last time 
         //game.Mode = PlayingMode.Default;
         game.Round++;
-        //game.PlayerOne ... -> stays the same
-        //game.PlayerTwo ... - || -
-        //game.Score = new int[] { }; -> updated in checker
+        game.PlayerOne.PrepPlayerForNewGame(game.PlayTimeMode); 
+        game.PlayerTwo.PrepPlayerForNewGame(game.PlayTimeMode);
         return game;
     }
 
@@ -91,7 +88,7 @@ public static class GameHandler
     /// <returns>The initialization game object.</returns>
     public static GameModel GameOnPlayingMode(int? modeId = 3)
     {
-        GameModel output = Default();
+        var output = Default();
 
         output.Mode = modeId switch
         {
@@ -137,7 +134,7 @@ public static class GameHandler
 
         switch (timeMode)
         {
-            case PlayTimeMode.None:
+            case PlayTimeMode.Custom:
                 if (playerOneTime != null && playerTwoTime != null)
                 {
                     game.PlayerOne.StartingTime = playerOneTime;
@@ -167,5 +164,26 @@ public static class GameHandler
 
         //player 2 name
         game.PlayerTwo.Name = !string.IsNullOrEmpty(playerTwoName) ? playerTwoName : "Player 2";
+    }
+
+    /// <summary>
+    /// Determines the starting time for a player based on the selected play time mode.
+    /// </summary>
+    /// <param name="timeMode">The play time mode indicating the duration of the game.</param>
+    /// <returns>
+    /// A TimeSpan representing the starting time for a player.
+    /// Returns a zero TimeSpan if the time mode has no associated limit.
+    /// </returns>
+    public static TimeSpan? GetPlayerStartingTime(PlayTimeMode timeMode)
+    {
+        return timeMode switch
+        {
+            PlayTimeMode.Custom => TimeSpan.Zero,
+            PlayTimeMode.ThreeMinutes => new TimeSpan(0, 3, 0),
+            PlayTimeMode.TenMinutes => new TimeSpan(0, 10, 0),
+            PlayTimeMode.ThirtyMinutes => new TimeSpan(0, 30, 0),
+            PlayTimeMode.NoTimeLimit => null,
+            _ => throw new ArgumentOutOfRangeException(nameof(timeMode), timeMode, null)
+        };
     }
 }
