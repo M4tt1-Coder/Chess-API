@@ -15,8 +15,6 @@ public static class MovingRules
 {
     // TODO - Check if the validation of the move is correct
     
-    // king can move to a field where it would be in check
-    // knight: can falsy move just one field straight
     // rook, bishop, queen can't move at all
     
     /// <summary>

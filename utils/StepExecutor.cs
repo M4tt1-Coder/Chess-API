@@ -116,10 +116,14 @@ public static class StepExecutor
                     case FigureType.Knight:
                     {
                         var nextField = FieldHandler.CopyField(curField);
+                        var stepCounter = 0;
+                        
                         foreach (var move in pattern)
                         {
+                            var previous = nextField;
                             nextField = GoStepKnight(move, game, nextField, piece.Color);
-                            if (nextField == newField)
+                            stepCounter++;
+                            if ( nextField == newField && previous!= nextField&& stepCounter == 2 )
                             {
                                 output = true;
                             }
