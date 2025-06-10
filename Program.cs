@@ -21,6 +21,7 @@ builder.Services.AddSingleton<IProtectionService, RoutesProtector>();
 // TODO - Pawn reaches the end of the field -> promotion
 // TODO - En passant
 // TODO - When the players begin a new game -> some settings that the player could have applied should be saved
+// TODO - When user access urls that he shouldn't have access to in the planned order -> redirect
 
 var app = builder.Build();
 

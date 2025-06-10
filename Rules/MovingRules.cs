@@ -15,7 +15,7 @@ public static class MovingRules
 {
     // TODO - Check if the validation of the move is correct
     
-    // rook, bishop, queen can't move at all
+    // rook, bishop, queen can only move in some cases + chess checker not working well
     
     /// <summary>
     /// Depending on the piece type, the function checks if a piece can move to a new field.
@@ -51,7 +51,7 @@ public static class MovingRules
             FigureType.Queen => new QueenMovePatterns(),
             FigureType.King => new KingMovePatterns(),
             _ => new PawnMovePatterns()
-        };
+        }; 
         output = StepExecutor.ExecuteMovePattern(game, movePattern, curField, destField, piece.Type);
         // return output
         return output;

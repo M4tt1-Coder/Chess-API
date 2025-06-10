@@ -270,7 +270,7 @@ public static class RulesExecutor
                                 // go along the pattern
                                 foreach (var move in currentPattern)
                                 {
-                                    nextField = StepExecutor.GoStepStraight(move, game, field);    
+                                    nextField = StepExecutor.GoStepStraight(move, game, field, kingColor == Colors.White ? Colors.Black : Colors.White);    
                                 }
 
                                 // check if the field where the figure has moved has changed
@@ -334,7 +334,8 @@ public static class RulesExecutor
 
                                 foreach (var move in currentPattern)
                                 {
-                                    nextField = StepExecutor.GoStepStraight(move, game, field);
+                                    nextField = StepExecutor.GoStepStraight(move, game, field,
+                                        kingColor == Colors.White ? Colors.Black : Colors.White);
                                 }
 
                                 if (previousField.X == nextField.X && previousField.Y == nextField.Y)
@@ -370,7 +371,8 @@ public static class RulesExecutor
 
                                 foreach (var move in currentPattern)
                                 {
-                                    nextField = StepExecutor.GoStepStraight(move, game, field);
+                                    nextField = StepExecutor.GoStepStraight(move, game, field,
+                                        kingColor == Colors.White ? Colors.Black : Colors.White);
                                 }
 
                                 if (nextField.X == previousField.X && nextField.Y == previousField.Y)
