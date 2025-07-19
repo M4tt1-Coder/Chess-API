@@ -31,7 +31,9 @@ public static class StepExecutor
 
         // check if the field is empty -> must contain a figure
         // when the field is the same as the new field -> return false
-        if(curField.Content is null || curField == newField)
+        if (curField.Content is null || curField == newField || 
+            // make sure that the potential piece on both fields don't have the same color
+            (newField.Content is not null && newField.Content.Color == curField.Content.Color))
         {
             return false;
         }
@@ -53,7 +55,16 @@ public static class StepExecutor
                     var iterationCounter = 0;                    
 
                     // go one step before entering the loop -------
-                    nextField = GoStepStraight(move, game, nextField,curField.Content.Color, true);
+                    nextField = GoStepStraight(move, game, nextField, 
+                        curField.Content.Color, true);
+                    
+                    // also check if the first step was on the destination field
+                    if (nextField == newField)
+                    {
+                        canStillMove = false;
+                        output = true;
+                    }
+                    
                     
                     while (canStillMove)
                     {

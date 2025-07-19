@@ -11,11 +11,11 @@ namespace Chess_API.Rules;
 ///
 /// Moves a piece to another field.
 /// </summary>
-public static class MovingRules
+public static class  MovingRules
 {
     // TODO - Check if the validation of the move is correct
     
-    // rook, bishop, queen can only move in some cases + chess checker not working well
+    // check rules doesnt work the right way
     
     /// <summary>
     /// Depending on the piece type, the function checks if a piece can move to a new field.
@@ -29,7 +29,6 @@ public static class MovingRules
     private static bool CanPieceMoveToField(GameModel game, IList<int> pieceCoordinates,
         IList<int> destinationCoordinates)
     {
-        var output = false;
         // simple look if the piece can move to that field using its move patterns
         // check if a piece (of both colors) is in the way
         // field where piece currently is
@@ -52,9 +51,9 @@ public static class MovingRules
             FigureType.King => new KingMovePatterns(),
             _ => new PawnMovePatterns()
         }; 
-        output = StepExecutor.ExecuteMovePattern(game, movePattern, curField, destField, piece.Type);
-        // return output
-        return output;
+        
+        // return
+        return StepExecutor.ExecuteMovePattern(game, movePattern, curField, destField, piece.Type);
     }
 
     /// <summary>

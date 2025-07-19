@@ -146,6 +146,8 @@ public static class RulesExecutor
         return output;
     }
 
+    // TODO - for Queen, Rook, Bishop tests arent running in the right way 
+    
     /// <summary>
     /// Figures of the opposite color doesn't matter.
     ///
@@ -257,9 +259,19 @@ public static class RulesExecutor
                         foreach (var pattern in bishopMovePatterns)
                         {
                             var canStillContinue = true;
-                            var nextField = field;
+                            var nextField = FieldHandler.CopyField(field);
 
                             var currentPattern = pattern.ToList();
+
+                            // go one default step before starting the repetitive step execution 
+                            nextField = StepExecutor.GoStepStraight(currentPattern[0], game, nextField,
+                                kingColor == Colors.White ? Colors.Black : Colors.White, true);
+                            // also add the additional field to the output list
+                            if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                            {
+                                AddCoordinatesToList(output,
+                                    new List<int> { nextField.X, nextField.Y });
+                            }
                             
                             // repeat to go as long as possible along one pattern
                             // just for straight move pattern
@@ -296,7 +308,7 @@ public static class RulesExecutor
                         foreach (var pattern in new KnightMovePattern().Patterns)
                         {   
                             // assign field where knight stands before iterating the patterns
-                            var nextField = field;
+                            var nextField = FieldHandler.CopyField(field);
                             var moveCount = 0;
                             // when it reaches 2 -> knight could land on that spot
                             foreach (var move in pattern)
@@ -322,9 +334,19 @@ public static class RulesExecutor
                         foreach (var pattern in rookMovePatterns)
                         {
                             var canStillContinueRun = true;
-                            var nextField = field;
+                            var nextField = FieldHandler.CopyField(field);
 
                             var currentPattern = pattern.ToList();
+                            
+                            // go one default step before starting the repetitive step execution 
+                            nextField = StepExecutor.GoStepStraight(currentPattern[0], game, nextField,
+                                kingColor == Colors.White ? Colors.Black : Colors.White, true);
+                            // also add the additional field to the output list
+                            if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                            {
+                                AddCoordinatesToList(output,
+                                    new List<int> { nextField.X, nextField.Y });
+                            }
                             
                             // repeat to go as long as possible along one pattern
                             // just for straight move pattern
@@ -359,9 +381,19 @@ public static class RulesExecutor
                         foreach (var pattern in queenMovePatterns)
                         {
                             var canStillContinueRun = true;
-                            var nextField = field;
-
+                            var nextField = FieldHandler.CopyField(field);
+                            
                             var currentPattern = pattern.ToList();
+                            
+                            // go one default step before starting the repetitive step execution 
+                            nextField = StepExecutor.GoStepStraight(currentPattern[0], game, nextField,
+                                kingColor == Colors.White ? Colors.Black : Colors.White, true);
+                            // also add the additional field to the output list
+                            if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                            {
+                                AddCoordinatesToList(output,
+                                    new List<int> { nextField.X, nextField.Y });
+                            }
                             
                             // repeat to go as long as possible along one pattern
                             // just for straight move pattern
@@ -371,7 +403,7 @@ public static class RulesExecutor
 
                                 foreach (var move in currentPattern)
                                 {
-                                    nextField = StepExecutor.GoStepStraight(move, game, field,
+                                    nextField = StepExecutor.GoStepStraight(move, game, nextField,
                                         kingColor == Colors.White ? Colors.Black : Colors.White);
                                 }
 
