@@ -41,7 +41,7 @@ public class GameModel
     /// <summary>
     /// List that contains all moves that have been made in the current game.
     /// </summary>
-    public IList<MoveModel> MoveHistory { get; set; }
+    public IList<MoveModel> MoveHistory { get; set; } = null!;
     
     /// <summary>
     /// Counts how many rounds have been played in the specific playing mode.

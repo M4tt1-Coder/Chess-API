@@ -146,8 +146,6 @@ public static class RulesExecutor
         return output;
     }
 
-    // TODO - for Queen, Rook, Bishop tests arent running in the right way 
-    
     /// <summary>
     /// Figures of the opposite color doesn't matter.
     ///
@@ -280,10 +278,9 @@ public static class RulesExecutor
                                 var previousField = nextField;
 
                                 // go along the pattern
-                                foreach (var move in currentPattern)
-                                {
-                                    nextField = StepExecutor.GoStepStraight(move, game, field, kingColor == Colors.White ? Colors.Black : Colors.White);    
-                                }
+                                nextField = currentPattern.Aggregate(nextField, (current, move) => 
+                                    StepExecutor.GoStepStraight(move, game, current, 
+                                        kingColor == Colors.White ? Colors.Black : Colors.White));
 
                                 // check if the field where the figure has moved has changed
                                 if (previousField.X == nextField.X && previousField.Y == nextField.Y)
@@ -354,11 +351,9 @@ public static class RulesExecutor
                             {
                                 var previousField = nextField;
 
-                                foreach (var move in currentPattern)
-                                {
-                                    nextField = StepExecutor.GoStepStraight(move, game, field,
-                                        kingColor == Colors.White ? Colors.Black : Colors.White);
-                                }
+                                nextField = currentPattern.Aggregate(nextField, (current, move) => 
+                                    StepExecutor.GoStepStraight(move, game, current, 
+                                        kingColor == Colors.White ? Colors.Black : Colors.White));
 
                                 if (previousField.X == nextField.X && previousField.Y == nextField.Y)
                                 {
@@ -401,11 +396,7 @@ public static class RulesExecutor
                             {
                                 var previousField = nextField;
 
-                                foreach (var move in currentPattern)
-                                {
-                                    nextField = StepExecutor.GoStepStraight(move, game, nextField,
-                                        kingColor == Colors.White ? Colors.Black : Colors.White);
-                                }
+                                nextField = currentPattern.Aggregate(nextField, (current, move) => StepExecutor.GoStepStraight(move, game, current, kingColor == Colors.White ? Colors.Black : Colors.White));
 
                                 if (nextField.X == previousField.X && nextField.Y == previousField.Y)
                                 {
