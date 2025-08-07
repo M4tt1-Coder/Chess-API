@@ -1,4 +1,5 @@
 using Chess_API.Database;
+using Chess_API.Enums;
 using Chess_API.Models;
 using Chess_API.utils;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +22,6 @@ public class PlayingController : Controller
 
     // TODO - Game board needs to be reorder -> white on top then bottom and then on top again
     // depending which players turn it is; just effective for local playing
-    
-    // TODO - Add resign & admit defeat functionality
         
     // TODO - Add the marked field functionality to the endpoint
     
@@ -53,6 +52,10 @@ public class PlayingController : Controller
             .Include(model => model.Board).ThenInclude(row => row.Row).ThenInclude(field => field.Content)
             .Include(model => model.MoveHistory)
             .FirstAsync();
+
+        // TODO - Check if a player lost be checkmate
+        
+
         var fieldSelectedCheckResult = FieldHandler.IsAFieldSelected(game);
         if (fieldSelectedCheckResult.IsThereSelectedField)
         {

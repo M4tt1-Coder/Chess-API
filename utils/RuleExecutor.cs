@@ -3,6 +3,7 @@ using Chess_API.Enums;
 using Chess_API.Models;
 using Chess_API.MovePatterns;
 using Chess_API.Rules;
+using Chess_API.utils.UtilTypes;
 
 namespace Chess_API.utils;
 
@@ -67,7 +68,7 @@ public static class RulesExecutor
     /// <param name="figureNow">Starting position of the piece</param>
     /// <param name="figureAfter">Ending position of the piece</param>
     /// <returns>True, when the king is in check</returns>
-    public static bool CheckChecker(GameModel game, Colors kingColor, IList<int>? figureNow, IList<int>? figureAfter)
+    public static bool CheckChecker(GameModel game, Colors kingColor, IList<int>? figureNow = null, IList<int>? figureAfter = null)
     {
         bool output;
         IList<int> kingCoordinates = new List<int>();
@@ -91,7 +92,7 @@ public static class RulesExecutor
         if (figureNow is null || figureAfter is null)
         {
             // when in one move pattern of some opponent piece the same coordinates as the kings appear there is a check
-            output = IsKingInCheck(game, kingCoordinates, kingColor);
+            output = IsKingInCheck(game, kingCoordinates, kingColor).IsInCheck;
         }
         else
         {
@@ -108,44 +109,13 @@ public static class RulesExecutor
             // move the figure to the new field
             gameCopy = MoveFigureToField(gameCopy, figureNow, figureAfter);
             // check if the king is in check
-            output = IsKingInCheck(gameCopy, kingCoordinates, kingColor); 
+            output = IsKingInCheck(gameCopy, kingCoordinates, kingColor).IsInCheck; 
         }
         return output;
     }
 
-    /// <summary>
-    /// Gets all fields where the king is attacked by the opposite color.
-    ///
-    /// When the king is in check, he can't move to the field where he is attacked.
-    ///
-    /// If the coordinates of the king's field are in the list of attacked fields, the king is in check.
-    /// </summary>
-    /// <param name="game">The current game instance</param>
-    /// <param name="kingCoordinates">Coordinates of the king's field</param>
-    /// <param name="kingColor">The color of the king which is checked on being in check</param>
-    /// <returns></returns>
-    private static bool IsKingInCheck(GameModel game, IList<int> kingCoordinates, Colors kingColor)
-    {
-        var output = false;
-        
-        // go through board -> check if opposite color -> execute patterns
-        // get all fields which are attacked by the opponents pieces
-        var attackedFields = FieldsWhereKingIsAttacked(game, kingColor);
-        
-        // compare king's coordinates with all coordinates where he is in check
-        foreach (var checkCoordinates in attackedFields)
-        {
-            // when the field, where the king is situated, is being attacked
-            if (checkCoordinates[0] == kingCoordinates[0] && checkCoordinates[1] == kingCoordinates[1])
-            {
-                // set the output to true
-                output = true;
-            }
-        }
-
-        return output;
-    }
-
+    // TODO - Finish adjusting the 'FieldsWhereKingIsAttacked' function
+    
     /// <summary>
     /// Figures of the opposite color doesn't matter.
     ///
@@ -158,10 +128,11 @@ public static class RulesExecutor
     /// </summary>
     /// <param name="game">Current game instance</param>
     /// <param name="kingColor">Either white /  black : Color of the king</param>
-    /// <returns>A list of coordinates (list of integers) of all field where the king is attacked</returns>
-    private static IEnumerable<IList<int>> FieldsWhereKingIsAttacked(GameModel game, Colors kingColor)
+    /// <returns>List record with all attacked fields</returns>
+    private static AttackedFieldsList FieldsWhereKingIsAttacked(GameModel game, Colors kingColor)
     {
-        var output = new Collection<IList<int>>();
+        // field list which can be assigned to a piece
+        var associatedWithPiece = new List<CoveredFieldOfPieceObjects>();
         
         // similar to move patterns but not moving but attacking
         // go along all possible move patterns
@@ -172,13 +143,21 @@ public static class RulesExecutor
             {
                 // Simply continue the iteration when: there is now figure || the figure is of the same color as the king
                 if (field.Content is null || field.Content.Color == kingColor) continue;
+                
+                // Piece coordinates
+                var pieceCoordinates = new List<int> { field.X, field.Y };                
+                
+                // list of coordinates of attacked fields
+                var fieldsAttackedByPiece = new List<List<int>>();
+                
                 // add the field where the piece is situated
                 if (AreCoordinatesOnBoard(new List<int>() { field.X, field.Y }))
                 {
-                    AddCoordinatesToList(output, new List<int>() { field.X, field.Y });
+                    AddCoordinatesToList(fieldsAttackedByPiece, new List<int>() { field.X, field.Y });
                 }
+                
                 switch (field.Content.Type)
-                {
+                { 
                     case FigureType.Pawn:
                         // for pawns I need to know in which direction they are turned to 
                         switch(game.Direction)
@@ -188,64 +167,64 @@ public static class RulesExecutor
                                 {
                                     // check for boundaries 
                                     // assign new possible fields that could be attacked by black piece
-                                    var firstField = new []{ field.X - 1, field.Y - 1 };
-                                    var secondField = new[] { field.X + 1, field.Y - 1 };
+                                    var firstField = new List<int> { field.X - 1, field.Y - 1 };
+                                    var secondField = new List<int>() { field.X + 1, field.Y - 1 };
 
                                     if (AreCoordinatesOnBoard(firstField))
                                     {
-                                        AddCoordinatesToList(output, firstField);
+                                        AddCoordinatesToList(fieldsAttackedByPiece, firstField);
                                     }
 
                                     if (AreCoordinatesOnBoard(secondField))
                                     {
-                                        AddCoordinatesToList(output, secondField);
+                                        AddCoordinatesToList(fieldsAttackedByPiece, secondField);
                                     }
                                 }
                                 else
                                 {
-                                    var firstField = new[] { field.X - 1, field.Y + 1 };
-                                    var secondField = new[] { field.X + 1, field.Y + 1 };
+                                    var firstField = new List<int> { field.X - 1, field.Y + 1 };
+                                    var secondField = new List<int> { field.X + 1, field.Y + 1 };
 
                                     if (AreCoordinatesOnBoard(firstField))
                                     {
-                                        AddCoordinatesToList(output, firstField);
+                                        AddCoordinatesToList(fieldsAttackedByPiece, firstField);
                                     }
 
                                     if (AreCoordinatesOnBoard(secondField))
                                     {
-                                        AddCoordinatesToList(output, secondField);
+                                        AddCoordinatesToList(fieldsAttackedByPiece, secondField);
                                     }
                                 }
                                 break;
                             case PlayingDirection.WhiteBottom:
                                 if (kingColor == Colors.White)
                                 {
-                                    var firstField = new[] { field.X - 1, field.Y + 1 };
-                                    var secondField = new[] { field.X + 1, field.Y + 1 };
+                                    var firstField = new List<int> { field.X - 1, field.Y + 1 };
+                                    var secondField = new List<int> { field.X + 1, field.Y + 1 };
 
                                     if (AreCoordinatesOnBoard(firstField))
                                     {
-                                        AddCoordinatesToList(output, firstField);
+                                        AddCoordinatesToList(fieldsAttackedByPiece, firstField);
                                     }
 
                                     if (AreCoordinatesOnBoard(secondField))
                                     {
-                                        AddCoordinatesToList(output, secondField);
+                                        AddCoordinatesToList(fieldsAttackedByPiece, secondField);
                                     }
                                 }
                                 else
                                 {
-                                    var firstField = new[] { field.X - 1, field.Y - 1 };
-                                    var secondField = new[] { field.X + 1, field.Y - 1 };
+                                    var firstField = new List<int> { field.X - 1, field.Y - 1 };
+                                    var secondField = new List<int> { field.X + 1, field.Y - 1 };
 
                                     if (AreCoordinatesOnBoard(firstField))
                                     {
-                                        AddCoordinatesToList(output, firstField);
+                                        AddCoordinatesToList(fieldsAttackedByPiece, firstField);
                                     }
 
                                     if (AreCoordinatesOnBoard(secondField))
                                     {
-                                        AddCoordinatesToList(output, secondField);
+                                        AddCoordinatesToList(fieldsAttackedByPiece, secondField);
                                     }
                                 }
                                 break;
@@ -267,8 +246,8 @@ public static class RulesExecutor
                             // also add the additional field to the output list
                             if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
                             {
-                                AddCoordinatesToList(output,
-                                    new List<int> { nextField.X, nextField.Y });
+                                var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y }; 
+                                AddCoordinatesToList(fieldsAttackedByPiece, coordinatesToBeAdded);
                             }
                             
                             // repeat to go as long as possible along one pattern
@@ -290,11 +269,9 @@ public static class RulesExecutor
                                 else
                                 {
                                     // add the field to the list
-                                    if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
-                                    {
-                                        AddCoordinatesToList(output,
-                                            new List<int> { nextField.X, nextField.Y });
-                                    }
+                                    if (!AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y })) continue;
+                                    var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y }; 
+                                    AddCoordinatesToList(fieldsAttackedByPiece, coordinatesToBeAdded);
                                 }
                             }
                         }
@@ -318,10 +295,9 @@ public static class RulesExecutor
                                 // when 2 steps have been taken -> check if previous field is equal to field after
                                 // the moving operation -> continue
                                 if (moveCount != 2) continue;
-                                if (previousField != nextField)
-                                {
-                                    AddCoordinatesToList(output, new List<int> {nextField.X, nextField.Y});
-                                }
+                                if (previousField == nextField) continue;
+                                var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
+                                AddCoordinatesToList(fieldsAttackedByPiece, coordinatesToBeAdded);
                             }
                         }
                         break;
@@ -339,10 +315,9 @@ public static class RulesExecutor
                             nextField = StepExecutor.GoStepStraight(currentPattern[0], game, nextField,
                                 kingColor == Colors.White ? Colors.Black : Colors.White, true);
                             // also add the additional field to the output list
-                            if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                            if (AreCoordinatesOnBoard(new List<int> { nextField.X, nextField.Y }))
                             {
-                                AddCoordinatesToList(output,
-                                    new List<int> { nextField.X, nextField.Y });
+                                AddCoordinatesToList(fieldsAttackedByPiece, new List<int> { nextField.X, nextField.Y });
                             }
                             
                             // repeat to go as long as possible along one pattern
@@ -364,8 +339,8 @@ public static class RulesExecutor
                                     // add the field to the list
                                     if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
                                     {
-                                        AddCoordinatesToList(output,
-                                            new List<int> { nextField.X, nextField.Y });
+                                        var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
+                                        AddCoordinatesToList(fieldsAttackedByPiece, coordinatesToBeAdded);
                                     }
                                 }
                             }
@@ -386,8 +361,8 @@ public static class RulesExecutor
                             // also add the additional field to the output list
                             if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
                             {
-                                AddCoordinatesToList(output,
-                                    new List<int> { nextField.X, nextField.Y });
+                                var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
+                                AddCoordinatesToList(fieldsAttackedByPiece, coordinatesToBeAdded);
                             }
                             
                             // repeat to go as long as possible along one pattern
@@ -405,11 +380,9 @@ public static class RulesExecutor
                                 else
                                 {
                                     // add the field to the list
-                                    if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
-                                    {
-                                        AddCoordinatesToList(output,
-                                            new List<int> { nextField.X, nextField.Y });
-                                    }
+                                    var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
+                                    if (!AreCoordinatesOnBoard(coordinatesToBeAdded)) continue;
+                                    AddCoordinatesToList(fieldsAttackedByPiece, coordinatesToBeAdded);
                                 }
                             }
                         }
@@ -426,16 +399,49 @@ public static class RulesExecutor
                             var nextField = pattern.Aggregate(field, (current, move) => KingJustTriesToGoToField(move, current, game));
                                 
                             // main check if the field where the figure has moved has changed
-                            if (!(field.X == nextField.X && field.Y == nextField.Y)) AddCoordinatesToList(output, new List<int>() {nextField.X, nextField.Y});
+                            if (field.X == nextField.X && field.Y == nextField.Y) continue;
+                            var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
+                            AddCoordinatesToList(fieldsAttackedByPiece, coordinatesToBeAdded);
                         }
                         break;
                 }
+                
+                // add the list of attacked fields related to the piece to the list
+                associatedWithPiece.Add(new CoveredFieldOfPieceObjects(fieldsAttackedByPiece, pieceCoordinates));
             }
         }
 
-        return output;
+        return new AttackedFieldsList(associatedWithPiece);
     }
+
+    // TODO - Implement the function that checks if a player has lost
     
+    
+    
+    public static GameModel HasAPlayerLost(GameModel game)
+    {
+        // check if an own piece of the kings color can throw the piece which checks the king
+        // when the king is in check -> check if he can move to a field where he is not in check anymore
+        // when the king is in check -> check if a piece can stop 
+        
+        // check if player one lost
+        if (CheckChecker(game, game.PlayerOne.PieceColor))
+        {
+            // first try to move the king to a field where he is not in check anymore
+            // second try to throw the piece which checks the king
+            // third try to block the piece which checks the king
+            // when all three cases are false -> player one has lost
+        }
+        
+        // check if player two lost
+        if (CheckChecker(game, game.PlayerTwo.PieceColor))
+        {
+        }
+
+        // return if no player has lost
+        return game;
+    }
+
     // ----- Helper functions -----
 
     /// <summary>
@@ -513,7 +519,7 @@ public static class RulesExecutor
     /// </summary>
     /// <param name="list">The list of all coordinates.</param>
     /// <param name="coordinates">The to adding coordinates.</param>
-    private static void AddCoordinatesToList(Collection<IList<int>> list, IList<int> coordinates)
+    private static void AddCoordinatesToList(List<List<int>> list, List<int> coordinates)
     {
         if (IsFieldAlreadyInList(list, coordinates))
         {
@@ -528,7 +534,7 @@ public static class RulesExecutor
     /// </summary>
     /// <param name="coordinates">The coordinates to be checked.</param>
     /// <returns>Results of check if the coordinates are on the board.</returns>
-    private static bool AreCoordinatesOnBoard(IList<int> coordinates)
+    private static bool AreCoordinatesOnBoard(List<int> coordinates)
     {
         foreach (var ordinate in coordinates)
         {
@@ -571,16 +577,13 @@ public static class RulesExecutor
     /// <param name="list">A collection containing sets of coordinates.</param>
     /// <param name="coordinates">The specific coordinates to check for existence in the collection.</param>
     /// <returns>True if the coordinates are already in the list, otherwise false.</returns>
-    private static bool IsFieldAlreadyInList(Collection<IList<int>> list, IList<int> coordinates)
+    private static bool IsFieldAlreadyInList(List<List<int>> list, List<int> coordinates)
     {
         var output = false;
         
-        foreach (var c in list)
+        foreach (var c in list.Where(c => c[0] == coordinates[0] && c[1] == coordinates[1]))
         {
-            if (c[0] == coordinates[0] && c[1] == coordinates[1])
-            {
-                output = true;
-            }
+            output = true;
         }
         
         return output;   
@@ -601,4 +604,37 @@ public static class RulesExecutor
         }
         return field.Content.Type == FigureType.King;
     }
+    
+    /// <summary>
+    /// Gets all fields where the king is attacked by the opposite color.
+    ///
+    /// When the king is in check, he can't move to the field where he is attacked.
+    ///
+    /// If the coordinates of the king's field are in the list of attacked fields, the king is in check.
+    /// </summary>
+    /// <param name="game">The current game instance</param>
+    /// <param name="kingCoordinates">Coordinates of the king's field</param>
+    /// <param name="kingColor">The color of the king which is checked on being in check</param>
+    /// <returns>True and the coordinates of the piece which checks him, if the king is in check </returns>
+    private static KingInCheckResult IsKingInCheck(GameModel game, IList<int> kingCoordinates, Colors kingColor)
+    {
+        var output = false;
+        List<int>? coordinates = null;
+        // go through board -> check if opposite color -> execute patterns
+        // get all fields which are attacked by the opponents pieces
+        var attackedFields = FieldsWhereKingIsAttacked(game, kingColor);
+
+        // compare king's coordinates with all coordinates where he is in check
+        foreach (var fieldsOfOnePiece in attackedFields.CoveredFieldOfPieceObjects.
+                     Where(fieldsOfOnePiece => fieldsOfOnePiece.CoveredFields.Any(singleCoordinates =>
+                     singleCoordinates[0] == kingCoordinates[0] && singleCoordinates[1] == kingCoordinates[1])))
+        {
+            output = true;
+            // assign the coordinates of the piece which checks the king
+            coordinates = fieldsOfOnePiece.PieceCoordinates;
+        }
+
+        return new KingInCheckResult(output, coordinates);
+    }
 }
+
