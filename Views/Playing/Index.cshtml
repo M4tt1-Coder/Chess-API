@@ -86,7 +86,7 @@
                         <!--TODO - when player clicks a field with a figure on it mark these fields who are selected -> where the figure can go!-->
                             @switch (field.Color)
                             {
-                                case Colors.White when field.Content is { PictureSource: not null }:
+                                case Color.White when field.Content is { PictureSource: not null }:
                                     <form action="/playing/move" method="post" class="aspect-square w-[12.5%] bg-white border-1 border-black focus:border-white m-1 flex items-center justify-center">
                                         <button
                                             class="aspect-square w-full"
@@ -97,7 +97,7 @@
                                                value=@ConverterHelper.ConvertIntsListToString(new List<int>() { field.X, field.Y })>
                                     </form>
                                     break;
-                                case Colors.White:
+                                case Color.White:
                                     <form action="/playing/move" method="post" class="aspect-square w-[12.5%] bg-white border-1 border-black focus:border-white m-1">
                                         <button type="submit"
                                                 class="aspect-square w-full"></button>
@@ -105,7 +105,7 @@
                                                value=@ConverterHelper.ConvertIntsListToString(new List<int>() { field.X, field.Y })>
                                     </form>
                                     break;
-                                case Colors.Black when field.Content is { PictureSource: not null }:
+                                case Color.Black when field.Content is { PictureSource: not null }:
                                     <form action="/playing/move" method="post" class="aspect-square w-[12.5%] bg-slate-500 border-1 border-black focus:border-white m-1 flex items-center justify-center">
                                         <button type="submit"
                                                 class=" m-1 aspect-square w-full">
@@ -115,7 +115,7 @@
                                                value=@ConverterHelper.ConvertIntsListToString(new List<int>() { field.X, field.Y })>
                                     </form>
                                     break;
-                                case Colors.Black:
+                                case Color.Black:
                                     <form action="/playing/move" method="post" class="aspect-square w-[12.5%] bg-slate-500 border-1 border-black focus:border-white m-1">
                                         <button type="submit"
                                                 class="aspect-square w-full"></button>

@@ -16,27 +16,27 @@ public class BishopMovePattern : IMovePattern
 {
     public bool AreMovesInfinite => true;
 
-    public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
+    public IEnumerable<IEnumerable<Move>> Patterns => new Collection<Collection<Move>>()
     {
         // 1
         new()
         {
-            Moves.DiagonalUpLeft
+            Move.DiagonalUpLeft
         },
         // 2
         new()
         {
-            Moves.DiagonalUpRight
+            Move.DiagonalUpRight
         },
         // 3
         new()
         {
-            Moves.DiagonalDownRight
+            Move.DiagonalDownRight
         },
         // 4
         new()
         {
-            Moves.DiagonalDownLeft
+            Move.DiagonalDownLeft
         }
     };
 }

@@ -40,10 +40,10 @@ public static class PlayerHandler
     {
         return game.PlayerTurn switch
         {
-            PlayerTurn.White => game.PlayerOne.PieceColor == Colors.White
+            PlayerTurn.White => game.PlayerOne.PieceColor == Color.White
                 ? game.PlayerOne.PlayerId
                 : game.PlayerTwo.PlayerId,
-            PlayerTurn.Black => game.PlayerOne.PieceColor == Colors.Black
+            PlayerTurn.Black => game.PlayerOne.PieceColor == Color.Black
                 ? game.PlayerOne.PlayerId
                 : game.PlayerTwo.PlayerId,
             _ => throw new Exception("Invalid player turn state.")

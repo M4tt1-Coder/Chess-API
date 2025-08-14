@@ -43,9 +43,9 @@ public class FigureModel
     /// Property to declare the color of the figure.
     /// </summary>
     [Required]
-    public Colors Color { get; set; }
+    public Color Color { get; set; }
 
-    public FigureModel(FigureType type, bool selected, string pictureSource, Colors color)
+    public FigureModel(FigureType type, bool selected, string pictureSource, Color color)
     {
         Type = type;
         Selected = selected;
@@ -53,7 +53,7 @@ public class FigureModel
         Color = color;
     }
 
-    public FigureModel(FigureType type, bool selected, string pictureSource, Colors color, int figureId)
+    public FigureModel(FigureType type, bool selected, string pictureSource, Color color, int figureId)
     {
         FigureId = figureId;
         Type = type;

@@ -62,7 +62,7 @@ public static class  MovingRules
     /// <param name="pieceCoordinates">The coordinates of a field on which a specific piece is supposed to move.</param>
     /// <param name="newCoordinates">Coordinates of the new field</param>
     /// <returns>If a piece can take a field where another piece is situated.</returns>
-    public static bool CanPieceMoveToFieldWithCheck(GameModel game, IList<int> pieceCoordinates, IList<int> newCoordinates)
+    public static bool CanPieceMoveToFieldWithCheck(GameModel game, List<int> pieceCoordinates, List<int> newCoordinates)
     {
         // the field where is supposed to be can't be empty
         if (game.Board[pieceCoordinates[1]].Row[pieceCoordinates[0]].Content is null)

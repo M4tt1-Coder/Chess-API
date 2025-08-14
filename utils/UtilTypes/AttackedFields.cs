@@ -9,11 +9,24 @@ namespace Chess_API.utils.UtilTypes;
 /// <param name="CoveredFields"> All fields that are being attacked by one piece</param>
 /// <param name="PieceCoordinates">Position of the piece on the board</param>
 public record CoveredFieldOfPieceObjects(List<List<int>> CoveredFields, List<int> PieceCoordinates);
-    
+
 /// <summary>
 /// Represents a list of attacked fields by the pieces of both players.
 /// </summary>
 /// <param name="CoveredFieldOfPieceObjects">List of all attacked fields associated with a piece</param>
-public record AttackedFieldsList(List<CoveredFieldOfPieceObjects> CoveredFieldOfPieceObjects);
+public record AttackedFieldsList(List<CoveredFieldOfPieceObjects> CoveredFieldOfPieceObjects)
+{
+    public List<List<int>> GetAllAttackedFields()
+    {
+        var output = new List<List<int>>();
+
+        foreach (var element in CoveredFieldOfPieceObjects)
+        {
+            output.AddRange(element.CoveredFields);
+        }
+        
+        return output;
+    }
+}
 
 

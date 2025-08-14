@@ -13,55 +13,55 @@ public class KnightMovePattern : IMovePattern
 {
     public bool AreMovesInfinite => false;
 
-    public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
+    public IEnumerable<IEnumerable<Move>> Patterns => new Collection<Collection<Move>>()
     {
         // 1
         new()
         {
-            Moves.Up,
-            Moves.DiagonalUpLeft
+            Move.Up,
+            Move.DiagonalUpLeft
         },
         // 2
         new()
         {
-            Moves.Up,
-            Moves.DiagonalUpRight
+            Move.Up,
+            Move.DiagonalUpRight
         },
         // 3
         new()
         {
-            Moves.Right,
-            Moves.DiagonalUpRight
+            Move.Right,
+            Move.DiagonalUpRight
         },
         // 4
         new()
         {
-            Moves.Right,
-            Moves.DiagonalDownRight
+            Move.Right,
+            Move.DiagonalDownRight
         },
         // 5
         new()
         {
-            Moves.Down,
-            Moves.DiagonalDownRight
+            Move.Down,
+            Move.DiagonalDownRight
         },
         // 6
         new()
         {
-            Moves.Down,
-            Moves.DiagonalDownLeft
+            Move.Down,
+            Move.DiagonalDownLeft
         },
         // 7
         new()
         {
-            Moves.Left,
-            Moves.DiagonalDownLeft
+            Move.Left,
+            Move.DiagonalDownLeft
         },
         // 8
         new()
         {
-            Moves.Left,
-            Moves.DiagonalUpLeft
+            Move.Left,
+            Move.DiagonalUpLeft
         }
     };
 }

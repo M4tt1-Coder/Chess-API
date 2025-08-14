@@ -26,50 +26,50 @@ public class PawnMovePatterns : IMovePattern
 {
     public bool AreMovesInfinite => false;
 
-    public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
+    public IEnumerable<IEnumerable<Move>> Patterns => new Collection<Collection<Move>>()
     {
         // 1
         new()
         {
-            Moves.Up
+            Move.Up
         },
         // 2
         new()
         {
-            Moves.Up,
-            Moves.Up
+            Move.Up,
+            Move.Up
         },
         // 3 
         new()
         {
-            Moves.DiagonalUpLeft
+            Move.DiagonalUpLeft
         },
         // 4
         new()
         {
-            Moves.DiagonalUpRight
+            Move.DiagonalUpRight
         },
         // 5
         new ()
         {
-            Moves.Down
+            Move.Down
         },
         // 6
         new()
         {
-            Moves.Down,
-            Moves.Down
+            Move.Down,
+            Move.Down
             
         },
         // 7
         new ()
         {
-            Moves.DiagonalDownLeft
+            Move.DiagonalDownLeft
         },
         // 8
         new ()
         {
-            Moves.DiagonalDownRight
+            Move.DiagonalDownRight
         }
     };
 }

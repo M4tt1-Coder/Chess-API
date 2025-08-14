@@ -30,7 +30,7 @@ public class FieldModel
     /// As in the figure class, these stands for color of the field.
     /// </summary>
     [Required]
-    public Colors Color { get; init; }
+    public Color Color { get; init; }
 
     /// <summary>
     /// The property can have two states:
@@ -61,7 +61,7 @@ public class FieldModel
     /// </summary>
     public bool SelectedField { get; set; }
     
-    public FieldModel(Colors color, FigureModel? content, int x, int y)
+    public FieldModel(Color color, FigureModel? content, int x, int y)
     {
         Color = color;
         Content = content;

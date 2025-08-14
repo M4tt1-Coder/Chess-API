@@ -180,7 +180,7 @@ public static class StepExecutor
     /// <param name="knightColor">Color of the knight.</param>
     /// <param name="ignoreOpponentPieces">When the pieces of the opponent should be considered in the checking process or not</param>
     /// <returns>The next field of the pattern.</returns>
-    public static FieldModel GoStepKnight(Moves move, GameModel game, FieldModel curField, Colors knightColor, bool ignoreOpponentPieces = false)
+    public static FieldModel GoStepKnight(Move move, GameModel game, FieldModel curField, Color knightColor, bool ignoreOpponentPieces = false)
     {
         var output = new FieldModel();
         List<int> newCoordinates;
@@ -191,24 +191,24 @@ public static class StepExecutor
         FieldModel? newField;
         switch (move)
         {
-            case Moves.Up:
+            case Move.Up:
                 // if (border check + is there a piece in the way -> stay on the field [possible throw])
                 newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
                 output = newCoordinates[1] < 0 ? curField : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.Down:
+            case Move.Down:
                 newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
                 output = newCoordinates[1] > 7 ? curField : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.Left:
+            case Move.Left:
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y };
                 output = newCoordinates[0] < 0 ? curField : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.Right:
+            case Move.Right:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y };
                 output = newCoordinates[0] > 7 ? curField : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.DiagonalUpLeft:
+            case Move.DiagonalUpLeft:
                 // is next field free? if not can the figure be thrown
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
@@ -228,7 +228,7 @@ public static class StepExecutor
                     output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 }
                 break;
-            case Moves.DiagonalUpRight:
+            case Move.DiagonalUpRight:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
@@ -246,7 +246,7 @@ public static class StepExecutor
                     output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 }
                 break;
-            case Moves.DiagonalDownLeft:
+            case Move.DiagonalDownLeft:
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
@@ -263,7 +263,7 @@ public static class StepExecutor
                     output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 }
                 break;
-            case Moves.DiagonalDownRight:
+            case Move.DiagonalDownRight:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
@@ -295,7 +295,7 @@ public static class StepExecutor
     /// <param name="curField">Current field of the pawn</param>
     /// <param name="pawnColor">Color of the pawn</param>
     /// <returns>The field the pawn is on in the next move</returns>
-    private static FieldModel GoStepPawn(Moves move, GameModel game, FieldModel curField, Colors pawnColor)
+    private static FieldModel GoStepPawn(Move move, GameModel game, FieldModel curField, Color pawnColor)
     {
         // according to the color of the pawn, the direction of the movement changes
         if (!MovesPawnInRightDirection(pawnColor, move, game.Direction))
@@ -310,7 +310,7 @@ public static class StepExecutor
         // cover all valid moves of the pawn
         switch (move)
         {
-            case Moves.Up:
+            case Move.Up:
                 // new coordinates
                 newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
@@ -324,7 +324,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.Down:
+            case Move.Down:
                 // new coordinates
                 newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
@@ -338,7 +338,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalUpLeft:
+            case Move.DiagonalUpLeft:
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || newCoordinates[1] < 0 || newField.Content is null ||
@@ -351,7 +351,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalUpRight:
+            case Move.DiagonalUpRight:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || newCoordinates[1] < 0 || newField.Content is null ||
@@ -364,7 +364,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalDownLeft:
+            case Move.DiagonalDownLeft:
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || newCoordinates[1] > 7 || newField.Content is null ||
@@ -377,7 +377,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalDownRight:
+            case Move.DiagonalDownRight:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || newCoordinates[1] > 7 || newField.Content is null ||
@@ -390,8 +390,8 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.Left:
-            case Moves.Right:   
+            case Move.Left:
+            case Move.Right:   
                 output = curField;
                 break;
         }
@@ -409,7 +409,7 @@ public static class StepExecutor
     /// <param name="curField">The field the king is theoretically situated</param>
     /// <param name="kingColor">Color of the king</param>
     /// <returns>The new field of the kings position</returns>
-    private static FieldModel GoStepKing(Moves move, GameModel game, FieldModel curField, Colors kingColor)
+    public static FieldModel GoStepKing(Move move, GameModel game, FieldModel curField, Color kingColor)
     {
         var output = new FieldModel();
         List<int> newCoordinates;
@@ -417,7 +417,7 @@ public static class StepExecutor
 
         switch (move)
         {
-            case Moves.Up:
+            case Move.Up:
                 newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[1] < 0 || (newField.Content is not null && newField.Content.Color == kingColor))
@@ -429,7 +429,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.Down:
+            case Move.Down:
                 newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[1] > 7 || (newField.Content is not null && newField.Content.Color == kingColor))
@@ -441,7 +441,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.Left:
+            case Move.Left:
                 newCoordinates = new List<int>() { curField.X- 1, curField.Y };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || (newField.Content is not null && newField.Content.Color == kingColor))
@@ -453,7 +453,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.Right:
+            case Move.Right:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || (newField.Content is not null && newField.Content.Color == kingColor))
@@ -465,7 +465,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalUpLeft:
+            case Move.DiagonalUpLeft:
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || newCoordinates[1] < 0 || (newField.Content is not null && newField.Content.Color == kingColor))
@@ -477,7 +477,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalUpRight:
+            case Move.DiagonalUpRight:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || newCoordinates[1] < 0 ||
@@ -490,7 +490,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalDownLeft:
+            case Move.DiagonalDownLeft:
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || newCoordinates[1] > 7 ||
@@ -503,7 +503,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalDownRight:
+            case Move.DiagonalDownRight:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || newCoordinates[1] > 7 ||
@@ -532,7 +532,7 @@ public static class StepExecutor
     /// <param name="ignoreCurrentFieldContent">Whether to ignore the current file or not</param>
     /// <param name="figureColor">Color of the figure that should move</param>
     /// <returns>The field the checker is currently on.</returns>
-    public static FieldModel GoStepStraight(Moves move, GameModel game, FieldModel curField, Colors figureColor, bool ignoreCurrentFieldContent = false)
+    public static FieldModel GoStepStraight(Move move, GameModel game, FieldModel curField, Color figureColor, bool ignoreCurrentFieldContent = false)
     {
         FieldModel output;
         FieldModel newField;
@@ -540,7 +540,7 @@ public static class StepExecutor
         // check for board borders + other pieces
         switch (move)
         {
-            case Moves.Up:
+            case Move.Up:
                 // if (border check + is there a piece i=n the way -> stay on the field [possible throw])
                 newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
@@ -555,7 +555,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.Down:
+            case Move.Down:
                 newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[1] > 7 || (curField.Content is not null && !ignoreCurrentFieldContent) ||
@@ -569,7 +569,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.Left:
+            case Move.Left:
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || (curField.Content is not null && !ignoreCurrentFieldContent) ||
@@ -583,7 +583,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.Right:
+            case Move.Right:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || (curField.Content is not null && !ignoreCurrentFieldContent) ||
@@ -597,7 +597,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalUpLeft:
+            case Move.DiagonalUpLeft:
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || newCoordinates[1] < 0 || (curField.Content is not null &&
@@ -612,7 +612,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalUpRight:
+            case Move.DiagonalUpRight:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || newCoordinates[1] < 0 ||
@@ -628,7 +628,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalDownLeft:
+            case Move.DiagonalDownLeft:
                 newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] < 0 || newCoordinates[1] > 7 ||
@@ -644,7 +644,7 @@ public static class StepExecutor
                     output = newField;
                 }
                 break;
-            case Moves.DiagonalDownRight:
+            case Move.DiagonalDownRight:
                 newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (newCoordinates[0] > 7 || newCoordinates[1] > 7 ||
@@ -679,10 +679,10 @@ public static class StepExecutor
     /// <param name="direction">In which direction both colors go (up OR down)</param>
     /// <returns>True, when the pawn moves in the right direction.</returns>
     /// <exception cref="ArgumentOutOfRangeException">When an invalid enum value was entered</exception>
-    private static bool MovesPawnInRightDirection(Colors pawnColor, Moves move, PlayingDirection direction)
+    private static bool MovesPawnInRightDirection(Color pawnColor, Move move, PlayingDirection direction)
     {
         // a pawn can't move side ways
-        if (move is Moves.Left or Moves.Right)
+        if (move is Move.Left or Move.Right)
         {
             return false;
         }
@@ -690,19 +690,19 @@ public static class StepExecutor
 
         switch (pawnColor)
         {
-            case Colors.White:
-                if ((move is Moves.Up or Moves.DiagonalUpLeft or Moves.DiagonalUpRight &&
+            case Color.White:
+                if ((move is Move.Up or Move.DiagonalUpLeft or Move.DiagonalUpRight &&
                      direction == PlayingDirection.WhiteBottom) ||
-                    (move is Moves.Down or Moves.DiagonalDownLeft or Moves.DiagonalDownRight &&
+                    (move is Move.Down or Move.DiagonalDownLeft or Move.DiagonalDownRight &&
                      direction == PlayingDirection.WhiteTop))
                 {
                     output = true;
                 }
                 break;
-            case Colors.Black:
-                if ((move is Moves.Up or Moves.DiagonalUpLeft or Moves.DiagonalUpRight &&
+            case Color.Black:
+                if ((move is Move.Up or Move.DiagonalUpLeft or Move.DiagonalUpRight &&
                      direction == PlayingDirection.WhiteTop) ||
-                    (move is Moves.Down or Moves.DiagonalDownLeft or Moves.DiagonalDownRight &&
+                    (move is Move.Down or Move.DiagonalDownLeft or Move.DiagonalDownRight &&
                      direction == PlayingDirection.WhiteBottom))
                 {
                     output = true;

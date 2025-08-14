@@ -51,10 +51,10 @@ public static class FieldHandler
                         switch (j % 2)
                         {
                             case 0:
-                                row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i), j, i ));
+                                row.Row.Add(new FieldModel(Color.White, GetFigureModel(j, i), j, i ));
                                 break;
                             case 1:
-                                row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i), j, i ));
+                                row.Row.Add(new FieldModel(Color.Black, GetFigureModel(j, i), j, i ));
                                 break;
                         }
 
@@ -63,10 +63,10 @@ public static class FieldHandler
                         switch (j % 2)
                         {
                             case 0:
-                                row.Row.Add(new FieldModel(Colors.Black, GetFigureModel(j, i),   j, i ));
+                                row.Row.Add(new FieldModel(Color.Black, GetFigureModel(j, i),   j, i ));
                                 break;
                             case 1:
-                                row.Row.Add(new FieldModel(Colors.White, GetFigureModel(j, i),  j, i ));
+                                row.Row.Add(new FieldModel(Color.White, GetFigureModel(j, i),  j, i ));
                                 break;
                         }
 
@@ -97,8 +97,8 @@ public static class FieldHandler
         return rowIndex switch
         {
             7 => DetermineFigure(fieldIndex, true),
-            6 => new FigureModel(FigureType.Pawn, false, PictureSources.White_Pawn(), Colors.White),
-            1 => new FigureModel(FigureType.Pawn, false, PictureSources.Black_Pawn(), Colors.Black),
+            6 => new FigureModel(FigureType.Pawn, false, PictureSources.White_Pawn(), Color.White),
+            1 => new FigureModel(FigureType.Pawn, false, PictureSources.Black_Pawn(), Color.Black),
             0 => DetermineFigure(fieldIndex, false),
             _ => null
         };
@@ -121,17 +121,17 @@ public static class FieldHandler
             {
                 case 0:
                 case 7:
-                    return new FigureModel(FigureType.Rook, false, PictureSources.White_Rook(), Colors.White);
+                    return new FigureModel(FigureType.Rook, false, PictureSources.White_Rook(), Color.White);
                 case 1:
                 case 6:
-                    return new FigureModel(FigureType.Knight, false, PictureSources.White_Knight(), Colors.White);
+                    return new FigureModel(FigureType.Knight, false, PictureSources.White_Knight(), Color.White);
                 case 2:
                 case 5:
-                    return new FigureModel(FigureType.Bishop, false, PictureSources.White_Bishop(), Colors.White);
+                    return new FigureModel(FigureType.Bishop, false, PictureSources.White_Bishop(), Color.White);
                 case 3:
-                    return new FigureModel(FigureType.King, false, PictureSources.White_King(), Colors.White);
+                    return new FigureModel(FigureType.King, false, PictureSources.White_King(), Color.White);
                 case 4:
-                    return new FigureModel(FigureType.Queen, false, PictureSources.White_Queen(), Colors.White);
+                    return new FigureModel(FigureType.Queen, false, PictureSources.White_Queen(), Color.White);
             }
         }
         else
@@ -140,17 +140,17 @@ public static class FieldHandler
             {
                 case 0:
                 case 7:
-                    return new FigureModel(FigureType.Rook, false, PictureSources.Black_Rook(), Colors.Black);
+                    return new FigureModel(FigureType.Rook, false, PictureSources.Black_Rook(), Color.Black);
                 case 1:
                 case 6:
-                    return new FigureModel(FigureType.Knight, false, PictureSources.Black_Knight(), Colors.Black);
+                    return new FigureModel(FigureType.Knight, false, PictureSources.Black_Knight(), Color.Black);
                 case 2:
                 case 5:
-                    return new FigureModel(FigureType.Bishop, false, PictureSources.Black_Bishop(), Colors.Black);
+                    return new FigureModel(FigureType.Bishop, false, PictureSources.Black_Bishop(), Color.Black);
                 case 3:
-                    return new FigureModel(FigureType.King, false, PictureSources.Black_King(), Colors.Black);
+                    return new FigureModel(FigureType.King, false, PictureSources.Black_King(), Color.Black);
                 case 4:
-                    return new FigureModel(FigureType.Queen, false, PictureSources.Black_Queen(), Colors.Black);
+                    return new FigureModel(FigureType.Queen, false, PictureSources.Black_Queen(), Color.Black);
             }
         }
 
@@ -167,7 +167,7 @@ public static class FieldHandler
     /// <returns>
     /// A field that has been found by coordinates.
     /// </returns>
-    public static FieldModel GetSpecificFieldByCoordinates(GameModel game, IList<int> coordinates)
+    public static FieldModel GetSpecificFieldByCoordinates(GameModel game, List<int> coordinates)
     {
         var output = new FieldModel();
 
@@ -270,8 +270,8 @@ public static class FieldHandler
             foreach (var field in row.Row)
             {
                 if (field.X != coordinates[0] || field.Y != coordinates[1] || field.Content is null) continue;
-                if ((field.Content.Color == Colors.White && game.PlayerTurn == PlayerTurn.White) || 
-                    (field.Content.Color == Colors.Black && game.PlayerTurn == PlayerTurn.Black))
+                if ((field.Content.Color == Color.White && game.PlayerTurn == PlayerTurn.White) || 
+                    (field.Content.Color == Color.Black && game.PlayerTurn == PlayerTurn.Black))
                 {
                     field.Content.Selected = !field.Content.Selected;
                 }

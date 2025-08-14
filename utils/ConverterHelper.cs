@@ -12,7 +12,7 @@ public static class ConverterHelper
     /// </summary>
     /// <param name="input">Integer values combined in a string!</param>
     /// <returns>List of integers</returns>
-    public static IList<int> ConvertStringToIntsList(string input)
+    public static List<int> ConvertStringToIntsList(string input)
     {
         return input.Split(',').Select(int.Parse).ToList();
     }
@@ -22,9 +22,27 @@ public static class ConverterHelper
     /// </summary>
     /// <param name="input">List of integers that should be included in one string.</param>
     /// <returns>String with integer values</returns>
-    public static string ConvertIntsListToString(IList<int> input)
+    public static string ConvertIntsListToString(List<int> input)
     {
         Console.WriteLine("Input: " + input);
         return string.Join(",", input);
+    }
+
+    /// <summary>
+    /// Adds different lists of lists together.
+    /// </summary>
+    /// <param name="data">List that need to be summarized</param>
+    /// <typeparam name="T">Independent type of the list elements</typeparam>
+    /// <returns>Merged list of list</returns>
+    public static List<List<T>> JoinListsOfListsTogether<T>(List<List<List<T>>> data)
+    {
+        var output = new List<List<T>>();
+
+        foreach (var list in data)
+        {
+            output.AddRange(list);
+        }
+
+        return output;
     }
 }

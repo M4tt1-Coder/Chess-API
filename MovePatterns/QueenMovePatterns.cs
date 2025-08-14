@@ -25,47 +25,47 @@ public class QueenMovePatterns : IMovePattern
 {
     public bool AreMovesInfinite => true;
 
-    public IEnumerable<IEnumerable<Moves>> Patterns => new Collection<Collection<Moves>>()
+    public IEnumerable<IEnumerable<Move>> Patterns => new Collection<Collection<Move>>()
     {
         // 1
         new()
         {
-            Moves.Up
+            Move.Up
         },
         // 2
         new()
         {
-            Moves.Right
+            Move.Right
         },
         // 3 
         new()
         {
-            Moves.Down
+            Move.Down
         },
         // 4
         new()
         {
-            Moves.Left
+            Move.Left
         },
         // 5
         new()
         {
-            Moves.DiagonalUpRight
+            Move.DiagonalUpRight
         },
         // 6 
         new()
         {
-            Moves.DiagonalDownRight
+            Move.DiagonalDownRight
         },
         // 7 
         new()
         {
-            Moves.DiagonalDownLeft
+            Move.DiagonalDownLeft
         },
         // 8
         new()
         {
-            Moves.DiagonalUpLeft
+            Move.DiagonalUpLeft
         }
     };
 }

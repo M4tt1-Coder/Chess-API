@@ -28,8 +28,8 @@ public static class GameHandler
     public static GameModel Default()
     {
         return new GameModel(
-            new PlayerModel(null, "", 0, Colors.White),
-            new PlayerModel(null, "", 0, Colors.Black),
+            new PlayerModel(null, "", 0, Color.White),
+            new PlayerModel(null, "", 0, Color.Black),
             FieldHandler.Default(),
             DefaultRound,
             PlayingMode.Default,

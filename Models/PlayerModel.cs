@@ -50,11 +50,11 @@ public class PlayerModel
 
     /// <summary>
     /// Specifies the color of the chess pieces that the player controls.
-    /// Uses the <see cref="Chess_API.Enums.Colors"/> enumeration to define the possible values.
+    /// Uses the <see cref="Color"/> enumeration to define the possible values.
     /// </summary>
-    public Colors PieceColor { get; set; }
+    public Color PieceColor { get; set; }
 
-    public PlayerModel(TimeSpan? time, string name, int score, Colors color)
+    public PlayerModel(TimeSpan? time, string name, int score, Color color)
     {
         PieceColor = color;
         Score = score;
@@ -80,6 +80,6 @@ public class PlayerModel
         // pieces
         Pieces = new List<FigureModel>();  
         // piece color
-        PieceColor = PieceColor == Colors.White ? Colors.Black : Colors.White;
+        PieceColor = PieceColor == Color.White ? Color.Black : Color.White;
     }
 }

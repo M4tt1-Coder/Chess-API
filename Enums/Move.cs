@@ -5,7 +5,7 @@ namespace Chess_API.Enums;
 /// 
 /// In iterations over move patterns.
 /// </summary>
-public enum Moves
+public enum Move
 {
     Up,
     Down,

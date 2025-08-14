@@ -17,5 +17,5 @@ public interface IMovePattern
     /// <summary>
     /// Public accessible list of all patterns.
     /// </summary>
-    public IEnumerable<IEnumerable<Moves>> Patterns { get; }
+    public IEnumerable<IEnumerable<Move>> Patterns { get; }
 }

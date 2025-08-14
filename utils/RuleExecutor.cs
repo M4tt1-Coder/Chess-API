@@ -4,6 +4,7 @@ using Chess_API.Models;
 using Chess_API.MovePatterns;
 using Chess_API.Rules;
 using Chess_API.utils.UtilTypes;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Chess_API.utils;
 
@@ -68,10 +69,10 @@ public static class RulesExecutor
     /// <param name="figureNow">Starting position of the piece</param>
     /// <param name="figureAfter">Ending position of the piece</param>
     /// <returns>True, when the king is in check</returns>
-    public static bool CheckChecker(GameModel game, Colors kingColor, IList<int>? figureNow = null, IList<int>? figureAfter = null)
+    public static bool CheckChecker(GameModel game, Color kingColor, List<int>? figureNow = null, List<int>? figureAfter = null)
     {
         bool output;
-        IList<int> kingCoordinates = new List<int>();
+        var kingCoordinates = new List<int>();
 
         // determine kings location
         foreach (var row in game.Board)
@@ -114,8 +115,6 @@ public static class RulesExecutor
         return output;
     }
 
-    // TODO - Finish adjusting the 'FieldsWhereKingIsAttacked' function
-    
     /// <summary>
     /// Figures of the opposite color doesn't matter.
     ///
@@ -129,7 +128,7 @@ public static class RulesExecutor
     /// <param name="game">Current game instance</param>
     /// <param name="kingColor">Either white /  black : Color of the king</param>
     /// <returns>List record with all attacked fields</returns>
-    private static AttackedFieldsList FieldsWhereKingIsAttacked(GameModel game, Colors kingColor)
+    private static AttackedFieldsList FieldsWhereKingIsAttacked(GameModel game, Color kingColor)
     {
         // field list which can be assigned to a piece
         var associatedWithPiece = new List<CoveredFieldOfPieceObjects>();
@@ -163,7 +162,7 @@ public static class RulesExecutor
                         switch(game.Direction)
                         {
                             case PlayingDirection.WhiteTop:
-                                if (kingColor == Colors.White)
+                                if (kingColor == Color.White)
                                 {
                                     // check for boundaries 
                                     // assign new possible fields that could be attacked by black piece
@@ -197,7 +196,7 @@ public static class RulesExecutor
                                 }
                                 break;
                             case PlayingDirection.WhiteBottom:
-                                if (kingColor == Colors.White)
+                                if (kingColor == Color.White)
                                 {
                                     var firstField = new List<int> { field.X - 1, field.Y + 1 };
                                     var secondField = new List<int> { field.X + 1, field.Y + 1 };
@@ -242,7 +241,7 @@ public static class RulesExecutor
 
                             // go one default step before starting the repetitive step execution 
                             nextField = StepExecutor.GoStepStraight(currentPattern[0], game, nextField,
-                                kingColor == Colors.White ? Colors.Black : Colors.White, true);
+                                kingColor == Color.White ? Color.Black : Color.White, true);
                             // also add the additional field to the output list
                             if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
                             {
@@ -259,7 +258,7 @@ public static class RulesExecutor
                                 // go along the pattern
                                 nextField = currentPattern.Aggregate(nextField, (current, move) => 
                                     StepExecutor.GoStepStraight(move, game, current, 
-                                        kingColor == Colors.White ? Colors.Black : Colors.White));
+                                        kingColor == Color.White ? Color.Black : Color.White));
 
                                 // check if the field where the figure has moved has changed
                                 if (previousField.X == nextField.X && previousField.Y == nextField.Y)
@@ -313,7 +312,7 @@ public static class RulesExecutor
                             
                             // go one default step before starting the repetitive step execution 
                             nextField = StepExecutor.GoStepStraight(currentPattern[0], game, nextField,
-                                kingColor == Colors.White ? Colors.Black : Colors.White, true);
+                                kingColor == Color.White ? Color.Black : Color.White, true);
                             // also add the additional field to the output list
                             if (AreCoordinatesOnBoard(new List<int> { nextField.X, nextField.Y }))
                             {
@@ -328,7 +327,7 @@ public static class RulesExecutor
 
                                 nextField = currentPattern.Aggregate(nextField, (current, move) => 
                                     StepExecutor.GoStepStraight(move, game, current, 
-                                        kingColor == Colors.White ? Colors.Black : Colors.White));
+                                        kingColor == Color.White ? Color.Black : Color.White));
 
                                 if (previousField.X == nextField.X && previousField.Y == nextField.Y)
                                 {
@@ -357,7 +356,7 @@ public static class RulesExecutor
                             
                             // go one default step before starting the repetitive step execution 
                             nextField = StepExecutor.GoStepStraight(currentPattern[0], game, nextField,
-                                kingColor == Colors.White ? Colors.Black : Colors.White, true);
+                                kingColor == Color.White ? Color.Black : Color.White, true);
                             // also add the additional field to the output list
                             if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
                             {
@@ -371,7 +370,7 @@ public static class RulesExecutor
                             {
                                 var previousField = nextField;
 
-                                nextField = currentPattern.Aggregate(nextField, (current, move) => StepExecutor.GoStepStraight(move, game, current, kingColor == Colors.White ? Colors.Black : Colors.White));
+                                nextField = currentPattern.Aggregate(nextField, (current, move) => StepExecutor.GoStepStraight(move, game, current, kingColor == Color.White ? Color.Black : Color.White));
 
                                 if (nextField.X == previousField.X && nextField.Y == previousField.Y)
                                 {
@@ -416,8 +415,6 @@ public static class RulesExecutor
 
     // TODO - Implement the function that checks if a player has lost
     
-    
-    
     public static GameModel HasAPlayerLost(GameModel game)
     {
         // check if an own piece of the kings color can throw the piece which checks the king
@@ -427,6 +424,16 @@ public static class RulesExecutor
         // check if player one lost
         if (CheckChecker(game, game.PlayerOne.PieceColor))
         {
+            var checkResult = IsKingInCheck(game, GetKingCoordinates(game, game.PlayerOne.PieceColor),
+                game.PlayerOne.PieceColor);
+            
+            // validate returned output
+            if (!checkResult.IsInCheck || checkResult.AttackingPieceCoordinates is null)
+            {
+                throw new Exception("In the check validation process an invalid result was returned! " +
+                                    "King is in check but an attacking piece couldn't be found OR two different results have been returned!");
+            }
+
             // first try to move the king to a field where he is not in check anymore
             // second try to throw the piece which checks the king
             // third try to block the piece which checks the king
@@ -456,7 +463,7 @@ public static class RulesExecutor
     /// <param name="currentField">Starting field where we are going from</param>
     /// <param name="game">Current game object</param>
     /// <returns>A field the king can move to</returns>
-    private static FieldModel KingJustTriesToGoToField(Moves kingMove, FieldModel currentField, GameModel game)
+    private static FieldModel KingJustTriesToGoToField(Move kingMove, FieldModel currentField, GameModel game)
     {
         // vars instantiation
         var output = new FieldModel();
@@ -464,7 +471,7 @@ public static class RulesExecutor
         // cover all moves
         switch (kingMove)
         {
-            case Moves.Up:
+            case Move.Up:
                 // get the new coordinates
                 newCoordinates = new List<int>() { currentField.X, currentField.Y - 1 };
                 // validate new coordinates
@@ -473,37 +480,37 @@ public static class RulesExecutor
                 // assign to output var
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.Down:
+            case Move.Down:
                 newCoordinates = new List<int>() { currentField.X, currentField.Y + 1};
                 if (newCoordinates[1] > 7) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.Left:
+            case Move.Left:
                 newCoordinates = new List<int>() { currentField.X - 1, currentField.Y};
                 if (newCoordinates[0] < 0) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.Right:
+            case Move.Right:
                 newCoordinates = new List<int>() { currentField.X, currentField.Y + 1 };
                 if (newCoordinates[0] > 7) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.DiagonalUpLeft:
+            case Move.DiagonalUpLeft:
                 newCoordinates = new List<int>() { currentField.X - 1, currentField.Y - 1 };
                 if (newCoordinates[1] < 0 && newCoordinates[0] < 0) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.DiagonalUpRight:
+            case Move.DiagonalUpRight:
                 newCoordinates = new List<int>() { currentField.X + 1, currentField.Y - 1 };
                 if (newCoordinates[1] < 0 && newCoordinates[0] > 7) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.DiagonalDownLeft:
+            case Move.DiagonalDownLeft:
                 newCoordinates = new List<int>() { currentField.X - 1, currentField.Y + 1 };
                 if (newCoordinates[1] > 7 && newCoordinates[0] < 0) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
-            case Moves.DiagonalDownRight:
+            case Move.DiagonalDownRight:
                 newCoordinates = new List<int>() { currentField.X + 1, currentField.Y + 1 };
                 if (newCoordinates[1] > 7 && newCoordinates[0] > 7) return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
@@ -554,7 +561,7 @@ public static class RulesExecutor
     /// <param name="from">Starting coordinates of the piece</param>
     /// <param name="to">Destination of the figure</param>
     /// <returns>New game instance</returns>   
-    private static GameModel MoveFigureToField(GameModel game, IList<int> from, IList<int> to)
+    private static GameModel MoveFigureToField(GameModel game, List<int> from, List<int> to)
     {
         if (FieldHandler.GetSpecificFieldByCoordinates(game, from).Content is null)
         {
@@ -579,14 +586,7 @@ public static class RulesExecutor
     /// <returns>True if the coordinates are already in the list, otherwise false.</returns>
     private static bool IsFieldAlreadyInList(List<List<int>> list, List<int> coordinates)
     {
-        var output = false;
-        
-        foreach (var c in list.Where(c => c[0] == coordinates[0] && c[1] == coordinates[1]))
-        {
-            output = true;
-        }
-        
-        return output;   
+        return list.Any(c => c[0] == coordinates[0] && c[1] == coordinates[1]);
     }
 
     /// <summary>
@@ -595,7 +595,7 @@ public static class RulesExecutor
     /// <param name="game">The current state of the game.</param>
     /// <param name="figureCoordinates">The coordinates of the field to check.</param>
     /// <returns>True if the field contains a King; otherwise, false.</returns>
-    private static bool IsKingOnThisField(GameModel game, IList<int> figureCoordinates)
+    private static bool IsKingOnThisField(GameModel game, List<int> figureCoordinates)
     {
         var field = FieldHandler.GetSpecificFieldByCoordinates(game, figureCoordinates);
         if (field.Content is null)
@@ -616,9 +616,10 @@ public static class RulesExecutor
     /// <param name="kingCoordinates">Coordinates of the king's field</param>
     /// <param name="kingColor">The color of the king which is checked on being in check</param>
     /// <returns>True and the coordinates of the piece which checks him, if the king is in check </returns>
-    private static KingInCheckResult IsKingInCheck(GameModel game, IList<int> kingCoordinates, Colors kingColor)
+    private static KingInCheckResult IsKingInCheck(GameModel game, List<int> kingCoordinates, Color kingColor)
     {
         var output = false;
+        var canEscapeByMoving = false;
         List<int>? coordinates = null;
         // go through board -> check if opposite color -> execute patterns
         // get all fields which are attacked by the opponents pieces
@@ -632,9 +633,79 @@ public static class RulesExecutor
             output = true;
             // assign the coordinates of the piece which checks the king
             coordinates = fieldsOfOnePiece.PieceCoordinates;
+
+            // Immediately check if the king can escape by moving to field around him
+            canEscapeByMoving = CanKingEscapeCheckByMoving(game, kingCoordinates, kingColor, attackedFields.GetAllAttackedFields());
+            
+            break;
         }
 
-        return new KingInCheckResult(output, coordinates);
+        
+        
+        return new KingInCheckResult(output, coordinates, canEscapeByMoving);
+    }
+
+    /// <summary>
+    /// Makes sure that a king in check can try to move to another field to avoid the check.
+    /// </summary>
+    /// <param name="game">Current Game instance</param>
+    /// <param name="kingCoordinates">Coordinates of the king</param>
+    /// <param name="kingColor">Color of the king</param>
+    /// <param name="attackedFields">List of Field coordinates where the king would be in check</param>
+    /// <returns>True, if the king can escape to field</returns>
+    private static bool CanKingEscapeCheckByMoving(GameModel game, List<int> kingCoordinates, Color kingColor, List<List<int>> attackedFields)
+    {
+        var fieldsCanMoveTo = GetListOfFieldsWhereKingCanMove(game, kingCoordinates, kingColor);
+
+        return fieldsCanMoveTo.Any(field => !IsFieldAlreadyInList(attackedFields, field));
+    }
+    
+    /// <summary>
+    /// Tries to move a king to all fields on the board he can move to.
+    ///
+    /// Collects valid surrounding fields and returns them.
+    /// </summary>
+    /// <param name="game">Current game instance</param>
+    /// <param name="kingCoordinates">Coordinates of the king</param>
+    /// <param name="kingColor">Color of the king</param>
+    /// <returns>List of Coordinates of Fields, where a king could potentially move to</returns>
+    private static List<List<int>> GetListOfFieldsWhereKingCanMove(GameModel game, List<int> kingCoordinates, Color kingColor)
+    {
+        var output = new List<List<int>>();
+
+        var fieldOfKing = FieldHandler.GetSpecificFieldByCoordinates(game, kingCoordinates);
+
+        var kingMovePattern = new KingMovePatterns();
+
+        foreach (var pattern in kingMovePattern.Patterns)
+        {
+            output.AddRange(from move in pattern select StepExecutor.GoStepKing(move, game, fieldOfKing, kingColor) 
+                into potentialField where potentialField.X != fieldOfKing.X || potentialField.Y != fieldOfKing.Y
+                select new List<int> { potentialField.X, potentialField.Y });
+        }
+        
+        return output;
+    }
+
+    /// <summary>
+    /// Gets either the coordinates of the white or black king on the board.
+    /// </summary>
+    /// <param name="game">Current game object with board information</param>
+    /// <param name="kingColor">Color of the king which's coordinates should be returned.</param>
+    /// <returns>Coordinates of the requested king</returns>
+    private static List<int> GetKingCoordinates(GameModel game, Color kingColor)
+    {
+        var output = new List<int>();
+
+        foreach (var row in game.Board)
+        {
+            foreach (var field in row.Row)
+            {
+                if (IsKingOnThisField(game, new List<int> {field.X, field.Y}) &&
+                    field.Content!.Color == kingColor) output = new List<int> { field.X, field.Y };
+            }
+        }
+        return output;
     }
 }
 
