@@ -52,9 +52,8 @@ public class PlayingController : Controller
             .Include(model => model.Board).ThenInclude(row => row.Row).ThenInclude(field => field.Content)
             .Include(model => model.MoveHistory)
             .FirstAsync();
-
-        // TODO - Check if a player lost be checkmate
         
+        game = RulesExecutor.HasAPlayerLost(game);        
 
         var fieldSelectedCheckResult = FieldHandler.IsAFieldSelected(game);
         if (fieldSelectedCheckResult.IsThereSelectedField)

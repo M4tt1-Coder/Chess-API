@@ -57,6 +57,37 @@ public static class GameHandler
             game.Direction
         );
     }
+
+
+    /// <summary>
+    /// Executes all mandatory data modifications in the case one player won or the game ended in a draw.
+    /// </summary>
+    /// <param name="game">Current game instance</param>
+    /// <param name="winnerStatus">Indicates if a player won, the game ended in a draw or nothing happened.</param>
+    /// <returns>Updated game instance</returns>
+    /// <exception cref="ArgumentOutOfRangeException">When a invalid enum value was passed inside the game object.</exception>
+    public static GameModel ApplyChangesAfterGameEnded(GameModel game, Winner winnerStatus)
+    {
+        // set winner property
+        game.Winner = winnerStatus;
+        
+        switch (winnerStatus)
+        {
+            case Winner.Draw:
+            case Winner.Default:
+                break;
+            case Winner.PlayerOne:
+                game.PlayerOne.Score++;
+                break;
+            case Winner.PlayerTwo:
+                game.PlayerTwo.Score++;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(winnerStatus), winnerStatus, null);
+        }
+
+        return game;
+    }
     
     /// <summary>
     /// Prepares the game for a new game in the same game mode as the last round.

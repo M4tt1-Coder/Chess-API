@@ -424,7 +424,8 @@ public static class RulesExecutor
         // check if player one lost
         if (CheckChecker(game, game.PlayerOne.PieceColor))
         {
-            var checkResult = IsKingInCheck(game, GetKingCoordinates(game, game.PlayerOne.PieceColor),
+            var kingCoordinates = GetKingCoordinates(game, game.PlayerOne.PieceColor);
+            var checkResult = IsKingInCheck(game, kingCoordinates,
                 game.PlayerOne.PieceColor);
             
             // validate returned output
@@ -434,15 +435,57 @@ public static class RulesExecutor
                                     "King is in check but an attacking piece couldn't be found OR two different results have been returned!");
             }
 
-            // first try to move the king to a field where he is not in check anymore
-            // second try to throw the piece which checks the king
-            // third try to block the piece which checks the king
+            // first try to move the king to a field where he is not in check anymore (*)
+            // second try to throw the piece which checks the king (*)
+            // third try to block the piece which checks the king (*)
             // when all three cases are false -> player one has lost
+
+            var finalCheckResult = CanKingEscapeCheckByMoving(game, kingCoordinates, game.PlayerOne.PieceColor,
+                FieldsWhereKingIsAttacked(game, game.PlayerOne.PieceColor).GetAllAttackedFields()) 
+                                   || CanKingAvoidCheckByThrowingPiece(game, checkResult.AttackingPieceCoordinates!, game.PlayerOne.PieceColor) 
+                                   || CanAPieceBlockCheck(game, checkResult.AttackingPieceCoordinates!, game.PlayerOne.PieceColor, kingCoordinates);
+
+            if (!finalCheckResult)
+            {
+                // set winner
+                // set win score of successful player
+                game = GameHandler.ApplyChangesAfterGameEnded(game, Winner.PlayerTwo);
+            }
         }
         
         // check if player two lost
         if (CheckChecker(game, game.PlayerTwo.PieceColor))
         {
+            var kingCoordinates = GetKingCoordinates(game, game.PlayerTwo.PieceColor);
+            var checkResult = IsKingInCheck(game, kingCoordinates,
+                game.PlayerTwo.PieceColor);
+
+            // validate returned output
+            if (!checkResult.IsInCheck || checkResult.AttackingPieceCoordinates is null)
+            {
+                throw new Exception("In the check validation process an invalid result was returned! " +
+                                    "King is in check but an attacking piece couldn't be found OR two different results have been returned!");
+            }
+
+            // first try to move the king to a field where he is not in check anymore (*)
+            // second try to throw the piece which checks the king (*)
+            // third try to block the piece which checks the king (*)
+            // when all three cases are false -> player one has lost
+
+            var finalCheckResult = CanKingEscapeCheckByMoving(game, kingCoordinates, game.PlayerTwo.PieceColor,
+                                       FieldsWhereKingIsAttacked(game, game.PlayerTwo.PieceColor)
+                                           .GetAllAttackedFields())
+                                   || CanKingAvoidCheckByThrowingPiece(game, checkResult.AttackingPieceCoordinates!,
+                                       game.PlayerTwo.PieceColor)
+                                   || CanAPieceBlockCheck(game, checkResult.AttackingPieceCoordinates!,
+                                       game.PlayerTwo.PieceColor, kingCoordinates);
+
+            if (!finalCheckResult)
+            {
+                // set winner
+                // set win score of successful player
+                game = GameHandler.ApplyChangesAfterGameEnded(game, Winner.PlayerOne);
+            }
         }
 
         // return if no player has lost
@@ -451,6 +494,93 @@ public static class RulesExecutor
 
     // ----- Helper functions -----
 
+    /// <summary>
+    /// Determines, whether a piece can block a check of the king or not.
+    /// </summary>
+    /// <param name="game">Current game instance</param>
+    /// <param name="pieceCoordinates">Field, where the attacking piece is located</param>
+    /// <param name="kingColor">Color of the own king</param>
+    /// <param name="kingCoordinates">Coordinates of the field where the king is situated.</param>
+    /// <returns>True, when one own piece of the king in check can block the attack</returns>
+    private static bool CanAPieceBlockCheck(GameModel game, List<int> pieceCoordinates, Color kingColor, List<int> kingCoordinates)
+    {
+        var output = false;
+        var attackedFields = FieldsWhereKingIsAttacked(game, kingColor == Color.White ? Color.Black : Color.White);
+        var fieldsAttackedByPiece = new List<List<int>>();
+        var fieldOfPiece = FieldHandler.GetSpecificFieldByCoordinates(game, pieceCoordinates);
+        
+        // continue when there is no piece or the piece is an attacking pawn / knight -> they can't be blocked
+        if (fieldOfPiece.Content is null || fieldOfPiece.Content.Type == FigureType.Knight || 
+            fieldOfPiece.Content.Type == FigureType.Pawn)
+        {
+            return false;
+        }
+        
+        // determine fields that are attacked by the piece that checks the king
+        foreach (var attackedFieldsByPiece in attackedFields.CoveredFieldOfPieceObjects
+                     .Where(attackedFieldsByPiece => attackedFieldsByPiece.PieceCoordinates == pieceCoordinates))
+        {
+            fieldsAttackedByPiece = attackedFieldsByPiece.CoveredFields;
+        }
+        
+        // go through all own pieces and check if they can move to one of the fields
+        // that are attacked by the piece that checks the king
+        
+        foreach (var row in game.Board)
+        {
+            foreach (var field in row.Row)
+            {
+                // continue when there is no piece or the piece is of the opposite color
+                if (field.Content is null || field.Content.Color != kingColor) continue;
+
+                var allyPieceCoordinates = new List<int> { field.X, field.Y };
+                
+                // go through all fields that are attacked by the piece that checks the king
+                foreach(var potentialField in fieldsAttackedByPiece.Where(attackedField => MovingRules.CanPieceMoveToFieldWithCheck(game,
+                            allyPieceCoordinates, attackedField)))
+                {
+                    // move figure to field and see if the check was blocked
+                    var gameCopy = GameHandler.CopyGame(game);
+
+                    gameCopy = MoveFigureToField(gameCopy, allyPieceCoordinates, potentialField);
+                    
+                    // validate if the king is still in check
+                    var checkResult = IsKingInCheck(gameCopy, kingCoordinates, kingColor);
+
+                    if (!checkResult.IsInCheck)
+                    {
+                        output = true;
+                    }
+                }
+            }
+        }
+        
+        return output;
+    } 
+    
+    /// <summary>
+    /// Looks, if when a king is in Check, that one of his piece can throw the attacking piece.
+    /// </summary>
+    /// <param name="game">Current game instance</param>
+    /// <param name="pieceCoordinates">Coordinates of the attacking piece</param>
+    /// <param name="kingColor">Color of the king</param>
+    /// <returns>True, when the attacking piece can be thrown</returns>
+    private static bool CanKingAvoidCheckByThrowingPiece(GameModel game, List<int> pieceCoordinates, Color kingColor)
+    {
+        var output = false;
+        // just get all fields that are attacked by the kings own pieces
+        var allAttackedFields = FieldsWhereKingIsAttacked(game, kingColor == Color.White ? Color.Black : Color.White).GetAllAttackedFields();
+
+        // compare with pieceCoordinates
+        foreach (var _ in allAttackedFields.Where(field => field[0] == pieceCoordinates[0] && field[1] == pieceCoordinates[1] &&
+                                                               field[2] == pieceCoordinates[2]))
+        {
+            output = true;
+        }
+
+        return output;
+    }
+    
     /// <summary>
     /// In total there are 2 step execution methods for the king.
     ///

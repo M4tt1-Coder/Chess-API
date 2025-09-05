@@ -18,4 +18,19 @@ public static class FigureHandler
     {
         return new FigureModel(figure.Type, figure.Selected, figure.PictureSource, figure.Color, figure.FigureId);
     }
+    
+    // public static List<List<int>> AllFieldsAttackedByFigure(GameModel game, List<int> figureCoordinates)
+    // {
+    //     var output = new List<List<int>>();
+    //     var figureField = FieldHandler.GetSpecificFieldByCoordinates(game, figureCoordinates);
+    //     
+    //     if (figureField.Content is null)
+    //     {
+    //         Console.WriteLine("FigureHandler.AllFieldsAttackedByFigure: No figure on the given coordinates!");
+    //         return output;
+    //     }
+    //     
+    //     
+    //     
+    // }
 }
