@@ -1,7 +1,53 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@{
+}
 
-<div class="container-fluid flex items-center mx-auto" role="main">
-    
-</div>
+<main class="w-screen h-[80vh] flex items-center justify-center" onmouseenter="test()">
+    <div class="text-4xl text-white font-bold p-4 w-full h-full grid grid-rows-2 grid-cols-1 justify-items-center">
+        <!--That's the text what is shown.-->
+        <div class="p-1 grid grid-rows-1 grid-cols-4 gap-3">
+            <!--The 'Press' text part-->
+            <div class="p-2 flex items-center">
+                <p class="hover:animate-none press absolute">Press</p>
+            </div>
+            <!--The 'the' text part-->
+            <div class="p-2 flex items-center">
+                <p class="hover:animate-none the absolute">the</p>
+            </div>
+            <!--The 'button' text part-->
+            <div class="p-2 flex items-center">
+                <p class="hover:animate-none button-text absolute">button</p>
+            </div>
+            <!--The 'to ...' text part-->
+            <div class="p-2 flex items-center">
+                <p class="hover:animate-none to-text">to ...</p>
+            </div>
+            @* <p class=""> *@
+            @*     <span class="press absolute">Press</span> <span class="">the</span> <span class="">button</span> <span class="animate-spin">to</span> ... *@
+            @* </p> *@
+        </div>
+        <!--The starting button.-->
+        
+        <div class="p-1">
+            <button id="starting-button" class="hover:animate-none starting-btn bg-white p-4 rounded-lg text-black" type="button">
+                <a href="/settings/">Start</a>
+            </button>
+
+        </div>
+    </div>
+</main>
+<script>
+        function test() {
+                const startingButton = document.getElementById("starting-button");
+                
+                startingButton.classList.toggle("animate-str-btn");
+            
+                setTimeout(() => {
+                    startingButton.classList.toggle("animate-str-btn");
+                }, 6500)
+                
+                console.log("I am here trying to delete the class.")
+        }
+</script>

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="min-h-[100vh]">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,30 +7,34 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true"/>
 </head>
-<body class="bg-slate-800">
+<body class="bg-slate-800 font-mono scroll-smooth min-h-[100vh] w-screen relative">
 <header>
-    <nav class="navbar">
-        <div class="container-fluid">
-            <a class="" asp-area="" asp-controller="Home" asp-action="Index">Chess_API</a>
-            <button class="" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class=""></span>
-            </button>
+    <nav class="bg-white">
+        <div class="p-2 w-screen mb-3 flex items-center justify-center border-b-2 border-black">
+            <a class="p-1 font-mono text-2xl font-bold hover:underline rounded-lg border-sky-500 transition-all duration-500 hover:ring-1 decoration-2 decoration-sky-500 decoration-dotted underline-offset-2" asp-area="" asp-controller="Home" asp-action="Index">Chess_API</a>
         </div>
     </nav>
 </header>
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
-<footer class="">
-    <div class="">
-        &copy; 2023 - Chess_API - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+<main role="main" class="">
+    @RenderBody()
+</main>
+<footer class="w-screen fixed bottom-0 left-0">
+    <div class="bg-white rounded-lg shadow m-4">
+        <div
+            class="w-full mx-auto max-w-screen-xl p-4 grid grid-cols-1 justify-items-center sm:flex sm:items-center sm:justify-between">
+            <span class="text-sm text-gray-500 sm:text-center">
+                © 2024 - <a asp-area="" asp-controller="Home" asp-action="Index" class="hover:underline">Chess_API</a>. All Rights Reserved.
+            </span>
+            <ul
+                class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 sm:mt-0">
+                <li>
+                    <a class="hover:underline me-4 md:me-6" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>

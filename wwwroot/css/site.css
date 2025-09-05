@@ -1,3 +1,140 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+/*That's supposed to be animations for the starting page heading.*/
+/*'Press'*/
+.press {
+    transform-origin: center;
+    animation: press-ani 4s ease-in-out infinite;
+}
+
+@keyframes press-ani {
+    33% {
+        transform: rotate(-15deg);
+    }
+    66% {
+        transform: rotate(15deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+/*'the'*/
+.the {
+    transform-origin: center;
+    animation: the-ani 4s infinite ease-in-out;
+}
+
+@keyframes the-ani {
+    20% {
+        transform: translate(15px, 15px);
+    }
+    40% {
+        transform: translate(15px, -15px);
+    }
+    60% {
+        transform: translate(-15px, 15px);
+    }
+    80% {
+        transform: translate(-15px, -15px);
+    }
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
+/*'button'*/
+
+.button-text {
+    animation: button-text-ani 4s infinite ease-in-out;
+    transform-origin: center;
+}
+
+@keyframes button-text-ani {
+    33% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    66% {
+        transform: scale(0.75);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/*'to ...'*/
+
+.to-text {
+    animation: to-text-ani 4s infinite ease-in-out;
+    /*transition: 5s clip-path ease-in-out;*/
+    /*clip-path: circle(15% at center);*/
+
+}
+
+/*.to-text:hover {*/
+/*    clip-path: circle(75% at center);  */
+/*}*/
+
+@keyframes to-text-ani {
+    0%, 100% {
+        clip-path: circle(5% at bottom center);
+        /*clip-path: polygon(54% 100%, 64% 82%, 76% 73%, 87% 69%, 100% 68%, 100% 100%);*/
+    }
+
+    50% {
+        /*clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);*/
+        clip-path: circle(70% at center);
+    }
+}
+
+/*The starting button to proceed to the game settings.*/
+.animate-str-btn {
+    animation: animate-str-btn 6s ease-in-out forwards;
+    animation-iteration-count: 1;
+}
+
+.starting-btn {
+    transition: all 0.5s;
+    transform-origin: center;
+    clip-path: ellipse(50% 35% at center);
+}
+
+.starting-btn:hover {
+    clip-path: ellipse(70% 70% at center);
+}
+
+@keyframes animate-str-btn {
+    0%, 10% {
+        display: none;
+        transform: translate(-35vw, -35vh);
+    }
+
+    16.6%, 33.2%, 49.4%, 65.6%, 82.2%, 0%, 10% {
+        clip-path: ellipse(5% 5% at center);
+        color: white;
+    }
+    16.6% {
+        transform: translate(-35vw, -35vh);
+    }
+    
+    33.2% {
+        transform: translate(-30vw, -25vh);
+    }
+    
+    
+    49.4% {
+        transform: translate(-20vw, -15vh);
+    }
+    65.6% {
+        transform: translate(-10vw, -10vh);
+    }
+    82.2% {
+        transform: translate(0, 0);
+    }
+    100% {
+        clip-path: ellipse(50% 35% at center);
+    }
+}
