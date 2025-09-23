@@ -36,12 +36,12 @@ public class GameModel
     /// <summary>
     /// The actual game field the player interacts with.
     /// </summary>
-    public IList<FieldRowModel> Board { get; set; } = null!;
+    public List<FieldRowModel> Board { get; set; } = null!;
 
     /// <summary>
     /// List that contains all moves that have been made in the current game.
     /// </summary>
-    public IList<MoveModel> MoveHistory { get; set; } = null!;
+    public List<MoveModel> MoveHistory { get; set; } = null!;
     
     /// <summary>
     /// Counts how many rounds have been played in the specific playing mode.
@@ -68,7 +68,7 @@ public class GameModel
     /// </summary>
     public PlayerTurn PlayerTurn { get; set; }
     
-    public GameModel(PlayerModel playerOne, PlayerModel playerTwo, IList<FieldRowModel> board, int round,
+    public GameModel(PlayerModel playerOne, PlayerModel playerTwo, List<FieldRowModel> board, int round,
         PlayingMode mode, Winner winner, PlayingDirection playingDirection)
     {
         PlayerOne = playerOne;
@@ -93,7 +93,7 @@ public class GameModel
     /// A new list of <see cref="FieldRowModel"/> objects that represents the exact state of the original board,
     /// ensuring any modifications to the copied board do not affect the original board.
     /// </returns>
-    public IList<FieldRowModel> CopyBoard()
+    public List<FieldRowModel> CopyBoard()
     {
         var copiedBoard = new List<FieldRowModel>();
 

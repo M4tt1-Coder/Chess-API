@@ -1,12 +1,11 @@
-using System.Collections.ObjectModel;
 using Chess_API.Enums;
 using Chess_API.Models;
 using Chess_API.MovePatterns;
 using Chess_API.Rules;
+using Chess_API.utils.Handlers;
 using Chess_API.utils.UtilTypes;
-using Microsoft.AspNetCore.Components.Forms;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Executors;
 
 /// <summary>
 /// Global rule endpoint.
@@ -48,7 +47,7 @@ public static class RulesExecutor
                 new List<int>() { newField.X, newField.Y })) return game;
         
         // add the move to the history
-        MoveHistoryManager.AddMove(game, new MoveModel(game.MoveHistory.Count + 1, currentFieldFigureId,
+        MoveHistoryHandler.AddMove(game, new MoveModel(game.MoveHistory.Count + 1, currentFieldFigureId,
             new List<int> { curField.X, curField.Y }, new List<int> { newField.X, newField.Y },
             PlayerHandler.GetPlayerIdOnTurn(game)));
         // modify who's turn it is
@@ -119,14 +118,14 @@ public static class RulesExecutor
     /// Figures of the opposite color doesn't matter.
     ///
     /// Iterates through all fields on the board -> when a piece of the opposite color is on the current field
-    /// -> all field that are attacked by it will be added to the coordinates list
+    /// -> all fields that are attacked by it will be added to the coordinate list
     ///
     /// Fails when the 'field' attribute is null.
     ///
-    /// Helps determining, where a king of one color is in a check or where he can move.
+    /// Helps to determine where a king of one color is in a check or where he can move.
     /// </summary>
     /// <param name="game">Current game instance</param>
-    /// <param name="kingColor">Either white /  black : Color of the king</param>
+    /// <param name="kingColor">Either white / black : Color of the king</param>
     /// <returns>List record with all attacked fields</returns>
     private static AttackedFieldsList FieldsWhereKingIsAttacked(GameModel game, Color kingColor)
     {
@@ -140,7 +139,7 @@ public static class RulesExecutor
         {
             foreach (var field in row.Row)
             {
-                // Simply continue the iteration when: there is now figure || the figure is of the same color as the king
+                // continue the iteration when: there is now figure || the figure is of the same color as the king
                 if (field.Content is null || field.Content.Color == kingColor) continue;
                 
                 // Piece coordinates
@@ -158,7 +157,7 @@ public static class RulesExecutor
                 switch (field.Content.Type)
                 { 
                     case FigureType.Pawn:
-                        // for pawns I need to know in which direction they are turned to 
+                        // for pawns, I need to know in which direction they are turned to 
                         switch(game.Direction)
                         {
                             case PlayingDirection.WhiteTop:
@@ -412,11 +411,22 @@ public static class RulesExecutor
 
         return new AttackedFieldsList(associatedWithPiece);
     }
-
-    // TODO - Implement the function that checks if a player has lost
     
-    public static GameModel HasAPlayerLost(GameModel game)
+    /// <summary>
+    /// Checks if one of the players lost and then applies modifications to the active game instance.
+    /// </summary>
+    /// <param name="game">Current game instance</param>
+    /// <returns>Updated game object after executing all necessary checks.</returns>
+    /// <exception cref="Exception">When functions return invalid data or fail the work properly.</exception>
+    public static GameModel HasGameEnded(GameModel game)
     {
+        // validate if the game ended in a draw this round
+        if (PlayerHandler.CanNotMakeAMoveAnymore(game))
+        {
+            game = GameHandler.ApplyChangesAfterGameEnded(game, Winner.Draw);
+            return game;
+        }
+        
         // check if an own piece of the kings color can throw the piece which checks the king
         // when the king is in check -> check if he can move to a field where he is not in check anymore
         // when the king is in check -> check if a piece can stop 
@@ -435,11 +445,6 @@ public static class RulesExecutor
                                     "King is in check but an attacking piece couldn't be found OR two different results have been returned!");
             }
 
-            // first try to move the king to a field where he is not in check anymore (*)
-            // second try to throw the piece which checks the king (*)
-            // third try to block the piece which checks the king (*)
-            // when all three cases are false -> player one has lost
-
             var finalCheckResult = CanKingEscapeCheckByMoving(game, kingCoordinates, game.PlayerOne.PieceColor,
                 FieldsWhereKingIsAttacked(game, game.PlayerOne.PieceColor).GetAllAttackedFields()) 
                                    || CanKingAvoidCheckByThrowingPiece(game, checkResult.AttackingPieceCoordinates!, game.PlayerOne.PieceColor) 
@@ -454,7 +459,7 @@ public static class RulesExecutor
         }
         
         // check if player two lost
-        if (CheckChecker(game, game.PlayerTwo.PieceColor))
+        if (!CheckChecker(game, game.PlayerTwo.PieceColor)) return game;
         {
             var kingCoordinates = GetKingCoordinates(game, game.PlayerTwo.PieceColor);
             var checkResult = IsKingInCheck(game, kingCoordinates,
@@ -493,7 +498,7 @@ public static class RulesExecutor
     }
 
     // ----- Helper functions -----
-
+    
     /// <summary>
     /// Determines, whether a piece can block a check of the king or not.
     /// </summary>

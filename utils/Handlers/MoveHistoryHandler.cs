@@ -1,13 +1,13 @@
 using Chess_API.Models;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Handlers;
 
 /// <summary>
 /// Regulates every action that is related to the move history.
 ///
 /// Provides all functions to add, remove and get moves from the history.
 /// </summary>
-public static class MoveHistoryManager
+public static class MoveHistoryHandler
 {
  /// <summary>
  /// Checks if a move is valid and adds it to the move history.

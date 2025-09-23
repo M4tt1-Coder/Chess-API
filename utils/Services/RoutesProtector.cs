@@ -1,6 +1,6 @@
 using Chess_API.Models;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Services;
 
 /// <summary>
 /// Is an API service for the app middleware that includes all necessary

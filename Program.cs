@@ -1,5 +1,6 @@
 using Chess_API.utils;
 using Chess_API.Database;
+using Chess_API.utils.Services;
 
 //Initialize the environment variables loading
 var root = Directory.GetCurrentDirectory();

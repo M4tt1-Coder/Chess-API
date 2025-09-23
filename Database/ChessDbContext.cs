@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Chess_API.Models;
 using Chess_API.utils;
+using Chess_API.utils.Handlers;
 
 namespace Chess_API.Database;
 

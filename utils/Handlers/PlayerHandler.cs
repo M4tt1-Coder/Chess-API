@@ -1,7 +1,7 @@
 using Chess_API.Enums;
 using Chess_API.Models;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Handlers;
 
 /// <summary>
 /// Represents a utility class that is responsible for handling player-related
@@ -15,6 +15,32 @@ namespace Chess_API.utils;
 /// </remarks>
 public static class PlayerHandler
 {
+    /// <summary>
+    /// Checks if the current player can make a move.
+    /// </summary>
+    /// <param name="game">The current Game instance</param>
+    /// <returns>TRUE, in the case that the player can't move any figure anymore.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">An invalid enum value was provided.</exception>
+    public static bool CanNotMakeAMoveAnymore(GameModel game)
+    {
+        var output = true;
+        
+        // cover cases when the player one or player two need to move in the next round
+        switch (game.PlayerTurn)
+        {
+            case PlayerTurn.White:
+                // go through all pieces and look if the figure can move -> output = false
+                if (!FigureHandler.OneOrMorePiecesCanMove(game, Color.White)) output = false;
+                break;
+            case PlayerTurn.Black:
+                if (!FigureHandler.OneOrMorePiecesCanMove(game, Color.Black)) output = false;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException("game", "Invalid player turn state.");
+        }
+        return output;
+    }
+    
     /// <summary>
     /// Creates a new instance of the <see cref="PlayerModel"/> class by copying the data
     /// from an existing player instance.

@@ -1,4 +1,4 @@
-namespace Chess_API.utils;
+namespace Chess_API.utils.Services;
 
 /// <summary>
 /// Contains helper functions to convert different datatypes to other necessary types.

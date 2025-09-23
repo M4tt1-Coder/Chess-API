@@ -1,4 +1,4 @@
-namespace Chess_API.utils;
+namespace Chess_API.utils.Services;
 
 /// <summary>
 /// Holds all picture sources to pass them through methods to the frontend pages.

@@ -1,7 +1,7 @@
 using Chess_API.Enums;
 using Chess_API.Models;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Handlers;
 
 /// <summary>
 /// At the beginning of a game, it will provide a default settings game-object.

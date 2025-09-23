@@ -2,6 +2,9 @@ using Chess_API.Database;
 using Chess_API.Enums;
 using Chess_API.Models;
 using Chess_API.utils;
+using Chess_API.utils.Executors;
+using Chess_API.utils.Handlers;
+using Chess_API.utils.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,7 +56,7 @@ public class PlayingController : Controller
             .Include(model => model.MoveHistory)
             .FirstAsync();
         
-        game = RulesExecutor.HasAPlayerLost(game);        
+        game = RulesExecutor.HasGameEnded(game);        
 
         var fieldSelectedCheckResult = FieldHandler.IsAFieldSelected(game);
         if (fieldSelectedCheckResult.IsThereSelectedField)

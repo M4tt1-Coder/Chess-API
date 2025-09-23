@@ -1,7 +1,8 @@
 using Chess_API.Enums;
 using Chess_API.Models;
+using Chess_API.utils.Services;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Handlers;
 
 /// <summary>
 /// Its function is to provide a chess-field

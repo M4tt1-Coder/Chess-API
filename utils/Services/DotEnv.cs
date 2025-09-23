@@ -1,4 +1,4 @@
-namespace Chess_API.utils;
+namespace Chess_API.utils.Services;
 
 /// <summary>
 /// Loads all static environment variables from .env into the .NET environment.

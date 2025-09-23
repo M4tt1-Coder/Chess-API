@@ -1,8 +1,10 @@
 using Chess_API.Enums;
 using Chess_API.Interfaces;
 using Chess_API.Models;
+using Chess_API.Rules;
+using Chess_API.utils.Handlers;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Executors;
 
 /// <summary>
 /// Includes all methods to execute a step of a figure.
@@ -101,7 +103,7 @@ public static class StepExecutor
                             case 2:
                             {
                                 // check if the pawn has already been moved
-                                if(MoveHistoryManager.HasPieceAlreadyMoved(game.MoveHistory, piece.FigureId))
+                                if(MoveHistoryHandler.HasPieceAlreadyMoved(game.MoveHistory, piece.FigureId))
                                 {
                                     break;
                                 }
@@ -713,5 +715,115 @@ public static class StepExecutor
         }
 
         return output;
+    }
+    
+    /// <summary>
+    /// Validates if a piece can make a move and returns the result.
+    /// </summary>
+    /// <param name="game">The current Game instance</param>
+    /// <param name="pieceCoordinates">The coordinates of the field where the figure is placed.</param>
+    /// <returns>The test result if a piece can move or not.</returns>
+    /// <exception cref="Exception">When mandatory data is not provided or any error occured</exception>
+    public static bool TestIfPieceCanMakeAMove(GameModel game, List<int> pieceCoordinates)
+    {
+        var fieldOfPiece = FieldHandler.GetSpecificFieldByCoordinates(game, pieceCoordinates);
+
+        if (fieldOfPiece.Content is null) throw new BadHttpRequestException("Considered field with figure on it, is empty!");
+        
+        // determine move pattern
+        var movePattern = MovingRules.DetermineMovePatternsByFigureType(fieldOfPiece.Content.Type);
+        
+        // check if the piece is present
+        if (movePattern.AreMovesInfinite)
+        {
+            foreach (var pattern in movePattern.Patterns)
+            {
+                foreach (var move in pattern)
+                {
+                    var nextField = FieldHandler.CopyField(fieldOfPiece);
+
+                    // go one step before entering the loop -------
+                    nextField = GoStepStraight(move, game, nextField, 
+                        fieldOfPiece.Content.Color, true);
+                    
+                    // also check if the first step was on the destination field
+                    if (nextField != fieldOfPiece)
+                    {
+                        return true;
+                    }
+                }
+            }    
+        }
+        else
+        {
+            var piece = fieldOfPiece.Content!;
+            foreach (var pattern in movePattern.Patterns)
+            {
+                switch (piece.Type)
+                {
+                    case FigureType.Pawn:
+                        // ReSharper disable once PossibleMultipleEnumeration
+                        if (pattern.Count() == 2)
+                        {
+                            if (MoveHistoryHandler.HasPieceAlreadyMoved(game.MoveHistory, piece.FigureId))
+                            {
+                                break;
+                            }
+
+                            var nextField = FieldHandler.CopyField(fieldOfPiece);
+                            // ReSharper disable once PossibleMultipleEnumeration
+                            foreach (var move in pattern)
+                            {
+                                nextField = GoStepPawn(move, game, nextField, piece.Color);
+                                if (nextField != fieldOfPiece)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // ReSharper disable once PossibleMultipleEnumeration
+                            if (pattern.Select(move => GoStepPawn(move, game, FieldHandler.CopyField(fieldOfPiece),
+                                    piece.Color)).Any(nextField => nextField != fieldOfPiece))
+                            {
+                                return true;
+                            }
+                        }
+
+                        break;
+                    case FigureType.Knight:
+                    {
+                        var nextField = FieldHandler.CopyField(fieldOfPiece);
+                        var stepCounter = 0;
+
+                        foreach (var move in pattern)
+                        {
+                            var previous = nextField;
+                            nextField = GoStepKnight(move, game, nextField, piece.Color);
+                            stepCounter++;
+                            if (nextField != fieldOfPiece && previous != nextField && stepCounter == 2)
+                            {
+                                return true;
+                            }
+                        }
+
+                        break;
+                    }
+                    case FigureType.King:
+                    {
+                        if (pattern.Select(move => GoStepKing(move, game, FieldHandler.CopyField(fieldOfPiece), piece.Color))
+                            .Any(nextField => nextField != fieldOfPiece))
+                        {
+                            return true;
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

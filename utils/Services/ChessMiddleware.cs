@@ -1,7 +1,7 @@
 using Chess_API.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Services;
 
 /// <summary>
 /// Contains a middleware pipeline component function.

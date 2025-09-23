@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Chess_API.Enums;
 using Chess_API.utils;
+using Chess_API.utils.Handlers;
 
 namespace Chess_API.Models;
 
