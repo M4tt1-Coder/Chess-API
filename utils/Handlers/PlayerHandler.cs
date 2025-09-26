@@ -24,23 +24,25 @@ public static class PlayerHandler
     public static bool CanNotMakeAMoveAnymore(GameModel game)
     {
         var output = false;
-        
+
         // cover cases when the player one or player two need to move in the next round
         switch (game.PlayerTurn)
         {
             case PlayerTurn.White:
                 // go through all pieces and look if the figure can move -> output = false
-                if (!FigureHandler.OneOrMorePiecesCanMove(game, Color.White)) output = true;
+                if (!FigureHandler.OneOrMorePiecesCanMove(game, Color.White))
+                    output = true;
                 break;
             case PlayerTurn.Black:
-                if (!FigureHandler.OneOrMorePiecesCanMove(game, Color.Black)) output = true;
+                if (!FigureHandler.OneOrMorePiecesCanMove(game, Color.Black))
+                    output = true;
                 break;
             default:
                 throw new ArgumentOutOfRangeException("game", "Invalid player turn state.");
         }
         return output;
     }
-    
+
     /// <summary>
     /// Creates a new instance of the <see cref="PlayerModel"/> class by copying the data
     /// from an existing player instance.
@@ -49,14 +51,9 @@ public static class PlayerHandler
     /// <returns>A new <see cref="PlayerModel"/> instance with the same data as the provided player.</returns>
     public static PlayerModel CopyPlayer(PlayerModel player)
     {
-        return new PlayerModel(
-            player.StartingTime,
-            player.Name,
-            player.Score,
-            player.PieceColor
-        );
+        return new PlayerModel(player.StartingTime, player.Name, player.Score, player.PieceColor);
     }
-    
+
     /// <summary>
     /// Determines the ID of the player whose turn it currently is in the provided game instance.
     /// </summary>
@@ -72,7 +69,7 @@ public static class PlayerHandler
             PlayerTurn.Black => game.PlayerOne.PieceColor == Color.Black
                 ? game.PlayerOne.PlayerId
                 : game.PlayerTwo.PlayerId,
-            _ => throw new Exception("Invalid player turn state.")
+            _ => throw new Exception("Invalid player turn state."),
         };
     }
 
@@ -84,6 +81,4 @@ public static class PlayerHandler
     {
         game.PlayerTurn = game.PlayerTurn == PlayerTurn.White ? PlayerTurn.Black : PlayerTurn.White;
     }
-
-    
 }

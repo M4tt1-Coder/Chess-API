@@ -34,7 +34,7 @@ public class PlayerModel
     /// Is null when the player chose a time mode.
     /// </summary>
     public TimeSpan? StartingTime { get; set; }
-    
+
     //public double? Seconds { get; set; }
 
     /// <summary>
@@ -63,11 +63,8 @@ public class PlayerModel
         Pieces = new List<FigureModel>();
         Name = name;
     }
-    
 
-    public PlayerModel()
-    {
-    }
+    public PlayerModel() { }
 
     /// <summary>
     /// Prepares a player for a new game by setting their starting time
@@ -76,10 +73,10 @@ public class PlayerModel
     /// <param name="timeMode">The time mode selected for the game that determines the player's starting time.</param>
     public void PrepPlayerForNewGame(PlayTimeMode timeMode)
     {
-        // starting time 
+        // starting time
         StartingTime = GameHandler.GetPlayerStartingTime(timeMode);
         // pieces
-        Pieces = new List<FigureModel>();  
+        Pieces = new List<FigureModel>();
         // piece color
         PieceColor = PieceColor == Color.White ? Color.Black : Color.White;
     }

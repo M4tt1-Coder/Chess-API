@@ -24,9 +24,7 @@ public record AttackedFieldsList(List<CoveredFieldOfPieceObjects> CoveredFieldOf
         {
             output.AddRange(element.CoveredFields);
         }
-        
+
         return output;
     }
 }
-
-

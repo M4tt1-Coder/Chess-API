@@ -18,7 +18,7 @@ public static class FigureHandler
     /// <returns>A new <see cref="FigureModel"/> instance that is a duplicate of the input figure.</returns>
     public static FigureModel CopyFigure(FigureModel figure)
     {
-        return new FigureModel(figure.Type, figure.Selected, figure.PictureSource, figure.Color, figure.FigureId);
+        return new FigureModel(figure.Type, figure.PictureSource, figure.Color, figure.FigureId);
     }
 
     /// <summary>
@@ -32,9 +32,15 @@ public static class FigureHandler
         // iterate over the fields
         foreach (var singleField in game.Board.SelectMany(row => row.Row))
         {
-            if (singleField.Content is null || singleField.Content.Color == pieceColorToConsider) continue;
-                
-            if (StepExecutor.TestIfPieceCanMakeAMove(game, new List<int> { singleField.X, singleField.Y }))
+            if (singleField.Content is null || singleField.Content.Color == pieceColorToConsider)
+                continue;
+
+            if (
+                StepExecutor.TestIfPieceCanMakeAMove(
+                    game,
+                    new List<int> { singleField.X, singleField.Y }
+                )
+            )
             {
                 return true;
             }

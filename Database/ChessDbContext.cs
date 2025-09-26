@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using Chess_API.Models;
 using Chess_API.utils;
 using Chess_API.utils.Handlers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chess_API.Database;
 
@@ -17,22 +17,22 @@ public class ChessDbContext : DbContext
     /// Table for all figures on the board.
     /// </summary>
     public required DbSet<FigureModel> Figures { get; set; }
-    
+
     /// <summary>
     /// Table for the fields.
     /// </summary>
     public required DbSet<FieldModel> Fields { get; set; }
-    
+
     /// <summary>
     /// Table for the single field rows.
     /// </summary>
     public required DbSet<FieldRowModel> FieldRows { get; set; }
-    
+
     /// <summary>
     /// Table for the player objects.
     /// </summary>
     public required DbSet<PlayerModel> Players { get; set; }
-    
+
     /// <summary>
     /// Table for the game object.
     /// </summary>
@@ -42,7 +42,7 @@ public class ChessDbContext : DbContext
     /// History of all moves in the current round.
     /// </summary>
     public required DbSet<MoveModel> Moves { get; set; }
-    
+
     /// <summary>
     /// Adds the database service to the dependency injection.
     /// </summary>
@@ -66,7 +66,7 @@ public class ChessDbContext : DbContext
 
         await this.SaveChangesAsync();
     }
-    
+
     /// <summary>
     /// Gets the first object in the game table.
     ///

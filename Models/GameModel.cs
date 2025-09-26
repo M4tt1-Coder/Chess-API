@@ -15,13 +15,13 @@ public class GameModel
     /// of the board.
     /// </summary>
     public PlayingDirection Direction { get; set; }
-    
+
     /// <summary>
     /// Represents the identifier of the current game instance in the database.
     /// </summary>
     [Key]
     public int GameId { get; set; }
-    
+
     /// <summary>
     /// Stands for the player who is everytime a person not dependent on the game mode.
     /// </summary>
@@ -42,7 +42,7 @@ public class GameModel
     /// List that contains all moves that have been made in the current game.
     /// </summary>
     public List<MoveModel> MoveHistory { get; set; } = null!;
-    
+
     /// <summary>
     /// Counts how many rounds have been played in the specific playing mode.
     /// </summary>
@@ -67,9 +67,16 @@ public class GameModel
     /// Specifies which player's turn it currently is in the game.
     /// </summary>
     public PlayerTurn PlayerTurn { get; set; }
-    
-    public GameModel(PlayerModel playerOne, PlayerModel playerTwo, List<FieldRowModel> board, int round,
-        PlayingMode mode, Winner winner, PlayingDirection playingDirection)
+
+    public GameModel(
+        PlayerModel playerOne,
+        PlayerModel playerTwo,
+        List<FieldRowModel> board,
+        int round,
+        PlayingMode mode,
+        Winner winner,
+        PlayingDirection playingDirection
+    )
     {
         PlayerOne = playerOne;
         PlayerTwo = playerTwo;
@@ -79,12 +86,10 @@ public class GameModel
         Winner = winner;
         Direction = playingDirection;
         PlayerTurn = PlayerTurn.White;
-        MoveHistory = new List<MoveModel>() {};
+        MoveHistory = new List<MoveModel>() { };
     }
 
-    public GameModel()
-    {
-    }
+    public GameModel() { }
 
     /// <summary>
     /// Creates a deep copy of the current state of the chessboard represented by a list of <see cref="FieldRowModel"/>.
@@ -99,18 +104,17 @@ public class GameModel
 
         foreach (var row in Board)
         {
-            var copiedRow = new FieldRowModel
-            {
-                Row = new List<FieldModel>()
-            };
+            var copiedRow = new FieldRowModel { Row = new List<FieldModel>() };
 
             foreach (var field in row.Row)
             {
-                copiedRow.Row.Add(new FieldModel(field.Color, field.Content, field.X, field.Y)
-                {
-                    MovableField = field.MovableField,
-                    SelectedField = field.SelectedField
-                });
+                copiedRow.Row.Add(
+                    new FieldModel(field.Color, field.Content, field.X, field.Y)
+                    {
+                        MovableField = field.MovableField,
+                        SelectedField = field.SelectedField,
+                    }
+                );
             }
 
             copiedBoard.Add(copiedRow);

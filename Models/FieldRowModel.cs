@@ -15,7 +15,7 @@ public class FieldRowModel
     /// The identifier for a row.
     ///
     /// Represents the number in the playing field in which the row sits
-    /// 
+    ///
     /// Can't be null.
     /// </summary>
     [Key]
@@ -26,7 +26,7 @@ public class FieldRowModel
     /// </summary>
     [Required]
     public int RowNumber { get; set; }
-    
+
     /// <summary>
     /// Stores all fields in the row.
     ///
@@ -41,7 +41,5 @@ public class FieldRowModel
         Row = row;
     }
 
-    public FieldRowModel()
-    {
-    }
+    public FieldRowModel() { }
 }

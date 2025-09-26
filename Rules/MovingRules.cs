@@ -23,8 +23,11 @@ public static class MovingRules
     /// <param name="pieceCoordinates">Current coordinates of the piece</param>
     /// <param name="destinationCoordinates">Field coordinates of the new field</param>
     /// <returns>True, when the piece theoretically can move to a new field.</returns>
-    private static bool CanPieceMoveToField(GameModel game, List<int> pieceCoordinates,
-        List<int> destinationCoordinates)
+    private static bool CanPieceMoveToField(
+        GameModel game,
+        List<int> pieceCoordinates,
+        List<int> destinationCoordinates
+    )
     {
         // simple look if the piece can move to that field using its move patterns
         // check if a piece (of both colors) is in the way
@@ -39,7 +42,7 @@ public static class MovingRules
         var destField = game.Board[destinationCoordinates[1]].Row[destinationCoordinates[0]];
         // execute pattern
         var movePattern = MovingRules.DetermineMovePatternsByFigureType(piece.Type);
-        
+
         // return
         return StepExecutor.ExecuteMovePattern(game, movePattern, curField, destField, piece.Type);
     }
@@ -54,7 +57,11 @@ public static class MovingRules
     /// <param name="pieceCoordinates">The coordinates of a field on which a specific piece is supposed to move.</param>
     /// <param name="newCoordinates">Coordinates of the new field</param>
     /// <returns>If a piece can take a field where another piece is situated.</returns>
-    public static bool CanPieceMoveToFieldWithCheck(GameModel game, List<int> pieceCoordinates, List<int> newCoordinates)
+    public static bool CanPieceMoveToFieldWithCheck(
+        GameModel game,
+        List<int> pieceCoordinates,
+        List<int> newCoordinates
+    )
     {
         // the field where is supposed to be can't be empty
         if (game.Board[pieceCoordinates[1]].Row[pieceCoordinates[0]].Content is null)
@@ -66,7 +73,12 @@ public static class MovingRules
         var canMove = CanPieceMoveToField(game, pieceCoordinates, newCoordinates);
         // check if the own king would be in check
         var figureColor = game.Board[pieceCoordinates[1]].Row[pieceCoordinates[0]].Content!.Color;
-        var kingInCheck = RulesExecutor.CheckChecker(game,figureColor, pieceCoordinates, newCoordinates);
+        var kingInCheck = RulesExecutor.CheckChecker(
+            game,
+            figureColor,
+            pieceCoordinates,
+            newCoordinates
+        );
         if (canMove && !kingInCheck)
         {
             output = true;
@@ -90,7 +102,7 @@ public static class MovingRules
             FigureType.Rook => new RookMovePattern(),
             FigureType.Queen => new QueenMovePatterns(),
             FigureType.King => new KingMovePatterns(),
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null),
         };
     }
 }

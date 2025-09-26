@@ -6,7 +6,7 @@ namespace Chess_API.Database;
 
 /// <summary>
 /// Its purpose is to be there as entity class for the in-memory database.
-/// 
+///
 /// Biggest instance in the type tree.
 ///
 /// Represents the whole game.

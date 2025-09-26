@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSettingsPageId&quot;
+  <component name="PropertiesComponent"
+    >{
+  "keyToString": {
+    "settings.editor.selected.configurable": "AndroidSettingsPageId"
   }
-}</component>
+}</component
+  >
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <created>1693944351632</created>

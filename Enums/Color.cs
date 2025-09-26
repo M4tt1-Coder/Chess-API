@@ -6,5 +6,5 @@ namespace Chess_API.Enums;
 public enum Color
 {
     White,
-    Black
+    Black,
 }

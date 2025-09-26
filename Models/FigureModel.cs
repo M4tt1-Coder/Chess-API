@@ -20,7 +20,7 @@ public class FigureModel
     /// </summary>
     [Key]
     public int FigureId { get; set; }
-    
+
     /// <summary>
     /// Defines type of piece through an enum.
     /// </summary>
@@ -34,35 +34,25 @@ public class FigureModel
     public string PictureSource { get; set; } = null!;
 
     /// <summary>
-    /// Shows if the user has clicked on a field with a piece of his color.
-    /// Should enable an appearance of possible movements on the board.
-    /// </summary>
-    public bool Selected { get; set; }
-
-    /// <summary>
     /// Property to declare the color of the figure.
     /// </summary>
     [Required]
     public Color Color { get; set; }
 
-    public FigureModel(FigureType type, bool selected, string pictureSource, Color color)
+    public FigureModel(FigureType type, string pictureSource, Color color)
     {
         Type = type;
-        Selected = selected;
         PictureSource = pictureSource;
         Color = color;
     }
 
-    public FigureModel(FigureType type, bool selected, string pictureSource, Color color, int figureId)
+    public FigureModel(FigureType type, string pictureSource, Color color, int figureId)
     {
         FigureId = figureId;
         Type = type;
-        Selected = selected;
         PictureSource = pictureSource;
         Color = color;
     }
-    
-    public FigureModel()
-    {
-    }
+
+    public FigureModel() { }
 }

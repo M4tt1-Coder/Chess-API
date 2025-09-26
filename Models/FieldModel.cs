@@ -25,7 +25,7 @@ public class FieldModel
     /// </summary>
     [Key]
     public int FieldId { get; init; }
-    
+
     /// <summary>
     /// As in the figure class, these stands for color of the field.
     /// </summary>
@@ -36,7 +36,7 @@ public class FieldModel
     /// The property can have two states:
     /// 1.) Hold nothing
     /// 2.) Include a piece of every type.
-    /// </summary> 
+    /// </summary>
     public FigureModel? Content { get; set; }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class FieldModel
     /// </summary>
     [Required]
     public int X { get; set; }
-    
+
     /// <summary>
     /// The Y ordinate of the field.
     /// </summary>
@@ -55,12 +55,12 @@ public class FieldModel
     /// Is TRUE when the user can move a piece to this field.
     /// </summary>
     public bool MovableField { get; set; }
-    
+
     /// <summary>
     /// Is TRUE when the user selected this field.
     /// </summary>
     public bool SelectedField { get; set; }
-    
+
     public FieldModel(Color color, FigureModel? content, int x, int y)
     {
         Color = color;
@@ -71,7 +71,5 @@ public class FieldModel
         Y = y;
     }
 
-    public FieldModel()
-    {
-    }
+    public FieldModel() { }
 }

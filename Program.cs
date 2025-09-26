@@ -1,5 +1,5 @@
-using Chess_API.utils;
 using Chess_API.Database;
+using Chess_API.utils;
 using Chess_API.utils.Services;
 
 //Initialize the environment variables loading
@@ -40,8 +40,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Resources;
-using Microsoft.AspNetCore.Mvc;
 using Chess_API.Database;
 using Chess_API.Models;
 using Chess_API.utils;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chess_API.Controllers;
@@ -30,11 +30,11 @@ public class HomeController : Controller
         return View();
     }
 
-    
-    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(
+            new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }
+        );
     }
 }

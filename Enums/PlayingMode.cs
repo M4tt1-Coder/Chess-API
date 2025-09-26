@@ -14,10 +14,13 @@ public enum PlayingMode
 {
     [Display(Name = "User vs User")]
     UserVsUserLocal,
+
     [Display(Name = "User vs AI")]
     UserVsAi,
+
     [Display(Name = "User vs User (online)")]
     UserVsUserOnline,
+
     [Display(Name = "Not Set")]
-    Default
+    Default,
 }

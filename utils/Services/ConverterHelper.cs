@@ -16,7 +16,7 @@ public static class ConverterHelper
     {
         return input.Split(',').Select(int.Parse).ToList();
     }
-    
+
     /// <summary>
     /// Creates a string out of a list of integers.
     /// </summary>

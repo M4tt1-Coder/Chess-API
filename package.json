@@ -1,15 +1,15 @@
 {
   "name": "ChessAPI",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A C# UI browser with ambitions to run with AI!",
   "scripts": {
+    "format": "csharpier format .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "css:build": "npx @tailwindcss/cli -i ./wwwroot/css/site.css -o ./wwwroot/css/styles.css --minify"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Matthis Geißler <matthisgeissler@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "tailwindcss": "^4.1.13"
   },

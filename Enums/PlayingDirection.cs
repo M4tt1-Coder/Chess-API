@@ -7,5 +7,5 @@ namespace Chess_API.Enums;
 public enum PlayingDirection
 {
     WhiteTop,
-    WhiteBottom
+    WhiteBottom,
 }
