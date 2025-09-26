@@ -58,6 +58,13 @@ public class PlayingController : Controller
         
         game = RulesExecutor.HasGameEnded(game);        
 
+        // immediately return if the game has ended
+        if (game.Winner is not Winner.Default)
+        {
+            await _context.SaveChangesAsync();
+            return Redirect("/playing");
+        }
+        
         var fieldSelectedCheckResult = FieldHandler.IsAFieldSelected(game);
         if (fieldSelectedCheckResult.IsThereSelectedField)
         {

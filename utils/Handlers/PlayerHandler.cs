@@ -23,17 +23,17 @@ public static class PlayerHandler
     /// <exception cref="ArgumentOutOfRangeException">An invalid enum value was provided.</exception>
     public static bool CanNotMakeAMoveAnymore(GameModel game)
     {
-        var output = true;
+        var output = false;
         
         // cover cases when the player one or player two need to move in the next round
         switch (game.PlayerTurn)
         {
             case PlayerTurn.White:
                 // go through all pieces and look if the figure can move -> output = false
-                if (!FigureHandler.OneOrMorePiecesCanMove(game, Color.White)) output = false;
+                if (!FigureHandler.OneOrMorePiecesCanMove(game, Color.White)) output = true;
                 break;
             case PlayerTurn.Black:
-                if (!FigureHandler.OneOrMorePiecesCanMove(game, Color.Black)) output = false;
+                if (!FigureHandler.OneOrMorePiecesCanMove(game, Color.Black)) output = true;
                 break;
             default:
                 throw new ArgumentOutOfRangeException("game", "Invalid player turn state.");
