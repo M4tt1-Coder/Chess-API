@@ -1,6 +1,7 @@
 using Chess_API.Database;
 using Chess_API.Models;
 using Chess_API.utils;
+using Chess_API.utils.Handlers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,12 +42,20 @@ public class SettingsController : Controller
     [Route("settings/options/save")]
     public async Task<IActionResult> SaveGameOptions([FromForm] GameModel gameModel) //using [FromBody] didn't work
     {
-        var game = await _context.Game.Include(model => model.PlayerOne)
-            .Include(model => model.PlayerTwo).FirstAsync();
+        var game = await _context
+            .Game.Include(model => model.PlayerOne)
+            .Include(model => model.PlayerTwo)
+            .FirstAsync();
 
         //Apply props that have been changed by the user.
-        game.ApplyUserChanges(gameModel.Mode, gameModel.PlayTimeMode, gameModel.PlayerOne.Name,
-            gameModel.PlayerTwo.Name, gameModel.PlayerOne.StartingTime, gameModel.PlayerTwo.StartingTime);
+        game.ApplyUserChanges(
+            gameModel.Mode,
+            gameModel.PlayTimeMode,
+            gameModel.PlayerOne.Name,
+            gameModel.PlayerTwo.Name,
+            gameModel.PlayerOne.StartingTime,
+            gameModel.PlayerTwo.StartingTime
+        );
 
         await _context.SaveChangesAsync();
 
@@ -72,7 +81,7 @@ public class SettingsController : Controller
         //Create the game instance with the first option of the game mode
         var game = GameHandler.GameOnPlayingMode(modeId);
 
-        //save it 
+        //save it
         _context.Game.Add(game);
         await _context.SaveChangesAsync();
 

@@ -6,5 +6,5 @@ namespace Chess_API.Enums;
 public enum PlayerTurn
 {
     White,
-    Black
+    Black,
 }

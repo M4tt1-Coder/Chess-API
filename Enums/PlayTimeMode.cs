@@ -15,12 +15,16 @@ public enum PlayTimeMode
 {
     [Display(Name = "No time limit")]
     NoTimeLimit = 0,
+
     [Display(Name = "None / Customized")]
     Custom = 1,
+
     [Display(Name = "3 min")]
     ThreeMinutes = 180,
+
     [Display(Name = "10 min")]
     TenMinutes = 600,
+
     [Display(Name = "30 min")]
     ThirtyMinutes = 1800,
 }

@@ -1,8 +1,8 @@
-namespace Chess_API.utils;
+namespace Chess_API.utils.Services;
 
 /// <summary>
 /// Loads all static environment variables from .env into the .NET environment.
-/// 
+///
 /// Source: https://dusted.codes/dotenv-in-dotnet
 /// </summary>
 public static class DotEnv
@@ -22,9 +22,7 @@ public static class DotEnv
 
         foreach (var line in File.ReadAllLines(filePath))
         {
-            var parts = line.Split(
-                '=',
-                StringSplitOptions.RemoveEmptyEntries);
+            var parts = line.Split('=', StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length != 2)
                 continue;

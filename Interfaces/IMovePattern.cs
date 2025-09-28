@@ -13,7 +13,7 @@ public interface IMovePattern
     /// Defines if the moves are infinite and repetitive.
     /// </summary>
     public bool AreMovesInfinite { get; }
-    
+
     /// <summary>
     /// Public accessible list of all patterns.
     /// </summary>

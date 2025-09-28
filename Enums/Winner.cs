@@ -10,5 +10,5 @@ public enum Winner
     Draw,
     PlayerOne,
     PlayerTwo,
-    Default
+    Default,
 }

@@ -1,10 +1,10 @@
 using Chess_API.Models;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Services;
 
 /// <summary>
 /// Is an API service for the app middleware that includes all necessary
-/// functions to check for simple data completion or state changes, for example.  
+/// functions to check for simple data completion or state changes, for example.
 /// </summary>
 public class RoutesProtector : IProtectionService
 {
@@ -31,8 +31,7 @@ public class RoutesProtector : IProtectionService
             _logger.LogError("Game was null when entering the '/playing'-route");
             return false;
         }
-        
-        
+
         // the game needs a field prop and then a complete one
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (game.Board is null)
@@ -40,30 +39,30 @@ public class RoutesProtector : IProtectionService
             _logger.LogError("Game instance didn't have a field");
             return false;
         }
-        
-        // when a field instance is there, there is the opportunity that the rows don't include all fields 
+
+        // when a field instance is there, there is the opportunity that the rows don't include all fields
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (game.Board.Any(row => row.Row.Any(field => field is null)))
         {
             _logger.LogError("Rows did not have all required fields");
             return false;
         }
-        
-        // two players 
+
+        // two players
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (game.PlayerOne is null)
         {
             _logger.LogError("Couldn't find player one");
             return false;
         }
-        
+
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (game.PlayerTwo is null)
         {
             _logger.LogError("Couldn't find player two");
             return false;
         }
-        
+
         return true;
     }
 }

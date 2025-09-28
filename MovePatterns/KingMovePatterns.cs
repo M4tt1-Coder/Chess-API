@@ -17,47 +17,24 @@ public class KingMovePatterns : IMovePattern
 {
     public bool AreMovesInfinite => false;
 
-    public IEnumerable<IEnumerable<Move>> Patterns => new Collection<Collection<Move>>()
-    {
-        // 1
-        new()
+    public IEnumerable<IEnumerable<Move>> Patterns =>
+        new Collection<Collection<Move>>()
         {
-            Move.Up
-        },
-        // 2
-        new()
-        {
-            Move.Right
-        },
-        // 3 
-        new()
-        {
-            Move.Down
-        },
-        // 4
-        new()
-        {
-            Move.Left
-        },
-        // 5
-        new()
-        {
-            Move.DiagonalUpRight
-        },
-        // 6 
-        new()
-        {
-            Move.DiagonalDownRight
-        },
-        // 7 
-        new()
-        {
-            Move.DiagonalDownLeft
-        },
-        // 8
-        new()
-        {
-            Move.DiagonalUpLeft
-        }
-    };
+            // 1
+            new() { Move.Up },
+            // 2
+            new() { Move.Right },
+            // 3
+            new() { Move.Down },
+            // 4
+            new() { Move.Left },
+            // 5
+            new() { Move.DiagonalUpRight },
+            // 6
+            new() { Move.DiagonalDownRight },
+            // 7
+            new() { Move.DiagonalDownLeft },
+            // 8
+            new() { Move.DiagonalUpLeft },
+        };
 }

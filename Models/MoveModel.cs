@@ -16,12 +16,12 @@ public class MoveModel
     /// </summary>
     [Key]
     public int MoveId { get; set; }
-    
+
     /// <summary>
     /// Number of the current move.
     /// </summary>
     public int MoveNum { get; set; }
-    
+
     /// <summary>
     /// Id of the piece which moved.
     /// </summary>
@@ -48,12 +48,11 @@ public class MoveModel
     /// </summary>
     public int ToY { get; set; }
 
-
     /// <summary>
     /// Player who made the move.
     /// </summary>
     public int PlayerId { get; set; }
-    
+
     public MoveModel(int moveNum, int figureId, IList<int> from, IList<int> to, int playerId)
     {
         MoveNum = moveNum;
@@ -64,8 +63,6 @@ public class MoveModel
         ToY = to[1];
         PlayerId = playerId;
     }
-    
-    public MoveModel()
-    {
-    }
+
+    public MoveModel() { }
 }

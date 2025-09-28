@@ -27,27 +27,16 @@ public class RookMovePattern : IMovePattern
 {
     public bool AreMovesInfinite => true;
 
-    public IEnumerable<IEnumerable<Move>> Patterns => new Collection<Collection<Move>>()
-    {
-        // 1
-        new()
+    public IEnumerable<IEnumerable<Move>> Patterns =>
+        new Collection<Collection<Move>>()
         {
-            Move.Up
-        },
-        // 2
-        new()
-        {
-            Move.Right
-        },
-        // 3
-        new()
-        {
-            Move.Down
-        },
-        // 4
-        new()
-        {
-            Move.Left
-        }
-    };
+            // 1
+            new() { Move.Up },
+            // 2
+            new() { Move.Right },
+            // 3
+            new() { Move.Down },
+            // 4
+            new() { Move.Left },
+        };
 }

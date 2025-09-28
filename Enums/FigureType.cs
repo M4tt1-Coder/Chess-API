@@ -13,5 +13,5 @@ public enum FigureType
     Knight,
     Rook,
     Queen,
-    King
+    King,
 }

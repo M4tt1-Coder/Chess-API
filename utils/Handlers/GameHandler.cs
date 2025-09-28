@@ -1,7 +1,7 @@
 using Chess_API.Enums;
 using Chess_API.Models;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Handlers;
 
 /// <summary>
 /// At the beginning of a game, it will provide a default settings game-object.
@@ -23,7 +23,7 @@ public static class GameHandler
     /// It gets the default field layout from a default field component.
     /// </summary>
     /// <returns>
-    /// A normal starter game instance with default properties. 
+    /// A normal starter game instance with default properties.
     /// </returns>
     public static GameModel Default()
     {
@@ -35,7 +35,6 @@ public static class GameHandler
             PlayingMode.Default,
             Winner.Default,
             PlayingDirection.WhiteBottom
-            
         );
     }
 
@@ -58,7 +57,6 @@ public static class GameHandler
         );
     }
 
-
     /// <summary>
     /// Executes all mandatory data modifications in the case one player won or the game ended in a draw.
     /// </summary>
@@ -70,7 +68,7 @@ public static class GameHandler
     {
         // set winner property
         game.Winner = winnerStatus;
-        
+
         switch (winnerStatus)
         {
             case Winner.Draw:
@@ -88,7 +86,7 @@ public static class GameHandler
 
         return game;
     }
-    
+
     /// <summary>
     /// Prepares the game for a new game in the same game mode as the last round.
     ///
@@ -100,10 +98,10 @@ public static class GameHandler
     {
         game.Board = FieldHandler.Default();
         game.Winner = Winner.Default;
-        //gaming mode stays the same the player wanted to play a new game in the same playing mode as last time 
+        //gaming mode stays the same the player wanted to play a new game in the same playing mode as last time
         //game.Mode = PlayingMode.Default;
         game.Round++;
-        game.PlayerOne.PrepPlayerForNewGame(game.PlayTimeMode); 
+        game.PlayerOne.PrepPlayerForNewGame(game.PlayTimeMode);
         game.PlayerTwo.PrepPlayerForNewGame(game.PlayTimeMode);
         return game;
     }
@@ -127,7 +125,7 @@ public static class GameHandler
             1 => PlayingMode.UserVsAi,
             2 => PlayingMode.UserVsUserOnline,
             3 => PlayingMode.Default,
-            _ => output.Mode
+            _ => output.Mode,
         };
 
         return output;
@@ -148,8 +146,15 @@ public static class GameHandler
     /// <param name="playerOneTime">Custom time of player 1.</param>
     /// <param name="playerTwoTime">If the user entered a custom time for 'player two,'
     /// then it will be stored here.</param>
-    public static void ApplyUserChanges(this GameModel game, PlayingMode newPlayingMode, PlayTimeMode timeMode,
-        string? playerOneName, string? playerTwoName, TimeSpan? playerOneTime, TimeSpan? playerTwoTime)
+    public static void ApplyUserChanges(
+        this GameModel game,
+        PlayingMode newPlayingMode,
+        PlayTimeMode timeMode,
+        string? playerOneName,
+        string? playerTwoName,
+        TimeSpan? playerOneTime,
+        TimeSpan? playerTwoTime
+    )
     {
         //game mode
         if (game.Mode != newPlayingMode)
@@ -173,7 +178,7 @@ public static class GameHandler
                 }
                 break;
             case PlayTimeMode.ThreeMinutes:
-                game.PlayerOne.StartingTime = new TimeSpan(0,3,0);
+                game.PlayerOne.StartingTime = new TimeSpan(0, 3, 0);
                 game.PlayerTwo.StartingTime = new TimeSpan(0, 3, 0);
                 break;
             case PlayTimeMode.TenMinutes:
@@ -214,7 +219,7 @@ public static class GameHandler
             PlayTimeMode.TenMinutes => new TimeSpan(0, 10, 0),
             PlayTimeMode.ThirtyMinutes => new TimeSpan(0, 30, 0),
             PlayTimeMode.NoTimeLimit => null,
-            _ => throw new ArgumentOutOfRangeException(nameof(timeMode), timeMode, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(timeMode), timeMode, null),
         };
     }
 }

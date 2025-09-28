@@ -1,11 +1,12 @@
 using Chess_API.Enums;
 using Chess_API.Models;
+using Chess_API.utils.Services;
 
-namespace Chess_API.utils;
+namespace Chess_API.utils.Handlers;
 
 /// <summary>
 /// Its function is to provide a chess-field
-/// with normal start layout. 
+/// with normal start layout.
 /// </summary>
 public static class FieldHandler
 {
@@ -51,10 +52,14 @@ public static class FieldHandler
                         switch (j % 2)
                         {
                             case 0:
-                                row.Row.Add(new FieldModel(Color.White, GetFigureModel(j, i), j, i ));
+                                row.Row.Add(
+                                    new FieldModel(Color.White, GetFigureModel(j, i), j, i)
+                                );
                                 break;
                             case 1:
-                                row.Row.Add(new FieldModel(Color.Black, GetFigureModel(j, i), j, i ));
+                                row.Row.Add(
+                                    new FieldModel(Color.Black, GetFigureModel(j, i), j, i)
+                                );
                                 break;
                         }
 
@@ -63,10 +68,14 @@ public static class FieldHandler
                         switch (j % 2)
                         {
                             case 0:
-                                row.Row.Add(new FieldModel(Color.Black, GetFigureModel(j, i),   j, i ));
+                                row.Row.Add(
+                                    new FieldModel(Color.Black, GetFigureModel(j, i), j, i)
+                                );
                                 break;
                             case 1:
-                                row.Row.Add(new FieldModel(Color.White, GetFigureModel(j, i),  j, i ));
+                                row.Row.Add(
+                                    new FieldModel(Color.White, GetFigureModel(j, i), j, i)
+                                );
                                 break;
                         }
 
@@ -77,8 +86,6 @@ public static class FieldHandler
             output.Add(row);
         }
 
-            
-        
         return output;
     }
 
@@ -97,10 +104,10 @@ public static class FieldHandler
         return rowIndex switch
         {
             7 => DetermineFigure(fieldIndex, true),
-            6 => new FigureModel(FigureType.Pawn, false, PictureSources.White_Pawn(), Color.White),
-            1 => new FigureModel(FigureType.Pawn, false, PictureSources.Black_Pawn(), Color.Black),
+            6 => new FigureModel(FigureType.Pawn, PictureSources.White_Pawn(), Color.White),
+            1 => new FigureModel(FigureType.Pawn, PictureSources.Black_Pawn(), Color.Black),
             0 => DetermineFigure(fieldIndex, false),
-            _ => null
+            _ => null,
         };
     }
 
@@ -121,17 +128,37 @@ public static class FieldHandler
             {
                 case 0:
                 case 7:
-                    return new FigureModel(FigureType.Rook, false, PictureSources.White_Rook(), Color.White);
+                    return new FigureModel(
+                        FigureType.Rook,
+                        PictureSources.White_Rook(),
+                        Color.White
+                    );
                 case 1:
                 case 6:
-                    return new FigureModel(FigureType.Knight, false, PictureSources.White_Knight(), Color.White);
+                    return new FigureModel(
+                        FigureType.Knight,
+                        PictureSources.White_Knight(),
+                        Color.White
+                    );
                 case 2:
                 case 5:
-                    return new FigureModel(FigureType.Bishop, false, PictureSources.White_Bishop(), Color.White);
+                    return new FigureModel(
+                        FigureType.Bishop,
+                        PictureSources.White_Bishop(),
+                        Color.White
+                    );
                 case 3:
-                    return new FigureModel(FigureType.King, false, PictureSources.White_King(), Color.White);
+                    return new FigureModel(
+                        FigureType.King,
+                        PictureSources.White_King(),
+                        Color.White
+                    );
                 case 4:
-                    return new FigureModel(FigureType.Queen, false, PictureSources.White_Queen(), Color.White);
+                    return new FigureModel(
+                        FigureType.Queen,
+                        PictureSources.White_Queen(),
+                        Color.White
+                    );
             }
         }
         else
@@ -140,17 +167,37 @@ public static class FieldHandler
             {
                 case 0:
                 case 7:
-                    return new FigureModel(FigureType.Rook, false, PictureSources.Black_Rook(), Color.Black);
+                    return new FigureModel(
+                        FigureType.Rook,
+                        PictureSources.Black_Rook(),
+                        Color.Black
+                    );
                 case 1:
                 case 6:
-                    return new FigureModel(FigureType.Knight, false, PictureSources.Black_Knight(), Color.Black);
+                    return new FigureModel(
+                        FigureType.Knight,
+                        PictureSources.Black_Knight(),
+                        Color.Black
+                    );
                 case 2:
                 case 5:
-                    return new FigureModel(FigureType.Bishop, false, PictureSources.Black_Bishop(), Color.Black);
+                    return new FigureModel(
+                        FigureType.Bishop,
+                        PictureSources.Black_Bishop(),
+                        Color.Black
+                    );
                 case 3:
-                    return new FigureModel(FigureType.King, false, PictureSources.Black_King(), Color.Black);
+                    return new FigureModel(
+                        FigureType.King,
+                        PictureSources.Black_King(),
+                        Color.Black
+                    );
                 case 4:
-                    return new FigureModel(FigureType.Queen, false, PictureSources.Black_Queen(), Color.Black);
+                    return new FigureModel(
+                        FigureType.Queen,
+                        PictureSources.Black_Queen(),
+                        Color.Black
+                    );
             }
         }
 
@@ -182,12 +229,10 @@ public static class FieldHandler
                 }
             }
         }
-    
+
         return output;
     }
 
-    
-    
     /// <summary>
     /// Simply creates a copy of a field.
     ///
@@ -200,7 +245,7 @@ public static class FieldHandler
         return new FieldModel(field.Color, field.Content, field.X, field.Y)
         {
             MovableField = field.MovableField,
-            SelectedField = field.SelectedField
+            SelectedField = field.SelectedField,
         };
     }
 
@@ -217,14 +262,14 @@ public static class FieldHandler
             {
                 if (field.Content is not null)
                 {
-                    field.Content.Selected = false;
+                    field.SelectedField = false;
                 }
             }
         }
 
         return game;
     }
-    
+
     /// <summary>
     /// Checks if a field has been selected by the user.
     ///
@@ -241,7 +286,7 @@ public static class FieldHandler
         {
             foreach (var field in row.Row)
             {
-                if (field.Content is not null && field.Content.Selected)
+                if (field.Content is not null && field.SelectedField)
                 {
                     output = new FieldSelectedCheckResult(field.X, field.Y, true);
                     numFieldsSelected++;
@@ -251,11 +296,13 @@ public static class FieldHandler
 
         if (numFieldsSelected >= 2)
         {
-            throw new Exception("Too many fields have been selected! Number of Fields: " + numFieldsSelected);
+            throw new Exception(
+                "Too many fields have been selected! Number of Fields: " + numFieldsSelected
+            );
         }
-        
+
         return output;
-    } 
+    }
 
     /// <summary>
     /// Checks the field coordinates and sets the field selected.
@@ -263,17 +310,20 @@ public static class FieldHandler
     /// <param name="game">Current game instance</param>
     /// <param name="coordinates">Coordinates of the field to be checked</param>
     /// <returns>Updated game instance</returns>
-    public static GameModel SetFieldSelected(GameModel game, IList<int> coordinates)
+    public static GameModel SetFieldSelected(GameModel game, List<int> coordinates)
     {
-        foreach(var row in game.Board)
+        foreach (var row in game.Board)
         {
             foreach (var field in row.Row)
             {
-                if (field.X != coordinates[0] || field.Y != coordinates[1] || field.Content is null) continue;
-                if ((field.Content.Color == Color.White && game.PlayerTurn == PlayerTurn.White) || 
-                    (field.Content.Color == Color.Black && game.PlayerTurn == PlayerTurn.Black))
+                if (field.X != coordinates[0] || field.Y != coordinates[1] || field.Content is null)
+                    continue;
+                if (
+                    (field.Content.Color == Color.White && game.PlayerTurn == PlayerTurn.White)
+                    || (field.Content.Color == Color.Black && game.PlayerTurn == PlayerTurn.Black)
+                )
                 {
-                    field.Content.Selected = !field.Content.Selected;
+                    field.SelectedField = !field.SelectedField;
                 }
             }
         }
