@@ -26,7 +26,7 @@ public static class FieldHandler
     /// Determines if the user already selected a field or not.
     /// </summary>
     /// <param name="X">Nullable field X ordinate</param>
-    /// /// <param name="Y">Nullable field Y ordinate</param>
+    /// <param name="Y">Nullable field Y ordinate</param>
     /// <param name="IsThereSelectedField">True when there is a selected field</param>
     public record FieldSelectedCheckResult(int? X, int? Y, bool IsThereSelectedField);
 

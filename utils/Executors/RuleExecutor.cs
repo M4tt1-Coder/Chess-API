@@ -46,8 +46,8 @@ public static class RulesExecutor
         if (
             !MovingRules.CanPieceMoveToFieldWithCheck(
                 game,
-                new List<int>() { curField.X, curField.Y },
-                new List<int>() { newField.X, newField.Y }
+                [curField.X, curField.Y],
+                [newField.X, newField.Y]
             )
         )
             return game;
@@ -58,19 +58,15 @@ public static class RulesExecutor
             new MoveModel(
                 game.MoveHistory.Count + 1,
                 currentFieldFigureId,
-                new List<int> { curField.X, curField.Y },
-                new List<int> { newField.X, newField.Y },
+                (List<int>)[curField.X, curField.Y],
+                (List<int>)[newField.X, newField.Y],
                 PlayerHandler.GetPlayerIdOnTurn(game)
             )
         );
         // modify who's turn it is
         PlayerHandler.ChangePlayerTurn(game);
         // move the figure to the new field
-        game = MoveFigureToField(
-            game,
-            new List<int> { curField.X, curField.Y },
-            new List<int>() { newField.X, newField.Y }
-        );
+        game = MoveFigureToField(game, [curField.X, curField.Y], [newField.X, newField.Y]);
 
         // return the game object
         return game;
@@ -104,7 +100,7 @@ public static class RulesExecutor
                     continue;
                 if (field.Content.Type == FigureType.King && field.Content.Color == kingColor)
                 {
-                    kingCoordinates = new List<int> { field.X, field.Y };
+                    kingCoordinates = [field.X, field.Y];
                 }
             }
         }
@@ -423,11 +419,7 @@ public static class RulesExecutor
                                 else
                                 {
                                     // add the field to the list
-                                    if (
-                                        AreCoordinatesOnBoard(
-                                            new List<int>() { nextField.X, nextField.Y }
-                                        )
-                                    )
+                                    if (AreCoordinatesOnBoard([nextField.X, nextField.Y]))
                                     {
                                         var coordinatesToBeAdded = new List<int>
                                         {
@@ -797,7 +789,7 @@ public static class RulesExecutor
     /// <param name="currentField">Starting field where we are going from</param>
     /// <param name="game">Current game object</param>
     /// <returns>A field the king can move to</returns>
-    private static FieldModel KingJustTriesToGoToField(
+    public static FieldModel KingJustTriesToGoToField(
         Move kingMove,
         FieldModel currentField,
         GameModel game
@@ -872,7 +864,7 @@ public static class RulesExecutor
     /// </summary>
     /// <param name="list">The list of all coordinates.</param>
     /// <param name="coordinates">The to adding coordinates.</param>
-    private static void AddCoordinatesToList(List<List<int>> list, List<int> coordinates)
+    public static void AddCoordinatesToList(List<List<int>> list, List<int> coordinates)
     {
         if (IsFieldAlreadyInList(list, coordinates))
         {
@@ -887,7 +879,7 @@ public static class RulesExecutor
     /// </summary>
     /// <param name="coordinates">The coordinates to be checked.</param>
     /// <returns>Results of check if the coordinates are on the board.</returns>
-    private static bool AreCoordinatesOnBoard(List<int> coordinates)
+    public static bool AreCoordinatesOnBoard(List<int> coordinates)
     {
         foreach (var ordinate in coordinates)
         {
@@ -1078,10 +1070,10 @@ public static class RulesExecutor
             foreach (var field in row.Row)
             {
                 if (
-                    IsKingOnThisField(game, new List<int> { field.X, field.Y })
+                    IsKingOnThisField(game, [field.X, field.Y])
                     && field.Content!.Color == kingColor
                 )
-                    output = new List<int> { field.X, field.Y };
+                    output = [field.X, field.Y];
             }
         }
         return output;

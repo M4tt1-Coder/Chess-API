@@ -1,6 +1,7 @@
 using Chess_API.Enums;
 using Chess_API.Interfaces;
 using Chess_API.Models;
+using Chess_API.MovePatterns;
 using Chess_API.Rules;
 using Chess_API.utils.Handlers;
 
@@ -224,28 +225,28 @@ public static class StepExecutor
         {
             case Move.Up:
                 // if (border check + is there a piece in the way -> stay on the field [possible throw])
-                newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
+                newCoordinates = [curField.X, curField.Y - 1];
                 output =
                     newCoordinates[1] < 0
                         ? curField
                         : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Move.Down:
-                newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
+                newCoordinates = [curField.X, curField.Y + 1];
                 output =
                     newCoordinates[1] > 7
                         ? curField
                         : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Move.Left:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y };
+                newCoordinates = [curField.X - 1, curField.Y];
                 output =
                     newCoordinates[0] < 0
                         ? curField
                         : FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Move.Right:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y };
+                newCoordinates = [curField.X + 1, curField.Y];
                 output =
                     newCoordinates[0] > 7
                         ? curField
@@ -253,7 +254,7 @@ public static class StepExecutor
                 break;
             case Move.DiagonalUpLeft:
                 // is next field free? if not can the figure be thrown
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
+                newCoordinates = [curField.X - 1, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
                 // check if the field is empty & if the knight can throw a piece
@@ -360,7 +361,7 @@ public static class StepExecutor
         {
             case Move.Up:
                 // new coordinates
-                newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
+                newCoordinates = [curField.X, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 // check if the field is empty + border check
                 if (newCoordinates[1] < 0 || newField.Content is not null)
@@ -374,7 +375,7 @@ public static class StepExecutor
                 break;
             case Move.Down:
                 // new coordinates
-                newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
+                newCoordinates = [curField.X, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 // check if the field is empty + border check
                 if (newCoordinates[1] > 7 || newField.Content is not null)
@@ -387,7 +388,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalUpLeft:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
+                newCoordinates = [curField.X - 1, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] < 0
@@ -404,7 +405,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalUpRight:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
+                newCoordinates = [curField.X + 1, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] > 7
@@ -421,7 +422,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalDownLeft:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
+                newCoordinates = [curField.X - 1, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] < 0
@@ -438,7 +439,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalDownRight:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
+                newCoordinates = [curField.X + 1, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] > 7
@@ -487,7 +488,7 @@ public static class StepExecutor
         switch (move)
         {
             case Move.Up:
-                newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
+                newCoordinates = [curField.X, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[1] < 0
@@ -502,7 +503,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.Down:
-                newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
+                newCoordinates = [curField.X, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[1] > 7
@@ -517,7 +518,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.Left:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y };
+                newCoordinates = [curField.X - 1, curField.Y];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] < 0
@@ -532,7 +533,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.Right:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y };
+                newCoordinates = [curField.X + 1, curField.Y];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] > 7
@@ -547,7 +548,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalUpLeft:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
+                newCoordinates = [curField.X - 1, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] < 0
@@ -662,7 +663,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.Down:
-                newCoordinates = new List<int>() { curField.X, curField.Y + 1 };
+                newCoordinates = [curField.X, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[1] > 7
@@ -682,7 +683,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.Left:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y };
+                newCoordinates = [curField.X - 1, curField.Y];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] < 0
@@ -702,7 +703,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.Right:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y };
+                newCoordinates = [curField.X + 1, curField.Y];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] > 7
@@ -722,7 +723,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalUpLeft:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y - 1 };
+                newCoordinates = [curField.X - 1, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] < 0
@@ -743,7 +744,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalUpRight:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
+                newCoordinates = [curField.X + 1, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] > 7
@@ -764,7 +765,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalDownLeft:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
+                newCoordinates = [curField.X - 1, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] < 0
@@ -785,7 +786,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalDownRight:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
+                newCoordinates = [curField.X + 1, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] > 7
@@ -1019,5 +1020,407 @@ public static class StepExecutor
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Gathers all fields where a piece can move to in the next move.
+    /// </summary>
+    /// <param name="game">The current Game instance</param>
+    /// <param name="pieceCoordinates">The coordinates of the piece.</param>
+    /// <returns>List of field coordinates the piece can move to.</returns>
+    public static List<List<int>> FieldsWherePieceCanMoveTo(
+        GameModel game,
+        List<int> pieceCoordinates
+    )
+    {
+        var fieldsWherePieceCanMove = new List<List<int>>();
+
+        // get the field of the piece
+        var fieldOfPiece = FieldHandler.GetSpecificFieldByCoordinates(game, pieceCoordinates);
+
+        if (fieldOfPiece.Content is null)
+            throw new Exception("The content of the field can't be null!");
+
+        switch (fieldOfPiece.Content.Type)
+        {
+            case FigureType.Pawn:
+                // for pawns, I need to know in which direction they are turned to
+                switch (game.Direction)
+                {
+                    case PlayingDirection.WhiteTop:
+                        if (fieldOfPiece.Content.Color == Color.White)
+                        {
+                            // check for boundaries
+                            // assign new possible fields that could be attacked by black piece
+                            List<int> firstField = [fieldOfPiece.X - 1, fieldOfPiece.Y - 1];
+                            List<int> secondField = [fieldOfPiece.X + 1, fieldOfPiece.Y - 1];
+
+                            if (RulesExecutor.AreCoordinatesOnBoard(firstField))
+                            {
+                                RulesExecutor.AddCoordinatesToList(
+                                    fieldsWherePieceCanMove,
+                                    firstField
+                                );
+                            }
+
+                            if (RulesExecutor.AreCoordinatesOnBoard(secondField))
+                            {
+                                RulesExecutor.AddCoordinatesToList(
+                                    fieldsWherePieceCanMove,
+                                    secondField
+                                );
+                            }
+                        }
+                        else
+                        {
+                            var firstField = new List<int>
+                            {
+                                fieldOfPiece.X - 1,
+                                fieldOfPiece.Y + 1,
+                            };
+                            var secondField = new List<int>
+                            {
+                                fieldOfPiece.X + 1,
+                                fieldOfPiece.Y + 1,
+                            };
+
+                            if (RulesExecutor.AreCoordinatesOnBoard(firstField))
+                            {
+                                RulesExecutor.AddCoordinatesToList(
+                                    fieldsWherePieceCanMove,
+                                    firstField
+                                );
+                            }
+
+                            if (RulesExecutor.AreCoordinatesOnBoard(secondField))
+                            {
+                                RulesExecutor.AddCoordinatesToList(
+                                    fieldsWherePieceCanMove,
+                                    secondField
+                                );
+                            }
+                        }
+                        break;
+                    case PlayingDirection.WhiteBottom:
+                        if (fieldOfPiece.Content.Color == Color.White)
+                        {
+                            var firstField = new List<int>
+                            {
+                                fieldOfPiece.X - 1,
+                                fieldOfPiece.Y + 1,
+                            };
+                            var secondField = new List<int>
+                            {
+                                fieldOfPiece.X + 1,
+                                fieldOfPiece.Y + 1,
+                            };
+
+                            if (RulesExecutor.AreCoordinatesOnBoard(firstField))
+                            {
+                                RulesExecutor.AddCoordinatesToList(
+                                    fieldsWherePieceCanMove,
+                                    firstField
+                                );
+                            }
+
+                            if (RulesExecutor.AreCoordinatesOnBoard(secondField))
+                            {
+                                RulesExecutor.AddCoordinatesToList(
+                                    fieldsWherePieceCanMove,
+                                    secondField
+                                );
+                            }
+                        }
+                        else
+                        {
+                            var firstField = new List<int>
+                            {
+                                fieldOfPiece.X - 1,
+                                fieldOfPiece.Y - 1,
+                            };
+                            var secondField = new List<int>
+                            {
+                                fieldOfPiece.X + 1,
+                                fieldOfPiece.Y - 1,
+                            };
+
+                            if (RulesExecutor.AreCoordinatesOnBoard(firstField))
+                            {
+                                RulesExecutor.AddCoordinatesToList(
+                                    fieldsWherePieceCanMove,
+                                    firstField
+                                );
+                            }
+
+                            if (RulesExecutor.AreCoordinatesOnBoard(secondField))
+                            {
+                                RulesExecutor.AddCoordinatesToList(
+                                    fieldsWherePieceCanMove,
+                                    secondField
+                                );
+                            }
+                        }
+                        break;
+                }
+                break;
+            case FigureType.Bishop:
+                var bishopMovePatterns = new BishopMovePattern().Patterns.ToList();
+                // run along the move patterns
+                foreach (var pattern in bishopMovePatterns)
+                {
+                    var canStillContinue = true;
+                    var nextField = FieldHandler.CopyField(fieldOfPiece);
+
+                    var currentPattern = pattern.ToList();
+
+                    // go one default step before starting the repetitive step execution
+                    nextField = StepExecutor.GoStepStraight(
+                        currentPattern[0],
+                        game,
+                        nextField,
+                        fieldOfPiece.Content.Color == Color.White ? Color.Black : Color.White,
+                        true
+                    );
+                    // also add the additional field to the output list
+                    if (RulesExecutor.AreCoordinatesOnBoard([nextField.X, nextField.Y]))
+                    {
+                        var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
+                        RulesExecutor.AddCoordinatesToList(
+                            fieldsWherePieceCanMove,
+                            coordinatesToBeAdded
+                        );
+                    }
+
+                    // repeat to go as long as possible along one pattern
+                    // just for straight move pattern
+                    while (canStillContinue)
+                    {
+                        var previousField = nextField;
+
+                        // go along the pattern
+                        nextField = currentPattern.Aggregate(
+                            nextField,
+                            (current, move) =>
+                                StepExecutor.GoStepStraight(
+                                    move,
+                                    game,
+                                    current,
+                                    fieldOfPiece.Content.Color == Color.White
+                                        ? Color.Black
+                                        : Color.White
+                                )
+                        );
+
+                        // check if the field where the figure has moved has changed
+                        if (previousField.X == nextField.X && previousField.Y == nextField.Y)
+                        {
+                            canStillContinue = false;
+                        }
+                        else
+                        {
+                            // add the field to the list
+                            if (!RulesExecutor.AreCoordinatesOnBoard([nextField.X, nextField.Y]))
+                                continue;
+                            List<int> coordinatesToBeAdded = [nextField.X, nextField.Y];
+                            RulesExecutor.AddCoordinatesToList(
+                                fieldsWherePieceCanMove,
+                                coordinatesToBeAdded
+                            );
+                        }
+                    }
+                }
+                break;
+            case FigureType.Knight:
+                // do the same logic for the knight as for the bishop
+                // all eight field can be added
+                foreach (var pattern in new KnightMovePattern().Patterns)
+                {
+                    // assign field where knight stands before iterating the patterns
+                    var nextField = FieldHandler.CopyField(fieldOfPiece);
+                    var moveCount = 0;
+                    // when it reaches 2 -> knight could land on that spot
+                    foreach (var move in pattern)
+                    {
+                        var previousField = nextField;
+                        // first go the step
+                        nextField = StepExecutor.GoStepKnight(
+                            move,
+                            game,
+                            previousField,
+                            fieldOfPiece.Content.Color,
+                            true
+                        );
+                        // increase counter by 1
+                        moveCount++;
+                        // when 2 steps have been taken -> check if previous field is equal to field after
+                        // the moving operation -> continue
+                        if (moveCount != 2)
+                            continue;
+                        if (previousField == nextField)
+                            continue;
+                        var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
+                        RulesExecutor.AddCoordinatesToList(
+                            fieldsWherePieceCanMove,
+                            coordinatesToBeAdded
+                        );
+                    }
+                }
+                break;
+            case FigureType.Rook:
+                var rookMovePatterns = new RookMovePattern().Patterns.ToList();
+                // rook has 4 moving opportunities
+                foreach (var pattern in rookMovePatterns)
+                {
+                    var canStillContinueRun = true;
+                    var nextField = FieldHandler.CopyField(fieldOfPiece);
+
+                    var currentPattern = pattern.ToList();
+
+                    // go one default step before starting the repetitive step execution
+                    nextField = StepExecutor.GoStepStraight(
+                        currentPattern[0],
+                        game,
+                        nextField,
+                        fieldOfPiece.Content.Color == Color.White ? Color.Black : Color.White,
+                        true
+                    );
+                    // also add the additional field to the output list
+                    if (RulesExecutor.AreCoordinatesOnBoard([nextField.X, nextField.Y]))
+                    {
+                        RulesExecutor.AddCoordinatesToList(
+                            fieldsWherePieceCanMove,
+                            [nextField.X, nextField.Y]
+                        );
+                    }
+
+                    // repeat to go as long as possible along one pattern
+                    // just for straight move pattern
+                    while (canStillContinueRun)
+                    {
+                        var previousField = nextField;
+
+                        nextField = currentPattern.Aggregate(
+                            nextField,
+                            (current, move) =>
+                                StepExecutor.GoStepStraight(
+                                    move,
+                                    game,
+                                    current,
+                                    fieldOfPiece.Content.Color == Color.White
+                                        ? Color.Black
+                                        : Color.White
+                                )
+                        );
+
+                        if (previousField.X == nextField.X && previousField.Y == nextField.Y)
+                        {
+                            canStillContinueRun = false;
+                        }
+                        else
+                        {
+                            // add the field to the list
+                            if (RulesExecutor.AreCoordinatesOnBoard([nextField.X, nextField.Y]))
+                            {
+                                var coordinatesToBeAdded = new List<int>
+                                {
+                                    nextField.X,
+                                    nextField.Y,
+                                };
+                                RulesExecutor.AddCoordinatesToList(
+                                    fieldsWherePieceCanMove,
+                                    coordinatesToBeAdded
+                                );
+                            }
+                        }
+                    }
+                }
+                break;
+            case FigureType.Queen:
+                var queenMovePatterns = new QueenMovePatterns().Patterns.ToList();
+                foreach (var pattern in queenMovePatterns)
+                {
+                    var canStillContinueRun = true;
+                    var nextField = FieldHandler.CopyField(fieldOfPiece);
+
+                    var currentPattern = pattern.ToList();
+
+                    // go one default step before starting the repetitive step execution
+                    nextField = StepExecutor.GoStepStraight(
+                        currentPattern[0],
+                        game,
+                        nextField,
+                        fieldOfPiece.Content.Color == Color.White ? Color.Black : Color.White,
+                        true
+                    );
+                    // also add the additional field to the output list
+                    if (RulesExecutor.AreCoordinatesOnBoard([nextField.X, nextField.Y]))
+                    {
+                        var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
+                        RulesExecutor.AddCoordinatesToList(
+                            fieldsWherePieceCanMove,
+                            coordinatesToBeAdded
+                        );
+                    }
+
+                    // repeat to go as long as possible along one pattern
+                    // just for straight move pattern
+                    while (canStillContinueRun)
+                    {
+                        var previousField = nextField;
+
+                        nextField = currentPattern.Aggregate(
+                            nextField,
+                            (current, move) =>
+                                StepExecutor.GoStepStraight(
+                                    move,
+                                    game,
+                                    current,
+                                    fieldOfPiece.Content.Color == Color.White
+                                        ? Color.Black
+                                        : Color.White
+                                )
+                        );
+
+                        if (nextField.X == previousField.X && nextField.Y == previousField.Y)
+                        {
+                            canStillContinueRun = false;
+                        }
+                        else
+                        {
+                            // add the field to the list
+                            var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
+                            if (!RulesExecutor.AreCoordinatesOnBoard(coordinatesToBeAdded))
+                                continue;
+                            RulesExecutor.AddCoordinatesToList(
+                                fieldsWherePieceCanMove,
+                                coordinatesToBeAdded
+                            );
+                        }
+                    }
+                }
+                break;
+            case FigureType.King:
+                foreach (var pattern in new KingMovePatterns().Patterns)
+                {
+                    // initialize the variable representing one of the 8 moves
+                    var nextField = pattern.Aggregate(
+                        fieldOfPiece,
+                        (current, move) =>
+                            RulesExecutor.KingJustTriesToGoToField(move, current, game)
+                    );
+
+                    // main check if the field where the figure has moved has changed
+                    if (fieldOfPiece.X == nextField.X && fieldOfPiece.Y == nextField.Y)
+                        continue;
+                    var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
+                    RulesExecutor.AddCoordinatesToList(
+                        fieldsWherePieceCanMove,
+                        coordinatesToBeAdded
+                    );
+                }
+                break;
+        }
+
+        return fieldsWherePieceCanMove;
     }
 }

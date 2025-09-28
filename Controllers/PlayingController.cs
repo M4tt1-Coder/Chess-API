@@ -87,11 +87,13 @@ public class PlayingController : Controller
             game = RulesExecutor.ValidateMove(game, curField, selectedField);
             // unselect all fields
             game = FieldHandler.UnselectAllFields(game);
+            game = BoardHandler.UnmarkAllFieldsWherePieceCouldMoveTo(game);
         }
         else
         {
             // select a field
             game = FieldHandler.SetFieldSelected(game, fieldCoordinatesList);
+            game = BoardHandler.MarkAllFieldsWherePieceCanMoveTo(game);
         }
 
         await _context.SaveChangesAsync();
