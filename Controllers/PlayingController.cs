@@ -74,11 +74,10 @@ public class PlayingController : Controller
             // get the fields
             var curField = FieldHandler.GetSpecificFieldByCoordinates(
                 game,
-                new List<int>
-                {
+                [
                     fieldSelectedCheckResult.X!.Value,
-                    fieldSelectedCheckResult.Y!.Value,
-                }
+                    fieldSelectedCheckResult.Y!.Value
+                ]
             );
             var selectedField = FieldHandler.GetSpecificFieldByCoordinates(
                 game,

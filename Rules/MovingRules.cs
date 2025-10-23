@@ -44,7 +44,7 @@ public static class MovingRules
         var movePattern = MovingRules.DetermineMovePatternsByFigureType(piece.Type);
 
         // return
-        return StepExecutor.ExecuteMovePattern(game, movePattern, curField, destField, piece.Type);
+        return StepExecutor.ExecuteMovePattern(game, movePattern, curField, destField);
     }
 
     /// <summary>

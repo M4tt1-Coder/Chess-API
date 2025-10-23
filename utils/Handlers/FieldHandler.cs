@@ -330,4 +330,15 @@ public static class FieldHandler
 
         return game;
     }
+    
+    /// <summary>
+    /// Checks if there is a piece of the opposite color on the given field.
+    /// </summary>
+    /// <param name="field">The field which content needs to be checked</param>
+    /// <param name="oppositeColor">Color of the opponents pieces</param>
+    /// <returns>TRUE, when there is a piece of the opposite color is on that field</returns>
+    public static bool IsPieceOfOppositeColorOnField(FieldModel field, Color oppositeColor)
+    {
+        return field.Content is not null && field.Content.Color == oppositeColor;
+    }
 }

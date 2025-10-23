@@ -16,21 +16,27 @@ public static class BoardHandler
     public static GameModel MarkAllFieldsWherePieceCanMoveTo(GameModel game)
     {
         var selectedFieldWithPiece = FieldHandler.IsAFieldSelected(game);
-        if (!selectedFieldWithPiece.IsThereSelectedField) return game;
-        
+        if (!selectedFieldWithPiece.IsThereSelectedField)
+            return game;
+
         // check if the coordinates where provided
-        if (selectedFieldWithPiece.X is null || selectedFieldWithPiece.Y is null) return game;
-        
+        if (selectedFieldWithPiece.X is null || selectedFieldWithPiece.Y is null)
+            return game;
+
         // get all field where a piece can move to
-        var fieldsPieceCanMoveTo = StepExecutor.FieldsWherePieceCanMoveTo(game,
-            [(int)selectedFieldWithPiece.X, (int)selectedFieldWithPiece.Y]);
+        var fieldsPieceCanMoveTo = StepExecutor.FieldsWherePieceCanMoveTo(
+            game,
+            [(int)selectedFieldWithPiece.X, (int)selectedFieldWithPiece.Y]
+        );
 
         // mark all fields
         foreach (var row in game.Board)
         {
+            
             foreach (var field in row.Row)
             {
-                foreach (var foundField in fieldsPieceCanMoveTo) {
+                foreach (var foundField in fieldsPieceCanMoveTo)
+                {
                     if (foundField[0] == field.X && foundField[1] == field.Y)
                     {
                         field.MovableField = true;
@@ -38,7 +44,7 @@ public static class BoardHandler
                 }
             }
         }
-        
+
         // return the game instance
         return game;
     }
