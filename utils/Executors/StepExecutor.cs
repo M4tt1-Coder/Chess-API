@@ -1378,10 +1378,25 @@ public static class StepExecutor
                         if (previousField == nextField)
                             continue;
                         var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
-                        RulesExecutor.AddCoordinatesToList(
-                            fieldsWherePieceCanMove,
-                            coordinatesToBeAdded
-                        );
+                        if (FieldHandler.GetSpecificFieldByCoordinates(game, coordinatesToBeAdded).Content is not null)
+                        {
+                            if (FieldHandler.IsPieceOfOppositeColorOnField(
+                                    FieldHandler.GetSpecificFieldByCoordinates(game, coordinatesToBeAdded),
+                                    fieldOfPiece.Content.Color == Color.White ? Color.Black : Color.White))
+                            {
+                                RulesExecutor.AddCoordinatesToList(
+                                    fieldsWherePieceCanMove,
+                                    coordinatesToBeAdded
+                                );
+                            }
+                        }
+                        else
+                        {
+                            RulesExecutor.AddCoordinatesToList(
+                                fieldsWherePieceCanMove,
+                                coordinatesToBeAdded
+                            );
+                        }
                     }
                 }
                 break;
