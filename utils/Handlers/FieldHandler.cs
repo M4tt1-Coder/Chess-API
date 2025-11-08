@@ -330,7 +330,7 @@ public static class FieldHandler
 
         return game;
     }
-    
+
     /// <summary>
     /// Checks if there is a piece of the opposite color on the given field.
     /// </summary>

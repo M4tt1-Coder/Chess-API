@@ -271,7 +271,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalUpRight:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
+                newCoordinates = [curField.X + 1, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
                 if (newField.Content is not null && !ignoreOpponentPieces)
@@ -289,7 +289,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalDownLeft:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
+                newCoordinates = [curField.X - 1, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
                 if (newField.Content is not null && !ignoreOpponentPieces)
@@ -306,7 +306,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalDownRight:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
+                newCoordinates = [curField.X + 1, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 sameColor = false;
                 if (newField.Content is not null && !ignoreOpponentPieces)
@@ -562,7 +562,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalUpRight:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y - 1 };
+                newCoordinates = [curField.X + 1, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] > 7
@@ -578,7 +578,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalDownLeft:
-                newCoordinates = new List<int>() { curField.X - 1, curField.Y + 1 };
+                newCoordinates = [curField.X - 1, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] < 0
@@ -594,7 +594,7 @@ public static class StepExecutor
                 }
                 break;
             case Move.DiagonalDownRight:
-                newCoordinates = new List<int>() { curField.X + 1, curField.Y + 1 };
+                newCoordinates = [curField.X + 1, curField.Y + 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[0] > 7
@@ -641,7 +641,7 @@ public static class StepExecutor
         {
             case Move.Up:
                 // if (border check + is there a piece i=n the way -> stay on the field [possible throw])
-                newCoordinates = new List<int>() { curField.X, curField.Y - 1 };
+                newCoordinates = [curField.X, curField.Y - 1];
                 newField = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 if (
                     newCoordinates[1] < 0
@@ -1055,8 +1055,13 @@ public static class StepExecutor
                             List<int> thirdField = [fieldOfPiece.X, fieldOfPiece.Y + 1];
                             List<int> fourthField = [fieldOfPiece.X, fieldOfPiece.Y + 2];
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(firstField) && 
-                                FieldHandler.IsPieceOfOppositeColorOnField(FieldHandler.GetSpecificFieldByCoordinates(game, firstField), Color.Black))
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(firstField)
+                                && FieldHandler.IsPieceOfOppositeColorOnField(
+                                    FieldHandler.GetSpecificFieldByCoordinates(game, firstField),
+                                    Color.Black
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1064,27 +1069,45 @@ public static class StepExecutor
                                 );
                             }
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(secondField) && 
-                                FieldHandler.IsPieceOfOppositeColorOnField(FieldHandler.GetSpecificFieldByCoordinates(game, secondField), Color.Black))
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(secondField)
+                                && FieldHandler.IsPieceOfOppositeColorOnField(
+                                    FieldHandler.GetSpecificFieldByCoordinates(game, secondField),
+                                    Color.Black
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
                                     secondField
                                 );
                             }
-                            
-                            if (RulesExecutor.AreCoordinatesOnBoard(thirdField) && 
-                                FieldHandler.GetSpecificFieldByCoordinates(game, thirdField).Content is null)
+
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(thirdField)
+                                && FieldHandler
+                                    .GetSpecificFieldByCoordinates(game, thirdField)
+                                    .Content
+                                    is null
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
                                     thirdField
                                 );
                             }
-                            
-                            if (RulesExecutor.AreCoordinatesOnBoard(fourthField) && 
-                                FieldHandler.GetSpecificFieldByCoordinates(game, fourthField).Content is null &&
-                                !MoveHistoryHandler.HasPieceAlreadyMoved(game.MoveHistory, fieldOfPiece.Content.FigureId))
+
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(fourthField)
+                                && FieldHandler
+                                    .GetSpecificFieldByCoordinates(game, fourthField)
+                                    .Content
+                                    is null
+                                && !MoveHistoryHandler.HasPieceAlreadyMoved(
+                                    game.MoveHistory,
+                                    fieldOfPiece.Content.FigureId
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1104,20 +1127,16 @@ public static class StepExecutor
                                 fieldOfPiece.X - 1,
                                 fieldOfPiece.Y - 1,
                             };
-                            var thirdField = new List<int>
-                            {
-                                fieldOfPiece.X,
-                                fieldOfPiece.Y - 1,
-                            };
-                            var fourthField = new List<int>
-                            {
-                                fieldOfPiece.X,
-                                fieldOfPiece.Y - 2,
-                            };
+                            var thirdField = new List<int> { fieldOfPiece.X, fieldOfPiece.Y - 1 };
+                            var fourthField = new List<int> { fieldOfPiece.X, fieldOfPiece.Y - 2 };
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(firstField) &&
-                                FieldHandler.IsPieceOfOppositeColorOnField(
-                                    FieldHandler.GetSpecificFieldByCoordinates(game, firstField), Color.Black))
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(firstField)
+                                && FieldHandler.IsPieceOfOppositeColorOnField(
+                                    FieldHandler.GetSpecificFieldByCoordinates(game, firstField),
+                                    Color.Black
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1125,9 +1144,13 @@ public static class StepExecutor
                                 );
                             }
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(secondField) &&
-                                FieldHandler.IsPieceOfOppositeColorOnField(
-                                    FieldHandler.GetSpecificFieldByCoordinates(game, secondField), Color.Black))
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(secondField)
+                                && FieldHandler.IsPieceOfOppositeColorOnField(
+                                    FieldHandler.GetSpecificFieldByCoordinates(game, secondField),
+                                    Color.Black
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1135,18 +1158,31 @@ public static class StepExecutor
                                 );
                             }
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(thirdField) &&
-                                FieldHandler.GetSpecificFieldByCoordinates(game, thirdField).Content is null)
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(thirdField)
+                                && FieldHandler
+                                    .GetSpecificFieldByCoordinates(game, thirdField)
+                                    .Content
+                                    is null
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
                                     thirdField
                                 );
                             }
-                            
-                            if (RulesExecutor.AreCoordinatesOnBoard(fourthField) &&
-                                FieldHandler.GetSpecificFieldByCoordinates(game, fourthField).Content is null &&
-                                !MoveHistoryHandler.HasPieceAlreadyMoved(game.MoveHistory, fieldOfPiece.Content.FigureId))
+
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(fourthField)
+                                && FieldHandler
+                                    .GetSpecificFieldByCoordinates(game, fourthField)
+                                    .Content
+                                    is null
+                                && !MoveHistoryHandler.HasPieceAlreadyMoved(
+                                    game.MoveHistory,
+                                    fieldOfPiece.Content.FigureId
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1168,20 +1204,16 @@ public static class StepExecutor
                                 fieldOfPiece.X - 1,
                                 fieldOfPiece.Y - 1,
                             };
-                            var thirdField = new List<int>
-                            {
-                                fieldOfPiece.X,
-                                fieldOfPiece.Y - 1,
-                            };
-                            var fourthField = new List<int>
-                            {
-                                fieldOfPiece.X,
-                                fieldOfPiece.Y - 2,
-                            };
+                            var thirdField = new List<int> { fieldOfPiece.X, fieldOfPiece.Y - 1 };
+                            var fourthField = new List<int> { fieldOfPiece.X, fieldOfPiece.Y - 2 };
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(firstField) &&
-                                FieldHandler.IsPieceOfOppositeColorOnField(
-                                    FieldHandler.GetSpecificFieldByCoordinates(game, firstField), Color.Black))
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(firstField)
+                                && FieldHandler.IsPieceOfOppositeColorOnField(
+                                    FieldHandler.GetSpecificFieldByCoordinates(game, firstField),
+                                    Color.Black
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1189,9 +1221,13 @@ public static class StepExecutor
                                 );
                             }
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(secondField) &&
-                                FieldHandler.IsPieceOfOppositeColorOnField(
-                                    FieldHandler.GetSpecificFieldByCoordinates(game, secondField), Color.Black))
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(secondField)
+                                && FieldHandler.IsPieceOfOppositeColorOnField(
+                                    FieldHandler.GetSpecificFieldByCoordinates(game, secondField),
+                                    Color.Black
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1199,18 +1235,31 @@ public static class StepExecutor
                                 );
                             }
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(thirdField) &&
-                                FieldHandler.GetSpecificFieldByCoordinates(game, thirdField).Content is null)
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(thirdField)
+                                && FieldHandler
+                                    .GetSpecificFieldByCoordinates(game, thirdField)
+                                    .Content
+                                    is null
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
                                     thirdField
                                 );
                             }
-                            
-                            if (RulesExecutor.AreCoordinatesOnBoard(fourthField) &&
-                                FieldHandler.GetSpecificFieldByCoordinates(game, fourthField).Content is null &&
-                                !MoveHistoryHandler.HasPieceAlreadyMoved(game.MoveHistory, fieldOfPiece.Content.FigureId))
+
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(fourthField)
+                                && FieldHandler
+                                    .GetSpecificFieldByCoordinates(game, fourthField)
+                                    .Content
+                                    is null
+                                && !MoveHistoryHandler.HasPieceAlreadyMoved(
+                                    game.MoveHistory,
+                                    fieldOfPiece.Content.FigureId
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1230,20 +1279,16 @@ public static class StepExecutor
                                 fieldOfPiece.X - 1,
                                 fieldOfPiece.Y + 1,
                             };
-                            var thirdField = new List<int>
-                            {
-                                fieldOfPiece.X,
-                                fieldOfPiece.Y + 1,
-                            };
-                            var fourthField = new List<int>
-                            {
-                                fieldOfPiece.X,
-                                fieldOfPiece.Y + 2,
-                            };
+                            var thirdField = new List<int> { fieldOfPiece.X, fieldOfPiece.Y + 1 };
+                            var fourthField = new List<int> { fieldOfPiece.X, fieldOfPiece.Y + 2 };
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(firstField) &&
-                                FieldHandler.IsPieceOfOppositeColorOnField(
-                                    FieldHandler.GetSpecificFieldByCoordinates(game, firstField), Color.White))
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(firstField)
+                                && FieldHandler.IsPieceOfOppositeColorOnField(
+                                    FieldHandler.GetSpecificFieldByCoordinates(game, firstField),
+                                    Color.White
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1251,9 +1296,13 @@ public static class StepExecutor
                                 );
                             }
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(secondField) &&
-                                FieldHandler.IsPieceOfOppositeColorOnField(
-                                    FieldHandler.GetSpecificFieldByCoordinates(game, secondField), Color.White))
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(secondField)
+                                && FieldHandler.IsPieceOfOppositeColorOnField(
+                                    FieldHandler.GetSpecificFieldByCoordinates(game, secondField),
+                                    Color.White
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1261,17 +1310,30 @@ public static class StepExecutor
                                 );
                             }
 
-                            if (RulesExecutor.AreCoordinatesOnBoard(thirdField) &&
-                                FieldHandler.GetSpecificFieldByCoordinates(game, thirdField).Content is null)
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(thirdField)
+                                && FieldHandler
+                                    .GetSpecificFieldByCoordinates(game, thirdField)
+                                    .Content
+                                    is null
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
                                     thirdField
                                 );
                             }
-                            if (RulesExecutor.AreCoordinatesOnBoard(fourthField) &&
-                                FieldHandler.GetSpecificFieldByCoordinates(game, fourthField).Content is null &&
-                                !MoveHistoryHandler.HasPieceAlreadyMoved(game.MoveHistory, fieldOfPiece.Content.FigureId))
+                            if (
+                                RulesExecutor.AreCoordinatesOnBoard(fourthField)
+                                && FieldHandler
+                                    .GetSpecificFieldByCoordinates(game, fourthField)
+                                    .Content
+                                    is null
+                                && !MoveHistoryHandler.HasPieceAlreadyMoved(
+                                    game.MoveHistory,
+                                    fieldOfPiece.Content.FigureId
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,
@@ -1293,7 +1355,7 @@ public static class StepExecutor
                     var currentPattern = pattern.ToList();
 
                     // go one default step before starting the repetitive step execution
-                    nextField = StepExecutor.GoStepStraight(
+                    nextField = GoStepStraight(
                         currentPattern[0],
                         game,
                         nextField,
@@ -1301,7 +1363,17 @@ public static class StepExecutor
                         true
                     );
                     // also add the additional field to the output list
-                    if (RulesExecutor.AreCoordinatesOnBoard([nextField.X, nextField.Y]))
+                    if (
+                        (
+                            RulesExecutor.AreCoordinatesOnBoard([nextField.X, nextField.Y])
+                            && FieldHandler.IsPieceOfOppositeColorOnField(
+                                nextField,
+                                fieldOfPiece.Content.Color == Color.White
+                                    ? Color.Black
+                                    : Color.White
+                            )
+                        ) || nextField.Content is null
+                    )
                     {
                         var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
                         RulesExecutor.AddCoordinatesToList(
@@ -1320,14 +1392,7 @@ public static class StepExecutor
                         nextField = currentPattern.Aggregate(
                             nextField,
                             (current, move) =>
-                                StepExecutor.GoStepStraight(
-                                    move,
-                                    game,
-                                    current,
-                                    fieldOfPiece.Content.Color == Color.White
-                                        ? Color.Black
-                                        : Color.White
-                                )
+                                GoStepStraight(move, game, current, fieldOfPiece.Content.Color)
                         );
 
                         // check if the field where the figure has moved has changed
@@ -1378,11 +1443,24 @@ public static class StepExecutor
                         if (previousField == nextField)
                             continue;
                         var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
-                        if (FieldHandler.GetSpecificFieldByCoordinates(game, coordinatesToBeAdded).Content is not null)
+                        if (
+                            FieldHandler
+                                .GetSpecificFieldByCoordinates(game, coordinatesToBeAdded)
+                                .Content
+                            is not null
+                        )
                         {
-                            if (FieldHandler.IsPieceOfOppositeColorOnField(
-                                    FieldHandler.GetSpecificFieldByCoordinates(game, coordinatesToBeAdded),
-                                    fieldOfPiece.Content.Color == Color.White ? Color.Black : Color.White))
+                            if (
+                                FieldHandler.IsPieceOfOppositeColorOnField(
+                                    FieldHandler.GetSpecificFieldByCoordinates(
+                                        game,
+                                        coordinatesToBeAdded
+                                    ),
+                                    fieldOfPiece.Content.Color == Color.White
+                                        ? Color.Black
+                                        : Color.White
+                                )
+                            )
                             {
                                 RulesExecutor.AddCoordinatesToList(
                                     fieldsWherePieceCanMove,

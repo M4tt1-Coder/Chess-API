@@ -32,7 +32,6 @@ public static class BoardHandler
         // mark all fields
         foreach (var row in game.Board)
         {
-            
             foreach (var field in row.Row)
             {
                 foreach (var foundField in fieldsPieceCanMoveTo)
