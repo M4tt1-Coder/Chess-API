@@ -51,9 +51,15 @@ public class PlayingController(ChessDbContext context, ILogger<PlayingController
             .Include(model => model.MoveHistory)
             .FirstAsync();
 
+        // immediately return if the game has ended
+        if (game.Winner is not Winner.Default)
+        {
+            await context.SaveChangesAsync();
+            return Redirect("/playing");
+        }
+
         game = RulesExecutor.HasGameEnded(game);
 
-        // immediately return if the game has ended
         if (game.Winner is not Winner.Default)
         {
             await context.SaveChangesAsync();

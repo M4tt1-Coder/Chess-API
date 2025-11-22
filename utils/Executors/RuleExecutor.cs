@@ -146,7 +146,7 @@ public static class RulesExecutor
     /// <param name="game">Current game instance</param>
     /// <param name="kingColor">Either white / black : Color of the king</param>
     /// <returns>List record with all attacked fields</returns>
-    private static AttackedFieldsList FieldsWhereKingIsAttacked(GameModel game, Color kingColor)
+    public static AttackedFieldsList FieldsWhereKingIsAttacked(GameModel game, Color kingColor)
     {
         // field list which can be assigned to a piece
         var associatedWithPiece = new List<CoveredFieldOfPieceObjects>();
@@ -169,14 +169,14 @@ public static class RulesExecutor
                 var fieldsAttackedByPiece = new List<List<int>>();
 
                 // add the field where the piece is situated
-                if (AreCoordinatesOnBoard(new List<int>() { field.X, field.Y }))
-                {
-                    AddCoordinatesToList(
-                        fieldsAttackedByPiece,
-                        new List<int>() { field.X, field.Y }
-                    );
-                }
-
+                // if (AreCoordinatesOnBoard(new List<int>() { field.X, field.Y }))
+                // {
+                //     AddCoordinatesToList(
+                //         fieldsAttackedByPiece,
+                //         new List<int>() { field.X, field.Y }
+                //     );
+                //}
+                
                 switch (field.Content.Type)
                 {
                     case FigureType.Pawn:
@@ -270,7 +270,7 @@ public static class RulesExecutor
                                 true
                             );
                             // also add the additional field to the output list
-                            if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                            if (AreCoordinatesOnBoard([nextField.X, nextField.Y]))
                             {
                                 var coordinatesToBeAdded = new List<int>
                                 {
@@ -290,12 +290,7 @@ public static class RulesExecutor
                                 nextField = currentPattern.Aggregate(
                                     nextField,
                                     (current, move) =>
-                                        StepExecutor.GoStepStraight(
-                                            move,
-                                            game,
-                                            current,
-                                            kingColor == Color.White ? Color.Black : Color.White
-                                        )
+                                        StepExecutor.GoStepStraight(move, game, current, kingColor, false, true)
                                 );
 
                                 // check if the field where the figure has moved has changed
@@ -311,7 +306,7 @@ public static class RulesExecutor
                                     // add the field to the list
                                     if (
                                         !AreCoordinatesOnBoard(
-                                            new List<int>() { nextField.X, nextField.Y }
+                                            [nextField.X, nextField.Y]
                                         )
                                     )
                                         continue;
@@ -384,11 +379,11 @@ public static class RulesExecutor
                                 true
                             );
                             // also add the additional field to the output list
-                            if (AreCoordinatesOnBoard(new List<int> { nextField.X, nextField.Y }))
+                            if (AreCoordinatesOnBoard([nextField.X, nextField.Y]))
                             {
                                 AddCoordinatesToList(
                                     fieldsAttackedByPiece,
-                                    new List<int> { nextField.X, nextField.Y }
+                                    [nextField.X, nextField.Y]
                                 );
                             }
 
@@ -401,12 +396,7 @@ public static class RulesExecutor
                                 nextField = currentPattern.Aggregate(
                                     nextField,
                                     (current, move) =>
-                                        StepExecutor.GoStepStraight(
-                                            move,
-                                            game,
-                                            current,
-                                            kingColor == Color.White ? Color.Black : Color.White
-                                        )
+                                        StepExecutor.GoStepStraight(move, game, current, kingColor, false, true)
                                 );
 
                                 if (
@@ -453,7 +443,7 @@ public static class RulesExecutor
                                 true
                             );
                             // also add the additional field to the output list
-                            if (AreCoordinatesOnBoard(new List<int>() { nextField.X, nextField.Y }))
+                            if (AreCoordinatesOnBoard([nextField.X, nextField.Y]))
                             {
                                 var coordinatesToBeAdded = new List<int>
                                 {
@@ -472,12 +462,7 @@ public static class RulesExecutor
                                 nextField = currentPattern.Aggregate(
                                     nextField,
                                     (current, move) =>
-                                        StepExecutor.GoStepStraight(
-                                            move,
-                                            game,
-                                            current,
-                                            kingColor == Color.White ? Color.Black : Color.White
-                                        )
+                                        StepExecutor.GoStepStraight(move, game, current, kingColor, false, true)
                                 );
 
                                 if (
@@ -789,7 +774,7 @@ public static class RulesExecutor
     /// <param name="currentField">Starting field where we are going from</param>
     /// <param name="game">Current game object</param>
     /// <returns>A field the king can move to</returns>
-    public static FieldModel KingJustTriesToGoToField(
+    private static FieldModel KingJustTriesToGoToField(
         Move kingMove,
         FieldModel currentField,
         GameModel game
@@ -803,7 +788,7 @@ public static class RulesExecutor
         {
             case Move.Up:
                 // get the new coordinates
-                newCoordinates = new List<int>() { currentField.X, currentField.Y - 1 };
+                newCoordinates = [currentField.X, currentField.Y - 1];
                 // validate new coordinates
                 if (newCoordinates[1] < 0)
                     return currentField;
@@ -812,43 +797,43 @@ public static class RulesExecutor
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Move.Down:
-                newCoordinates = new List<int>() { currentField.X, currentField.Y + 1 };
+                newCoordinates = [currentField.X, currentField.Y + 1];
                 if (newCoordinates[1] > 7)
                     return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Move.Left:
-                newCoordinates = new List<int>() { currentField.X - 1, currentField.Y };
+                newCoordinates = [currentField.X - 1, currentField.Y];
                 if (newCoordinates[0] < 0)
                     return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Move.Right:
-                newCoordinates = new List<int>() { currentField.X, currentField.Y + 1 };
+                newCoordinates = [currentField.X, currentField.Y + 1];
                 if (newCoordinates[0] > 7)
                     return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Move.DiagonalUpLeft:
-                newCoordinates = new List<int>() { currentField.X - 1, currentField.Y - 1 };
+                newCoordinates = [currentField.X - 1, currentField.Y - 1];
                 if (newCoordinates[1] < 0 && newCoordinates[0] < 0)
                     return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Move.DiagonalUpRight:
-                newCoordinates = new List<int>() { currentField.X + 1, currentField.Y - 1 };
+                newCoordinates = [currentField.X + 1, currentField.Y - 1];
                 if (newCoordinates[1] < 0 && newCoordinates[0] > 7)
                     return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Move.DiagonalDownLeft:
-                newCoordinates = new List<int>() { currentField.X - 1, currentField.Y + 1 };
+                newCoordinates = [currentField.X - 1, currentField.Y + 1];
                 if (newCoordinates[1] > 7 && newCoordinates[0] < 0)
                     return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
                 break;
             case Move.DiagonalDownRight:
-                newCoordinates = new List<int>() { currentField.X + 1, currentField.Y + 1 };
+                newCoordinates = [currentField.X + 1, currentField.Y + 1];
                 if (newCoordinates[1] > 7 && newCoordinates[0] > 7)
                     return currentField;
                 output = FieldHandler.GetSpecificFieldByCoordinates(game, newCoordinates);
@@ -1025,7 +1010,7 @@ public static class RulesExecutor
     /// <param name="kingCoordinates">Coordinates of the king</param>
     /// <param name="kingColor">Color of the king</param>
     /// <returns>List of Coordinates of Fields, where a king could potentially move to</returns>
-    private static List<List<int>> GetListOfFieldsWhereKingCanMove(
+    public static List<List<int>> GetListOfFieldsWhereKingCanMove(
         GameModel game,
         List<int> kingCoordinates,
         Color kingColor
