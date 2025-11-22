@@ -1,7 +1,5 @@
 using Chess_API.Database;
 using Chess_API.Enums;
-using Chess_API.Models;
-using Chess_API.utils;
 using Chess_API.utils.Executors;
 using Chess_API.utils.Handlers;
 using Chess_API.utils.Services;
@@ -10,18 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chess_API.Controllers;
 
-public class PlayingController : Controller
+public class PlayingController(ChessDbContext context, ILogger<PlayingController> logger)
+    : Controller
 {
     // dependencies
-    private readonly ChessDbContext _context;
 
-    private readonly ILogger<PlayingController> _logger;
-
-    public PlayingController(ChessDbContext context, ILogger<PlayingController> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
+    private readonly ILogger<PlayingController> _logger = logger;
 
     // TODO - Game board needs to be reorder -> white on top then bottom and then on top again
     // depending which players turn it is; just effective for local playing
@@ -50,7 +42,7 @@ public class PlayingController : Controller
         // convert the string to a list of integers
         var fieldCoordinatesList = ConverterHelper.ConvertStringToIntsList(fieldCoordinates[0]!);
         // check if a field with a figure was selected
-        var game = await _context
+        var game = await context
             .Game.Include(model => model.PlayerOne)
             .Include(model => model.PlayerTwo)
             .Include(model => model.Board)
@@ -64,7 +56,7 @@ public class PlayingController : Controller
         // immediately return if the game has ended
         if (game.Winner is not Winner.Default)
         {
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Redirect("/playing");
         }
 
@@ -92,7 +84,7 @@ public class PlayingController : Controller
             game = BoardHandler.MarkAllFieldsWherePieceCanMoveTo(game);
         }
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         return Redirect("/playing");
     }
 
@@ -109,7 +101,7 @@ public class PlayingController : Controller
         // add inclusion declarations of properties that forcibly have to take out of the in-memory database
         // data needs to be included in the entity
         // https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.entityframeworkqueryableextensions.include?view=efcore-8.0&viewFallbackFrom=net-6.0
-        var game = _context.Game.First();
+        var game = context.Game.First();
 
         return View(game);
     }

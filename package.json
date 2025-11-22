@@ -4,7 +4,6 @@
   "description": "A C# UI browser with ambitions to run with AI!",
   "scripts": {
     "format": "csharpier format .",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "css:build": "npx @tailwindcss/cli -i ./wwwroot/css/site.css -o ./wwwroot/css/styles.css --minify"
   },
   "keywords": [],

@@ -108,84 +108,84 @@ public static class StepExecutor
                         switch (Math.Abs(curField.Y - newField.Y))
                         {
                             case 2:
-                            {
-                                // check if the pawn has already been moved
-                                if (
-                                    MoveHistoryHandler.HasPieceAlreadyMoved(
-                                        game.MoveHistory,
-                                        piece.FigureId
-                                    )
-                                )
                                 {
+                                    // check if the pawn has already been moved
+                                    if (
+                                        MoveHistoryHandler.HasPieceAlreadyMoved(
+                                            game.MoveHistory,
+                                            piece.FigureId
+                                        )
+                                    )
+                                    {
+                                        break;
+                                    }
+                                    var nextField = FieldHandler.CopyField(curField);
+                                    foreach (var move in pattern)
+                                    {
+                                        nextField = GoStepPawn(move, game, nextField, piece.Color);
+                                        if (nextField == newField)
+                                        {
+                                            output = true;
+                                        }
+                                    }
                                     break;
                                 }
-                                var nextField = FieldHandler.CopyField(curField);
-                                foreach (var move in pattern)
-                                {
-                                    nextField = GoStepPawn(move, game, nextField, piece.Color);
-                                    if (nextField == newField)
-                                    {
-                                        output = true;
-                                    }
-                                }
-                                break;
-                            }
                             case 1:
-                            {
-                                foreach (var move in pattern)
                                 {
-                                    var nextField = GoStepPawn(
-                                        move,
-                                        game,
-                                        FieldHandler.CopyField(curField),
-                                        piece.Color
-                                    );
-                                    if (nextField == newField)
+                                    foreach (var move in pattern)
                                     {
-                                        output = true;
+                                        var nextField = GoStepPawn(
+                                            move,
+                                            game,
+                                            FieldHandler.CopyField(curField),
+                                            piece.Color
+                                        );
+                                        if (nextField == newField)
+                                        {
+                                            output = true;
+                                        }
                                     }
+                                    break;
                                 }
-                                break;
-                            }
                         }
 
                         break;
                     case FigureType.Knight:
-                    {
-                        var nextField = FieldHandler.CopyField(curField);
-                        var stepCounter = 0;
-
-                        foreach (var move in pattern)
                         {
-                            var previous = nextField;
-                            nextField = GoStepKnight(move, game, nextField, piece.Color);
-                            stepCounter++;
-                            if (nextField == newField && previous != nextField && stepCounter == 2)
-                            {
-                                output = true;
-                            }
-                        }
+                            var nextField = FieldHandler.CopyField(curField);
+                            var stepCounter = 0;
 
-                        break;
-                    }
+                            foreach (var move in pattern)
+                            {
+                                var previous = nextField;
+                                nextField = GoStepKnight(move, game, nextField, piece.Color);
+                                stepCounter++;
+                                if (nextField == newField && previous != nextField && stepCounter == 2)
+                                {
+                                    output = true;
+                                }
+                            }
+
+                            break;
+                        }
                     case FigureType.King:
-                    {
-                        foreach (var move in pattern)
                         {
-                            var nextField = GoStepKing(
-                                move,
-                                game,
-                                FieldHandler.CopyField(curField),
-                                piece.Color
-                            );
-                            if (nextField == newField)
+                            foreach (var move in pattern)
                             {
-                                output = true;
+                                var nextField = GoStepKing(
+                                    move,
+                                    game,
+                                    FieldHandler.CopyField(curField),
+                                    piece.Color
+                                );
+                                if (nextField == newField)
+                                {
+                                    output = true;
+                                }
                             }
-                        }
 
-                        break;
-                    }
+                            break;
+                        }
                 }
             }
         }
@@ -972,47 +972,47 @@ public static class StepExecutor
 
                         break;
                     case FigureType.Knight:
-                    {
-                        var nextField = FieldHandler.CopyField(fieldOfPiece);
-                        var stepCounter = 0;
-
-                        foreach (var move in pattern)
                         {
-                            var previous = nextField;
-                            nextField = GoStepKnight(move, game, nextField, piece.Color);
-                            stepCounter++;
+                            var nextField = FieldHandler.CopyField(fieldOfPiece);
+                            var stepCounter = 0;
+
+                            foreach (var move in pattern)
+                            {
+                                var previous = nextField;
+                                nextField = GoStepKnight(move, game, nextField, piece.Color);
+                                stepCounter++;
+                                if (
+                                    nextField != fieldOfPiece
+                                    && previous != nextField
+                                    && stepCounter == 2
+                                )
+                                {
+                                    return true;
+                                }
+                            }
+
+                            break;
+                        }
+                    case FigureType.King:
+                        {
                             if (
-                                nextField != fieldOfPiece
-                                && previous != nextField
-                                && stepCounter == 2
+                                pattern
+                                    .Select(move =>
+                                        GoStepKing(
+                                            move,
+                                            game,
+                                            FieldHandler.CopyField(fieldOfPiece),
+                                            piece.Color
+                                        )
+                                    )
+                                    .Any(nextField => nextField != fieldOfPiece)
                             )
                             {
                                 return true;
                             }
-                        }
 
-                        break;
-                    }
-                    case FigureType.King:
-                    {
-                        if (
-                            pattern
-                                .Select(move =>
-                                    GoStepKing(
-                                        move,
-                                        game,
-                                        FieldHandler.CopyField(fieldOfPiece),
-                                        piece.Color
-                                    )
-                                )
-                                .Any(nextField => nextField != fieldOfPiece)
-                        )
-                        {
-                            return true;
+                            break;
                         }
-
-                        break;
-                    }
                 }
             }
         }
@@ -1565,7 +1565,17 @@ public static class StepExecutor
                         true
                     );
                     // also add the additional field to the output list
-                    if (RulesExecutor.AreCoordinatesOnBoard([nextField.X, nextField.Y]))
+                    if (
+                        (
+                            RulesExecutor.AreCoordinatesOnBoard([nextField.X, nextField.Y])
+                            && FieldHandler.IsPieceOfOppositeColorOnField(
+                                nextField,
+                                fieldOfPiece.Content.Color == Color.White
+                                    ? Color.Black
+                                    : Color.White
+                            )
+                        ) || nextField.Content is null
+                    )
                     {
                         var coordinatesToBeAdded = new List<int> { nextField.X, nextField.Y };
                         RulesExecutor.AddCoordinatesToList(
@@ -1587,9 +1597,7 @@ public static class StepExecutor
                                     move,
                                     game,
                                     current,
-                                    fieldOfPiece.Content.Color == Color.White
-                                        ? Color.Black
-                                        : Color.White
+                                    fieldOfPiece.Content.Color
                                 )
                         );
 
