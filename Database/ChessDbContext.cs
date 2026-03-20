@@ -1,5 +1,4 @@
 using Chess_API.Models;
-using Chess_API.utils;
 using Chess_API.utils.Handlers;
 using Microsoft.EntityFrameworkCore;
 

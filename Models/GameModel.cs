@@ -28,7 +28,7 @@ public class GameModel
     public PlayerModel PlayerOne { get; set; } = null!;
 
     /// <summary>
-    /// Can be the Ai instance with the default name "Paul",
+    /// Can be the AI instance with the default name "Paul",
     /// or another normal player.
     /// </summary>
     public PlayerModel PlayerTwo { get; set; } = null!;

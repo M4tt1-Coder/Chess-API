@@ -15,10 +15,8 @@ public class PlayingController(ChessDbContext context, ILogger<PlayingController
 
     private readonly ILogger<PlayingController> _logger = logger;
 
-    // TODO - Game board needs to be reorder -> white on top then bottom and then on top again
+    // TODO: - Game board needs to be reorder -> white on top then bottom and then on top again
     // depending which players turn it is; just effective for local playing
-
-    // TODO - Add the marked field functionality to the endpoint
 
     /// <summary>
     /// Universal endpoint for user interaction.
@@ -94,7 +92,7 @@ public class PlayingController(ChessDbContext context, ILogger<PlayingController
         return Redirect("/playing");
     }
 
-    // TODO - Add a endpoint for resigning and offering a draw
+    // TODO: - Add a endpoint for resigning and offering a draw
 
     /// <summary>
     /// Gets the game model out of memory.

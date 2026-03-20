@@ -10,9 +10,9 @@
   "author": "Matthis Geißler <matthisgeissler@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "tailwindcss": "^4.1.13"
+    "tailwindcss": "^4.2.2"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.13"
+    "@tailwindcss/cli": "^4.2.2"
   }
 }

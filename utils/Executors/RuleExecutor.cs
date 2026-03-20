@@ -176,7 +176,7 @@ public static class RulesExecutor
                 //         new List<int>() { field.X, field.Y }
                 //     );
                 //}
-                
+
                 switch (field.Content.Type)
                 {
                     case FigureType.Pawn:
@@ -290,7 +290,14 @@ public static class RulesExecutor
                                 nextField = currentPattern.Aggregate(
                                     nextField,
                                     (current, move) =>
-                                        StepExecutor.GoStepStraight(move, game, current, kingColor, false, true)
+                                        StepExecutor.GoStepStraight(
+                                            move,
+                                            game,
+                                            current,
+                                            kingColor,
+                                            false,
+                                            true
+                                        )
                                 );
 
                                 // check if the field where the figure has moved has changed
@@ -304,11 +311,7 @@ public static class RulesExecutor
                                 else
                                 {
                                     // add the field to the list
-                                    if (
-                                        !AreCoordinatesOnBoard(
-                                            [nextField.X, nextField.Y]
-                                        )
-                                    )
+                                    if (!AreCoordinatesOnBoard([nextField.X, nextField.Y]))
                                         continue;
                                     var coordinatesToBeAdded = new List<int>
                                     {
@@ -396,7 +399,14 @@ public static class RulesExecutor
                                 nextField = currentPattern.Aggregate(
                                     nextField,
                                     (current, move) =>
-                                        StepExecutor.GoStepStraight(move, game, current, kingColor, false, true)
+                                        StepExecutor.GoStepStraight(
+                                            move,
+                                            game,
+                                            current,
+                                            kingColor,
+                                            false,
+                                            true
+                                        )
                                 );
 
                                 if (
@@ -462,7 +472,14 @@ public static class RulesExecutor
                                 nextField = currentPattern.Aggregate(
                                     nextField,
                                     (current, move) =>
-                                        StepExecutor.GoStepStraight(move, game, current, kingColor, false, true)
+                                        StepExecutor.GoStepStraight(
+                                            move,
+                                            game,
+                                            current,
+                                            kingColor,
+                                            false,
+                                            true
+                                        )
                                 );
 
                                 if (
@@ -522,6 +539,8 @@ public static class RulesExecutor
 
         return new AttackedFieldsList(associatedWithPiece);
     }
+
+    // TODO: When the king is in check, can't move BUT the attacking piece could be thrown by an own piece -> not working
 
     /// <summary>
     /// Checks if one of the players lost and then applies modifications to the active game instance.
@@ -584,6 +603,8 @@ public static class RulesExecutor
                 game = GameHandler.ApplyChangesAfterGameEnded(game, Winner.PlayerTwo);
             }
         }
+
+        // TODO: check process of determining if player 2 has lost -> unknown bahaviour + remove '!' from checking if statement
 
         // check if player two lost
         if (!CheckChecker(game, game.PlayerTwo.PieceColor))

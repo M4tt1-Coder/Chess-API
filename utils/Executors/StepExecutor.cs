@@ -108,84 +108,84 @@ public static class StepExecutor
                         switch (Math.Abs(curField.Y - newField.Y))
                         {
                             case 2:
-                            {
-                                // check if the pawn has already been moved
-                                if (
-                                    MoveHistoryHandler.HasPieceAlreadyMoved(
-                                        game.MoveHistory,
-                                        piece.FigureId
-                                    )
-                                )
                                 {
+                                    // check if the pawn has already been moved
+                                    if (
+                                        MoveHistoryHandler.HasPieceAlreadyMoved(
+                                            game.MoveHistory,
+                                            piece.FigureId
+                                        )
+                                    )
+                                    {
+                                        break;
+                                    }
+                                    var nextField = FieldHandler.CopyField(curField);
+                                    foreach (var move in pattern)
+                                    {
+                                        nextField = GoStepPawn(move, game, nextField, piece.Color);
+                                        if (nextField == newField)
+                                        {
+                                            output = true;
+                                        }
+                                    }
                                     break;
                                 }
-                                var nextField = FieldHandler.CopyField(curField);
-                                foreach (var move in pattern)
-                                {
-                                    nextField = GoStepPawn(move, game, nextField, piece.Color);
-                                    if (nextField == newField)
-                                    {
-                                        output = true;
-                                    }
-                                }
-                                break;
-                            }
                             case 1:
-                            {
-                                foreach (var move in pattern)
                                 {
-                                    var nextField = GoStepPawn(
-                                        move,
-                                        game,
-                                        FieldHandler.CopyField(curField),
-                                        piece.Color
-                                    );
-                                    if (nextField == newField)
+                                    foreach (var move in pattern)
                                     {
-                                        output = true;
+                                        var nextField = GoStepPawn(
+                                            move,
+                                            game,
+                                            FieldHandler.CopyField(curField),
+                                            piece.Color
+                                        );
+                                        if (nextField == newField)
+                                        {
+                                            output = true;
+                                        }
                                     }
+                                    break;
                                 }
-                                break;
-                            }
                         }
 
                         break;
                     case FigureType.Knight:
-                    {
-                        var nextField = FieldHandler.CopyField(curField);
-                        var stepCounter = 0;
-
-                        foreach (var move in pattern)
                         {
-                            var previous = nextField;
-                            nextField = GoStepKnight(move, game, nextField, piece.Color);
-                            stepCounter++;
-                            if (nextField == newField && previous != nextField && stepCounter == 2)
-                            {
-                                output = true;
-                            }
-                        }
+                            var nextField = FieldHandler.CopyField(curField);
+                            var stepCounter = 0;
 
-                        break;
-                    }
+                            foreach (var move in pattern)
+                            {
+                                var previous = nextField;
+                                nextField = GoStepKnight(move, game, nextField, piece.Color);
+                                stepCounter++;
+                                if (nextField == newField && previous != nextField && stepCounter == 2)
+                                {
+                                    output = true;
+                                }
+                            }
+
+                            break;
+                        }
                     case FigureType.King:
-                    {
-                        foreach (var move in pattern)
                         {
-                            var nextField = GoStepKing(
-                                move,
-                                game,
-                                FieldHandler.CopyField(curField),
-                                piece.Color
-                            );
-                            if (nextField == newField)
+                            foreach (var move in pattern)
                             {
-                                output = true;
+                                var nextField = GoStepKing(
+                                    move,
+                                    game,
+                                    FieldHandler.CopyField(curField),
+                                    piece.Color
+                                );
+                                if (nextField == newField)
+                                {
+                                    output = true;
+                                }
                             }
-                        }
 
-                        break;
-                    }
+                            break;
+                        }
                 }
             }
         }
@@ -968,7 +968,6 @@ public static class StepExecutor
                 switch (piece.Type)
                 {
                     case FigureType.Pawn:
-                        // ReSharper disable once PossibleMultipleEnumeration
                         if (pattern.Count() == 2)
                         {
                             if (
@@ -982,7 +981,6 @@ public static class StepExecutor
                             }
 
                             var nextField = FieldHandler.CopyField(fieldOfPiece);
-                            // ReSharper disable once PossibleMultipleEnumeration
                             foreach (var move in pattern)
                             {
                                 nextField = GoStepPawn(move, game, nextField, piece.Color);
@@ -994,7 +992,6 @@ public static class StepExecutor
                         }
                         else
                         {
-                            // ReSharper disable once PossibleMultipleEnumeration
                             if (
                                 pattern
                                     .Select(move =>
@@ -1014,47 +1011,47 @@ public static class StepExecutor
 
                         break;
                     case FigureType.Knight:
-                    {
-                        var nextField = FieldHandler.CopyField(fieldOfPiece);
-                        var stepCounter = 0;
-
-                        foreach (var move in pattern)
                         {
-                            var previous = nextField;
-                            nextField = GoStepKnight(move, game, nextField, piece.Color);
-                            stepCounter++;
+                            var nextField = FieldHandler.CopyField(fieldOfPiece);
+                            var stepCounter = 0;
+
+                            foreach (var move in pattern)
+                            {
+                                var previous = nextField;
+                                nextField = GoStepKnight(move, game, nextField, piece.Color);
+                                stepCounter++;
+                                if (
+                                    nextField != fieldOfPiece
+                                    && previous != nextField
+                                    && stepCounter == 2
+                                )
+                                {
+                                    return true;
+                                }
+                            }
+
+                            break;
+                        }
+                    case FigureType.King:
+                        {
                             if (
-                                nextField != fieldOfPiece
-                                && previous != nextField
-                                && stepCounter == 2
+                                pattern
+                                    .Select(move =>
+                                        GoStepKing(
+                                            move,
+                                            game,
+                                            FieldHandler.CopyField(fieldOfPiece),
+                                            piece.Color
+                                        )
+                                    )
+                                    .Any(nextField => nextField != fieldOfPiece)
                             )
                             {
                                 return true;
                             }
-                        }
 
-                        break;
-                    }
-                    case FigureType.King:
-                    {
-                        if (
-                            pattern
-                                .Select(move =>
-                                    GoStepKing(
-                                        move,
-                                        game,
-                                        FieldHandler.CopyField(fieldOfPiece),
-                                        piece.Color
-                                    )
-                                )
-                                .Any(nextField => nextField != fieldOfPiece)
-                        )
-                        {
-                            return true;
+                            break;
                         }
-
-                        break;
-                    }
                 }
             }
         }
@@ -1062,8 +1059,12 @@ public static class StepExecutor
         return false;
     }
 
+    // TODO: Add a check checking step before adding a field to the list -> use 'CheckChecker' method (finish this first)
+
     /// <summary>
     /// Gathers all fields where a piece can move to in the next move.
+    ///
+    /// Pays attention to all special moves of different pieces and makes sure that after a move the own king isn't in check.
     /// </summary>
     /// <param name="game">The current Game instance</param>
     /// <param name="pieceCoordinates">The coordinates of the piece.</param>
@@ -1073,6 +1074,7 @@ public static class StepExecutor
         List<int> pieceCoordinates
     )
     {
+
         var fieldsWherePieceCanMove = new List<List<int>>();
 
         // get the field of the piece
@@ -1080,6 +1082,8 @@ public static class StepExecutor
 
         if (fieldOfPiece.Content is null)
             throw new Exception("The content of the field can't be null!");
+
+
 
         switch (fieldOfPiece.Content.Type)
         {
@@ -1092,8 +1096,11 @@ public static class StepExecutor
                         {
                             // check for boundaries
                             // assign new possible fields that could be attacked by black piece
+
+                            // these apply only when on the exact field is a piece of the opposite color
                             List<int> firstField = [fieldOfPiece.X + 1, fieldOfPiece.Y + 1];
                             List<int> secondField = [fieldOfPiece.X - 1, fieldOfPiece.Y + 1];
+                            // -----------------
                             List<int> thirdField = [fieldOfPiece.X, fieldOfPiece.Y + 1];
                             List<int> fourthField = [fieldOfPiece.X, fieldOfPiece.Y + 2];
 
@@ -1102,6 +1109,12 @@ public static class StepExecutor
                                 && FieldHandler.IsPieceOfOppositeColorOnField(
                                     FieldHandler.GetSpecificFieldByCoordinates(game, firstField),
                                     Color.Black
+                                )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    firstField
                                 )
                             )
                             {
@@ -1117,6 +1130,12 @@ public static class StepExecutor
                                     FieldHandler.GetSpecificFieldByCoordinates(game, secondField),
                                     Color.Black
                                 )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    secondField
+                                )
                             )
                             {
                                 RulesExecutor.AddCoordinatesToList(
@@ -1131,6 +1150,12 @@ public static class StepExecutor
                                     .GetSpecificFieldByCoordinates(game, thirdField)
                                     .Content
                                     is null
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    thirdField
+                                )
                             )
                             {
                                 RulesExecutor.AddCoordinatesToList(
@@ -1148,6 +1173,12 @@ public static class StepExecutor
                                 && !MoveHistoryHandler.HasPieceAlreadyMoved(
                                     game.MoveHistory,
                                     fieldOfPiece.Content.FigureId
+                                )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    fourthField
                                 )
                             )
                             {
@@ -1178,6 +1209,12 @@ public static class StepExecutor
                                     FieldHandler.GetSpecificFieldByCoordinates(game, firstField),
                                     Color.Black
                                 )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    firstField
+                                )
                             )
                             {
                                 RulesExecutor.AddCoordinatesToList(
@@ -1191,6 +1228,12 @@ public static class StepExecutor
                                 && FieldHandler.IsPieceOfOppositeColorOnField(
                                     FieldHandler.GetSpecificFieldByCoordinates(game, secondField),
                                     Color.Black
+                                )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    secondField
                                 )
                             )
                             {
@@ -1206,6 +1249,12 @@ public static class StepExecutor
                                     .GetSpecificFieldByCoordinates(game, thirdField)
                                     .Content
                                     is null
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    thirdField
+                                )
                             )
                             {
                                 RulesExecutor.AddCoordinatesToList(
@@ -1223,6 +1272,12 @@ public static class StepExecutor
                                 && !MoveHistoryHandler.HasPieceAlreadyMoved(
                                     game.MoveHistory,
                                     fieldOfPiece.Content.FigureId
+                                )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    fourthField
                                 )
                             )
                             {
@@ -1255,6 +1310,12 @@ public static class StepExecutor
                                     FieldHandler.GetSpecificFieldByCoordinates(game, firstField),
                                     Color.Black
                                 )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    firstField
+                                )
                             )
                             {
                                 RulesExecutor.AddCoordinatesToList(
@@ -1268,6 +1329,12 @@ public static class StepExecutor
                                 && FieldHandler.IsPieceOfOppositeColorOnField(
                                     FieldHandler.GetSpecificFieldByCoordinates(game, secondField),
                                     Color.Black
+                                )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    secondField
                                 )
                             )
                             {
@@ -1283,6 +1350,12 @@ public static class StepExecutor
                                     .GetSpecificFieldByCoordinates(game, thirdField)
                                     .Content
                                     is null
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    thirdField
+                                )
                             )
                             {
                                 RulesExecutor.AddCoordinatesToList(
@@ -1300,6 +1373,12 @@ public static class StepExecutor
                                 && !MoveHistoryHandler.HasPieceAlreadyMoved(
                                     game.MoveHistory,
                                     fieldOfPiece.Content.FigureId
+                                )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    fourthField
                                 )
                             )
                             {
@@ -1330,6 +1409,12 @@ public static class StepExecutor
                                     FieldHandler.GetSpecificFieldByCoordinates(game, firstField),
                                     Color.White
                                 )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    firstField
+                                )
                             )
                             {
                                 RulesExecutor.AddCoordinatesToList(
@@ -1343,6 +1428,12 @@ public static class StepExecutor
                                 && FieldHandler.IsPieceOfOppositeColorOnField(
                                     FieldHandler.GetSpecificFieldByCoordinates(game, secondField),
                                     Color.White
+                                )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    secondField
                                 )
                             )
                             {
@@ -1358,6 +1449,12 @@ public static class StepExecutor
                                     .GetSpecificFieldByCoordinates(game, thirdField)
                                     .Content
                                     is null
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    thirdField
+                                )
                             )
                             {
                                 RulesExecutor.AddCoordinatesToList(
@@ -1374,6 +1471,12 @@ public static class StepExecutor
                                 && !MoveHistoryHandler.HasPieceAlreadyMoved(
                                     game.MoveHistory,
                                     fieldOfPiece.Content.FigureId
+                                )
+                                && !RulesExecutor.CheckChecker(
+                                    game,
+                                    fieldOfPiece.Content.Color,
+                                    [fieldOfPiece.X, fieldOfPiece.Y],
+                                    fourthField
                                 )
                             )
                             {

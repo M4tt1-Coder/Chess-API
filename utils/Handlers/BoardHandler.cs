@@ -9,7 +9,9 @@ namespace Chess_API.utils.Handlers;
 public static class BoardHandler
 {
     // TODO: When a king is in check only piece which can block the attack besides the king should be able to move
-    
+    // TODO: A piece shouldn't be able to move when it blocks a check
+    // TODO: When a pawn is selected, hasn't moved yet and a piece is in front of it the second field shoudn't be marked 
+
     /// <summary>
     /// Marks all fields a piece can move to, which can be seen on the board.
     /// </summary>

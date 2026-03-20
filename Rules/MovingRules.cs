@@ -2,7 +2,6 @@ using Chess_API.Enums;
 using Chess_API.Interfaces;
 using Chess_API.Models;
 using Chess_API.MovePatterns;
-using Chess_API.utils;
 using Chess_API.utils.Executors;
 
 namespace Chess_API.Rules;
